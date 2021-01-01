@@ -9,21 +9,13 @@ public class ShapeAnalyzer {
     private final int ERROR_ALLOWANCE = 5;
 
     public boolean isHorizontal(List<Point> stroke) {
-        boolean leftRight = stroke.get(0).getX() < stroke.get(1).getX();
-        if (leftRight) {
-            return isLeftRightLine(stroke);
-        } else {
-            return isRightLeftLine(stroke);
-        }
+        boolean startsAtLeft = stroke.get(0).getX() < stroke.get(1).getX();
+        return startsAtLeft? isLeftRightLine(stroke) : isRightLeftLine(stroke) ;
     }
 
     public boolean isVertical(List<Point> stroke) {
-        boolean topDown = stroke.get(0).getY() < stroke.get(1).getY();
-        if (topDown) {
-            return isTopDownLine(stroke);
-        } else {
-            return isBottomUpLine(stroke);
-        }
+        boolean startsAtTop = stroke.get(0).getY() < stroke.get(1).getY();
+        return startsAtTop? isTopDownLine(stroke) : isBottomUpLine(stroke);
     }
 
     private boolean isLeftRightLine(List<Point> stroke) {
