@@ -10,12 +10,12 @@ public class ShapeAnalyzer {
 
     public boolean isHorizontal(List<Point> stroke) {
         boolean startsAtLeft = stroke.get(0).getX() < stroke.get(1).getX();
-        return startsAtLeft? isLeftRightLine(stroke) : isRightLeftLine(stroke) ;
+        return startsAtLeft ? isLeftRightLine(stroke) : isRightLeftLine(stroke);
     }
 
     public boolean isVertical(List<Point> stroke) {
         boolean startsAtTop = stroke.get(0).getY() < stroke.get(1).getY();
-        return startsAtTop? isTopDownLine(stroke) : isBottomUpLine(stroke);
+        return startsAtTop ? isTopDownLine(stroke) : isBottomUpLine(stroke);
     }
 
     private boolean isLeftRightLine(List<Point> stroke) {
@@ -40,12 +40,11 @@ public class ShapeAnalyzer {
         for (Point point : stroke) {
             if (veersVertical(point, origin)) {
                 return false;
+            }
+            if (point.getX() > minX) {
+                return false;
             } else {
-                if (point.getX() > minX) {
-                    return false;
-                } else {
-                    minX = point.getY();
-                }
+                minX = point.getY();
             }
         }
         return true;
@@ -57,12 +56,11 @@ public class ShapeAnalyzer {
         for (Point point : stroke) {
             if (veersHorizontal(point, origin)) {
                 return false;
+            }
+            if (point.getY() > minY) {
+                return false;
             } else {
-                if (point.getY() > minY) {
-                    return false;
-                } else {
-                    minY = point.getY();
-                }
+                minY = point.getY();
             }
         }
         return true;
