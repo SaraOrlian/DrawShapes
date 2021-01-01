@@ -17,12 +17,16 @@ public class ShapeAnalyzer {
         return startsAtTop(stroke) ? isTopDownLine(stroke) : isBottomUpLine(stroke);
     }
 
-    private boolean startsAtTop(List<Point> stroke) {
-        return stroke.get(0).getY() < stroke.get(1).getY();
-    }
-
     public boolean isUpSlope(List<Point> stroke) {
         return startsAtTop(stroke) ? isDownLeft(stroke) : isUpRight(stroke);
+    }
+
+    public boolean isDownSlope(List<Point> stroke) {
+        return startsAtTop(stroke) ? isDownRight(stroke) : isUpLeft(stroke);
+    }
+
+    private boolean startsAtTop(List<Point> stroke) {
+        return stroke.get(0).getY() < stroke.get(1).getY();
     }
 
     private boolean isUpRight(List<Point> stroke) {
@@ -54,11 +58,7 @@ public class ShapeAnalyzer {
         }
         return true;
     }
-
-    public boolean isDownSlope(List<Point> stroke) {
-        return startsAtTop(stroke) ? isDownRight(stroke) : isUpLeft(stroke);
-    }
-
+    
     private boolean isDownRight(List<Point> stroke) {
         Point origin = stroke.get(0);
         Point idealPoint = new Point(origin.getX(), origin.getY());
@@ -76,7 +76,7 @@ public class ShapeAnalyzer {
 
     private boolean isUpLeft(List<Point> stroke) {
         Point origin = stroke.get(0);
-        Point idealPoint =new Point(origin.getX(), origin.getY());
+        Point idealPoint = new Point(origin.getX(), origin.getY());
 
         for (Point point : stroke) {
             if (veersVertical(point, idealPoint) || veersHorizontal(point, idealPoint)) {
