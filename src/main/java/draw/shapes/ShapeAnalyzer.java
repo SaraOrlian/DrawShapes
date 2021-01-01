@@ -25,12 +25,17 @@ public class ShapeAnalyzer {
     }
 
     public boolean isV(List<Point> stroke) {
-        //combine down right and  up right OR down left and upleft
+        //combine down right and  up right OR down left and up left
         return false;
     }
 
     public boolean isCarat(List<Point> stroke) {
         //combine up right and  down left OR up left and down right
+        return false;
+    }
+
+    public boolean isL(List<Point> stroke) {
+        //combine top down and left right OR right left and bottom up
         return false;
     }
 
