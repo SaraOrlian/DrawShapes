@@ -133,7 +133,7 @@ public class ShapeAnalyzer {
             if (point.getX() > minX) {
                 return false;
             } else {
-                minX = point.getY();
+                minX = point.getX();
             }
         }
         return true;
