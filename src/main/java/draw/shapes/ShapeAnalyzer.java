@@ -38,7 +38,6 @@ public class ShapeAnalyzer {
         Point origin = stroke.get(0);
         int minX = 0;
         for (Point point : stroke) {
-
             if (veersVertical(point, origin)) {
                 return false;
             } else {
@@ -56,7 +55,6 @@ public class ShapeAnalyzer {
         Point origin = stroke.get(0);
         int minY = 0;
         for (Point point : stroke) {
-
             if (veersHorizontal(point, origin)) {
                 return false;
             } else {
