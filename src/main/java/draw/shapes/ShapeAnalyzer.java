@@ -117,6 +117,4 @@ public class ShapeAnalyzer {
     private boolean veersRight(Point point, Point origin) {
         return point.getX() > origin.getX() + ERROR_ALLOWANCE;
     }
-
-
 }
