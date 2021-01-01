@@ -17,6 +17,16 @@ public class ShapeAnalyzer {
         }
     }
 
+    public boolean isVertical(List<Point> stroke) {
+
+        boolean topDown = stroke.get(0).getY() < stroke.get(1).getY();
+        if (topDown) {
+            return isTopDownLine(stroke);
+        } else {
+            return isBottomUpLine(stroke);
+        }
+    }
+
     private boolean isLeftRightLine(List<Point> stroke) {
         Point origin = stroke.get(0);
         int maxX = 0;
@@ -54,18 +64,17 @@ public class ShapeAnalyzer {
 
 
     private boolean veersVertical(Point point, Point origin) {
-        return point.getY() > origin.getY() + ERROR_ALLOWANCE || point.getY() < origin.getY() - ERROR_ALLOWANCE;
+        return veersDown(point, origin) || veersUp(point, origin);
     }
 
-    public boolean isVertical(List<Point> stroke) {
-
-        boolean topDown = stroke.get(0).getY() < stroke.get(1).getY();
-        if (topDown) {
-            return isTopDownLine(stroke);
-        } else {
-            return isBottomUpLine(stroke);
-        }
+    private boolean veersUp(Point point, Point origin) {
+        return point.getY() < origin.getY() - ERROR_ALLOWANCE;
     }
+
+    private boolean veersDown(Point point, Point origin) {
+        return point.getY() > origin.getY() + ERROR_ALLOWANCE;
+    }
+
 
     private boolean isBottomUpLine(List<Point> stroke) {
         Point origin = stroke.get(0);
@@ -103,7 +112,15 @@ public class ShapeAnalyzer {
     }
 
     private boolean veersHorizontal(Point point, Point origin) {
-        return point.getX() > origin.getX() + ERROR_ALLOWANCE || point.getX() < origin.getX() - ERROR_ALLOWANCE;
+        return veersRight(point, origin) || veersLeft(point, origin);
+    }
+
+    private boolean veersLeft(Point point, Point origin) {
+        return point.getX() < origin.getX() - ERROR_ALLOWANCE;
+    }
+
+    private boolean veersRight(Point point, Point origin) {
+        return point.getX() > origin.getX() + ERROR_ALLOWANCE;
     }
 
 
