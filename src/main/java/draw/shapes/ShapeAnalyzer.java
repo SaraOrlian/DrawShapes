@@ -21,14 +21,14 @@ public class ShapeAnalyzer {
     private boolean isLeftRightLine(List<Point> stroke) {
         Point origin = stroke.get(0);
         int maxX = 0;
-        for (int i = 1; i < stroke.size(); i++) {
-            if (veersVertical(stroke.get(i), origin)) {
+        for (Point point : stroke) {
+            if (veersVertical(point, origin)) {
                 return false;
             }
-            if (stroke.get(i).getX() < maxX) {
+            if (point.getX() < maxX) {
                 return false;
             } else {
-                maxX = stroke.get(i).getX();
+                maxX = point.getX();
             }
         }
         return true;
@@ -37,15 +37,15 @@ public class ShapeAnalyzer {
     private boolean isRightLeftLine(List<Point> stroke) {
         Point origin = stroke.get(0);
         int minX = 0;
-        for (int i = 1; i < stroke.size(); i++) {
+        for (Point point : stroke) {
 
-            if (veersVertical(stroke.get(i), origin)) {
+            if (veersVertical(point, origin)) {
                 return false;
             } else {
-                if (stroke.get(i).getX() > minX) {
+                if (point.getX() > minX) {
                     return false;
                 } else {
-                    minX = stroke.get(i).getY();
+                    minX = point.getY();
                 }
             }
         }
@@ -55,15 +55,15 @@ public class ShapeAnalyzer {
     private boolean isBottomUpLine(List<Point> stroke) {
         Point origin = stroke.get(0);
         int minY = 0;
-        for (int i = 1; i < stroke.size(); i++) {
+        for (Point point : stroke) {
 
-            if (veersHorizontal(stroke.get(i), origin)) {
+            if (veersHorizontal(point, origin)) {
                 return false;
             } else {
-                if (stroke.get(i).getY() > minY) {
+                if (point.getY() > minY) {
                     return false;
                 } else {
-                    minY = stroke.get(i).getY();
+                    minY = point.getY();
                 }
             }
         }
@@ -73,14 +73,14 @@ public class ShapeAnalyzer {
     private boolean isTopDownLine(List<Point> stroke) {
         Point origin = stroke.get(0);
         int maxY = 0;
-        for (int i = 1; i < stroke.size(); i++) {
-            if (veersHorizontal(stroke.get(i), origin)) {
+        for (Point point : stroke) {
+            if (veersHorizontal(point, origin)) {
                 return false;
             }
-            if (stroke.get(i).getY() < maxY) {
+            if (point.getY() < maxY) {
                 return false;
             } else {
-                maxY = stroke.get(i).getY();
+                maxY = point.getY();
             }
         }
         return true;
