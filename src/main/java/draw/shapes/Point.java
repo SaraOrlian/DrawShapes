@@ -16,4 +16,20 @@ public class Point {
     public int getY() {
         return y;
     }
+
+    public void incrementX(){
+        x++;
+    }
+
+    public void incrementY(){
+        y++;
+    }
+
+    public void decrementX(){
+        x--;
+    }
+
+    public void decrementY(){
+        y--;
+    }
 }
