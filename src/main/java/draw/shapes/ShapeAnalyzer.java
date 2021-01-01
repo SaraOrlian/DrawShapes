@@ -98,16 +98,16 @@ public class ShapeAnalyzer {
         return veersDown(point, origin) || veersUp(point, origin);
     }
 
+    private boolean veersHorizontal(Point point, Point origin) {
+        return veersRight(point, origin) || veersLeft(point, origin);
+    }
+
     private boolean veersUp(Point point, Point origin) {
         return point.getY() < origin.getY() - ERROR_ALLOWANCE;
     }
 
     private boolean veersDown(Point point, Point origin) {
         return point.getY() > origin.getY() + ERROR_ALLOWANCE;
-    }
-
-    private boolean veersHorizontal(Point point, Point origin) {
-        return veersRight(point, origin) || veersLeft(point, origin);
     }
 
     private boolean veersLeft(Point point, Point origin) {
