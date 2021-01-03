@@ -6,7 +6,7 @@ import java.util.List;
 //Ricki
 public class ShapeAnalyzer {
     //private List<Point> stroke;
-    private final int ERROR_ALLOWANCE = 5;
+    private final int ERROR_ALLOWANCE = 40;
 
     public boolean isHorizontal(List<Point> stroke) {
          return startsAtLeft(stroke) ? isLeftRightLine(stroke) : isRightLeftLine(stroke);
@@ -94,6 +94,7 @@ public class ShapeAnalyzer {
 
     private boolean isUpLeft(List<Point> stroke) {
         Point origin = stroke.get(0);
+        //Point end = stroke.get(stroke.size() - 1);
         Point idealPoint = new Point(origin.getX(), origin.getY());
 
         for (Point point : stroke) {

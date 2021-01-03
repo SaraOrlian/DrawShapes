@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Shana
-public class MouseListener extends MouseInputAdapter {
+public class StrokeListener extends MouseInputAdapter {
 
-    private ShapesView view;
+    private StrokeManager view;
     private List<Point> stroke = new ArrayList<>();
 
-    public MouseListener(ShapesView view) {
+    public StrokeListener(StrokeManager view) {
         this.view = view;
     }
 
