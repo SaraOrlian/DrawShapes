@@ -68,10 +68,4 @@ public class StrokeManager extends JComponent {
             System.out.println("not recognized");
         }
     }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-    }
-
 }
