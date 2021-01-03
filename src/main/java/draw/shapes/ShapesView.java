@@ -1,5 +1,6 @@
 package draw.shapes;
 
+<<<<<<< HEAD
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -48,4 +49,7 @@ public class ShapesView extends JComponent {
 
         }
     }
+=======
+public class ShapesView {
+>>>>>>> 12133e3598022045d07c6acc867e8f574348ba3c
 }
