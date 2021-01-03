@@ -26,7 +26,7 @@ public class MouseListener extends MouseInputAdapter {
 
     public void mouseReleased(MouseEvent e) {
         view.setStroke(stroke);
-        //stroke.clear();
+        stroke.clear();
         view.whichStroke();
     }
 }

@@ -2,6 +2,7 @@ package draw.shapes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 //Sara
@@ -21,7 +22,7 @@ public class ShapesView extends JComponent {
     }
 
     public void setStroke(List<Point> stroke) {
-        this.stroke = stroke;
+        this.stroke = new ArrayList<>(stroke);
     }
 
     public void whichStroke(){
