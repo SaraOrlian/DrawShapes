@@ -17,19 +17,26 @@ public class Point {
         return y;
     }
 
-    public void incrementX(){
+    public void incrementX() {
         x++;
     }
 
-    public void incrementY(){
+    public void incrementY() {
         y++;
     }
 
-    public void decrementX(){
+    public void decrementX() {
         x--;
     }
 
-    public void decrementY(){
+    public void decrementY() {
         y--;
+    }
+
+    public void invert() {
+        int tempX = x;
+        int tempY = y;
+        y = tempX;
+        x = tempY;
     }
 }
