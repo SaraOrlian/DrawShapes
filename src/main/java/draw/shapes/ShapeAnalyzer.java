@@ -5,194 +5,129 @@ import java.util.List;
 //Determine which shape- if any
 //Ricki
 public class ShapeAnalyzer {
-    //private List<Point> stroke;
-    private final int ERROR_ALLOWANCE = 40;
 
+    private final double HORIZONTAL_ERROR_ALLOWANCE = 5;
+    private final double V_ERROR_ALLOWANCE = 10;
+
+    private final double MAX_POS_SLOPE = 3;
+    private final double MIN_POS_SLOPE = 0.47;
+    private final double MAX_NEG_SLOPE = -0.42;
+    private final double MIN_NEG_SLOPE = -3;
+
+    //smooth out line by reducing little lines onto one large line where slopes are all similar, so
+    // that you only look at the points that define the shape
+    //1- draw visually 2- reduce 3- test with perfect coordinates
     public boolean isHorizontal(List<Point> stroke) {
-         return startsAtLeft(stroke) ? isLeftRightLine(stroke) : isRightLeftLine(stroke);
+        Point start = stroke.get(0);
+        Point end = stroke.get(stroke.size() - 1);
+        double slope = calcSlope(start, end);
+
+        if (!isInZeroRange(slope)) {
+            return false;
+        } else {
+            return hasOnlyValidSlopes(stroke, start);
+        }
+    }
+
+    private boolean hasOnlyValidSlopes(List<Point> stroke, Point start) {
+        Point previousPoint = start;
+        double prevSlope = 0;
+        for (Point point : stroke) {
+            double currSlope = calcSlope(point, previousPoint);
+            if (currSlope - prevSlope > HORIZONTAL_ERROR_ALLOWANCE) {
+                return false;
+            }
+            prevSlope = currSlope;
+            previousPoint = point;
+        }
+        return true;
     }
 
     public boolean isVertical(List<Point> stroke) {
-        return startsAtTop(stroke) ? isTopDownLine(stroke) : isBottomUpLine(stroke);
-    }
-
-    public boolean isUpSlope(List<Point> stroke) {
-        return startsAtTop(stroke) ? isDownLeft(stroke) : isUpRight(stroke);
-    }
-
-    public boolean isDownSlope(List<Point> stroke) {
-        return startsAtTop(stroke) ? isDownRight(stroke) : isUpLeft(stroke);
+        for (Point point : stroke) {
+            point.invert();
+        }
+        return isHorizontal(stroke);
     }
 
     public boolean isV(List<Point> stroke) {
-        //combine down right and  up right OR down left and up left
-        return false;
+
+        Point start = stroke.get(0);
+        Point end = stroke.get(stroke.size() - 1);
+        if (Math.abs(start.getY()) - end.getY() > V_ERROR_ALLOWANCE) {
+            return false;
+        }
+        Point vertex = null;
+        Point previousPoint = start;
+        double prevSlope = 0;
+        for (Point point : stroke) {
+            double currSlope = calcSlope(point, previousPoint);
+            if (currSlope > 0) {
+                vertex = previousPoint;
+                break;
+            }
+            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
+                return false;
+            }
+            prevSlope = currSlope;
+            previousPoint = point;
+        }
+        if (vertex == null) {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isCarat(List<Point> stroke) {
-        //combine up right and  down left OR up left and down right
-        return false;
-    }
-
-    public boolean isL(List<Point> stroke) {
-        //combine top down and left right OR right left and bottom up
-        return false;
-    }
-
-    private boolean startsAtLeft(List<Point> stroke) {
-        return stroke.get(0).getX() < stroke.get(1).getX();
-    }
-
-    private boolean startsAtTop(List<Point> stroke) {
-        return stroke.get(0).getY() < stroke.get(1).getY();
-    }
-
-    private boolean isUpRight(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        Point idealPoint = new Point(origin.getX(), origin.getY());
-
+        Point start = stroke.get(0);
+        Point end = stroke.get(stroke.size() - 1);
+        if (Math.abs(start.getY()) - end.getY() > V_ERROR_ALLOWANCE) {
+            return false;
+        }
+        Point vertex = null;
+        Point previousPoint = start;
+        double prevSlope = 0;
         for (Point point : stroke) {
-            if (veersVertical(point, idealPoint) || veersHorizontal(point, idealPoint)) {
+            double currSlope = calcSlope(point, previousPoint);
+            if (currSlope < 0) {
+                vertex = previousPoint;
+                break;
+            }
+            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
                 return false;
             }
-
-            idealPoint.incrementX();
-            idealPoint.decrementY();
+            prevSlope = currSlope;
+            previousPoint = point;
         }
+        if (vertex == null) {
+            return false;
+        }
+
         return true;
     }
 
-    private boolean isDownLeft(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        Point idealPoint = new Point(origin.getX(), origin.getY());
 
-        for (Point point : stroke) {
-            if (veersVertical(point, idealPoint) || veersHorizontal(point, idealPoint)) {
-                return false;
-            }
 
-            idealPoint.decrementX();
-            idealPoint.incrementY();
-        }
-        return true;
+    private boolean isInZeroRange(double slope) {
+        return slope > MAX_NEG_SLOPE && slope < MIN_POS_SLOPE;
     }
 
-    private boolean isDownRight(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        Point idealPoint = new Point(origin.getX(), origin.getY());
-
-        for (Point point : stroke) {
-            if (veersVertical(point, idealPoint) || veersHorizontal(point, idealPoint)) {
-                return false;
-            }
-
-            idealPoint.incrementX();
-            idealPoint.incrementY();
-        }
-        return true;
+    private boolean isInPosRange(double slope) {
+        return slope > MIN_POS_SLOPE && slope < MAX_POS_SLOPE;
     }
 
-    private boolean isUpLeft(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        //Point end = stroke.get(stroke.size() - 1);
-        Point idealPoint = new Point(origin.getX(), origin.getY());
-
-        for (Point point : stroke) {
-            if (veersVertical(point, idealPoint) || veersHorizontal(point, idealPoint)) {
-                return false;
-            }
-
-            idealPoint.decrementX();
-            idealPoint.decrementY();
-        }
-        return true;
+    private boolean isInNegRange(double slope) {
+        return slope > MIN_NEG_SLOPE && slope < MAX_NEG_SLOPE;
     }
 
-    private boolean isLeftRightLine(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        int maxX = 0;
-        for (Point point : stroke) {
-            if (veersVertical(point, origin)) {
-                return false;
-            }
-            if (point.getX() < maxX) {
-                return false;
-            } else {
-                maxX = point.getX();
-            }
-        }
-        return true;
+    private boolean isInUndefRange(double slope) {
+        return slope > MAX_POS_SLOPE || slope < MAX_NEG_SLOPE;
     }
 
-    private boolean isRightLeftLine(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        int minX = 0;
-        for (Point point : stroke) {
-            if (veersVertical(point, origin)) {
-                return false;
-            }
-            if (point.getX() > minX) {
-                return false;
-            } else {
-                minX = point.getX();
-            }
-        }
-        return true;
+
+    private double calcSlope(Point point1, Point point2) {
+        return -1 * (point1.getY() - point2.getY()) / (double) (point1.getX() - point2.getX());
     }
 
-    private boolean isBottomUpLine(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        int minY = 0;
-        for (Point point : stroke) {
-            if (veersHorizontal(point, origin)) {
-                return false;
-            }
-            if (point.getY() > minY) {
-                return false;
-            } else {
-                minY = point.getY();
-            }
-        }
-        return true;
-    }
-
-    private boolean isTopDownLine(List<Point> stroke) {
-        Point origin = stroke.get(0);
-        int maxY = 0;
-        for (Point point : stroke) {
-            if (veersHorizontal(point, origin)) {
-                return false;
-            }
-            if (point.getY() < maxY) {
-                return false;
-            } else {
-                maxY = point.getY();
-            }
-        }
-        return true;
-    }
-
-    private boolean veersVertical(Point point, Point origin) {
-        return veersDown(point, origin) || veersUp(point, origin);
-    }
-
-    private boolean veersHorizontal(Point point, Point origin) {
-        return veersRight(point, origin) || veersLeft(point, origin);
-    }
-
-    private boolean veersUp(Point point, Point origin) {
-        return point.getY() < origin.getY() - ERROR_ALLOWANCE;
-    }
-
-    private boolean veersDown(Point point, Point origin) {
-        return point.getY() > origin.getY() + ERROR_ALLOWANCE;
-    }
-
-    private boolean veersLeft(Point point, Point origin) {
-        return point.getX() < origin.getX() - ERROR_ALLOWANCE;
-    }
-
-    private boolean veersRight(Point point, Point origin) {
-        return point.getX() > origin.getX() + ERROR_ALLOWANCE;
-    }
 }
