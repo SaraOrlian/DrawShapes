@@ -17,20 +17,14 @@ public class ShapeAnalyzerTest {
         int peakX = 4;
         int num = 3;
         //when
-        num = 5;
-        for (int i = 0; i < peakX; i++) {
-            Point temp = new Point(peakX + i, i);
-            stroke.add(i, temp);
-            num++;
-        }
+        stroke.add(new Point(10,50));
+        stroke.add(new Point(20,60));
+        stroke.add(new Point(30,70));
+        stroke.add(new Point(40 ,80)); //vertex
+        stroke.add(new Point(50,70));
+        stroke.add(new Point(60,60));
+        stroke.add(new Point( 70,50));
 
-        stroke.add(new Point(peakX, 2));
-
-        for (int i = 0; i < peakX-1; i++) {
-            Point temp = new Point(1, num);
-            stroke.add(i, temp);
-            num--;
-        }
         //then
         assertTrue(analyzer.isV(stroke));
 

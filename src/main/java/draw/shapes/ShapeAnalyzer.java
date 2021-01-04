@@ -8,6 +8,8 @@ public class ShapeAnalyzer {
 
     private final double HORIZONTAL_ERROR_ALLOWANCE = 3;
     private final double V_ERROR_ALLOWANCE = 10;
+    private final double V_POINT_ERROR_ALLOWANCE = 50;
+
     private final double MIN_POS_SLOPE = 0.47;
     private final double MAX_NEG_SLOPE = -0.42;
 
@@ -48,43 +50,49 @@ public class ShapeAnalyzer {
 
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
-        if (Math.abs(start.getY()) - end.getY() > V_ERROR_ALLOWANCE) {
+        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
             return false;
         }
-        Point vertex = null;
+
         Point previousPoint = start;
         int vertexIndex = 0;
-        double prevSlope = 0;
-        for (int i = 0; i < stroke.size(); i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-            if (currSlope > 0) {
-                vertex = previousPoint;
-                vertexIndex = i - 1;
-                break;
+
+
+        for (Point point : stroke) {
+            if (point.getY() > previousPoint.getY()) {
+                vertexIndex = stroke.indexOf(point);
             }
+            previousPoint = point;
+        }
+        if (calcSlope(start, stroke.get(vertexIndex)) > 0 || calcSlope(stroke.get(vertexIndex), end) < 0) {
+            return false;
+        }
+
+        previousPoint = start;
+        double prevSlope = 0;
+        for (int i = 1; i < vertexIndex; i++) {
+            double currSlope = calcSlope(stroke.get(i), previousPoint);
+
             if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
                 return false;
             }
             prevSlope = currSlope;
-            previousPoint = stroke.get(i);
         }
-        if (vertex == null) {
-            return false;
-        }
-//        for (int i = vertexIndex + (int) V_ERROR_ALLOWANCE; i < stroke.size(); i++) {
-//            double currSlope = calcSlope(stroke.get(i), previousPoint);
-//            if (currSlope < 0) {
-//                return false;
-//
-//            }
-//            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-//                return false;
-//            }
-//            prevSlope = currSlope;
-//            previousPoint = stroke.get(i);
-//        }
 
-        return (calcSlope(start, vertex) < 0 && calcSlope(vertex, end) > 0);
+        previousPoint = stroke.get(vertexIndex);
+        prevSlope = 0;
+
+        for (int i = vertexIndex + 1; i < stroke.size(); i++) {
+            double currSlope = calcSlope(stroke.get(i), previousPoint);
+
+            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
+                return false;
+            }
+            prevSlope = currSlope;
+        }
+
+
+        return true;
     }
 
     public boolean isCarat(List<Point> stroke) {
