@@ -35,12 +35,12 @@ public class StrokeManager extends JComponent {
 
     private boolean strokeIsShape(List<Point> stroke, Shape shape) {
         switch (shape) {
-            case UP_SLOPE -> {
-                return analyzer.isUpSlope(stroke);
-            }
-            case DOWN_SLOPE -> {
-                return analyzer.isDownSlope(stroke);
-            }
+//            case UP_SLOPE -> {
+//                return analyzer.isUpSlope(stroke);
+//            }
+//            case DOWN_SLOPE -> {
+//                return analyzer.isDownSlope(stroke);
+//            }
             case HORIZONTAL -> {
                 return analyzer.isHorizontal(stroke);
             }
@@ -64,10 +64,10 @@ public class StrokeManager extends JComponent {
             System.out.println("horizontal");
         } else if (analyzer.isVertical(stroke)) {
             System.out.println("vertical");
-        } else if (analyzer.isDownSlope(stroke)) {
-            System.out.println("down slope");
-        } else if (analyzer.isUpSlope(stroke)) {
-            System.out.println("up slope");
+        } else if (analyzer.isV(stroke)) {
+            System.out.println("v");
+        } else if (analyzer.isCarat(stroke)) {
+            System.out.println("^");
         } else {
             System.out.println("not recognized");
         }
