@@ -6,7 +6,7 @@ import java.util.List;
 //Ricki
 public class ShapeAnalyzer {
 
-    private final double HORIZONTAL_ERROR_ALLOWANCE = 5;
+    private final double HORIZONTAL_ERROR_ALLOWANCE = 3;
     private final double V_ERROR_ALLOWANCE = 10;
     private final double MIN_POS_SLOPE = 0.47;
     private final double MAX_NEG_SLOPE = -0.42;
@@ -71,17 +71,7 @@ public class ShapeAnalyzer {
         if (vertex == null) {
             return false;
         }
-        for (int i = vertexIndex; i < stroke.size() - 1; i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-            if (currSlope < 0) {
-                return false;
-            }
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-            previousPoint = stroke.get(i);
-        }
+
 
         return true;
     }
