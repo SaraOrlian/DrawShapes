@@ -73,21 +73,19 @@ public class ShapeAnalyzerTest {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
         List<Point> stroke = new ArrayList<Point>();
-        int peakX = 4;
-        int num = 5;
-        //when
-        for (int i = 0; i < peakX - 1; i++) {
-            Point temp = new Point(1, num);
-            stroke.add(i, temp);
-            num--;
-        }
-        stroke.add(new Point(peakX, 2));
 
-        num = 3;
-        for (int i = 1; i < 4; i++) {
-            Point temp = new Point(peakX + i, i);
-            stroke.add(i, temp);
-            num++;
+
+        int y = 500;
+        //when
+        for (int i = 100; i < 400; i++) {
+            stroke.add(new Point(i, y));
+            y--;
+        }
+        stroke.add(new Point(400, 200));
+
+        for (int i = 401; i < 700; i++) {
+            stroke.add(new Point(i, y));
+            y++;
         }
 
         //then

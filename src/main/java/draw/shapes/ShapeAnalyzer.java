@@ -98,27 +98,47 @@ public class ShapeAnalyzer {
     public boolean isCarat(List<Point> stroke) {
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
-        if (Math.abs(start.getY()) - end.getY() > V_ERROR_ALLOWANCE) {
+        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
             return false;
         }
-        Point vertex = null;
+
         Point previousPoint = start;
-        double prevSlope = 0;
+        int vertexIndex = 0;
+
+
         for (Point point : stroke) {
-            double currSlope = calcSlope(point, previousPoint);
-            if (currSlope < 0) {
-                vertex = previousPoint;
-                break;
+            if (point.getY() < previousPoint.getY()) {
+                vertexIndex = stroke.indexOf(point);
             }
+            previousPoint = point;
+        }
+        if (calcSlope(start, stroke.get(vertexIndex)) < 0 || calcSlope(stroke.get(vertexIndex), end) > 0) {
+            return false;
+        }
+
+        previousPoint = start;
+        double prevSlope = 0;
+        for (int i = 1; i < vertexIndex; i++) {
+            double currSlope = calcSlope(stroke.get(i), previousPoint);
+
             if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
                 return false;
             }
             prevSlope = currSlope;
-            previousPoint = point;
         }
-        if (vertex == null) {
-            return false;
+
+        previousPoint = stroke.get(vertexIndex);
+        prevSlope = 0;
+
+        for (int i = vertexIndex + 1; i < stroke.size(); i++) {
+            double currSlope = calcSlope(stroke.get(i), previousPoint);
+
+            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
+                return false;
+            }
+            prevSlope = currSlope;
         }
+
 
         return true;
     }
