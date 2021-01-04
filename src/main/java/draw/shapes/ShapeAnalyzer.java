@@ -71,9 +71,20 @@ public class ShapeAnalyzer {
         if (vertex == null) {
             return false;
         }
+//        for (int i = vertexIndex + (int) V_ERROR_ALLOWANCE; i < stroke.size(); i++) {
+//            double currSlope = calcSlope(stroke.get(i), previousPoint);
+//            if (currSlope < 0) {
+//                return false;
+//
+//            }
+//            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
+//                return false;
+//            }
+//            prevSlope = currSlope;
+//            previousPoint = stroke.get(i);
+//        }
 
-
-        return true;
+        return (calcSlope(start, vertex) < 0 && calcSlope(vertex, end) > 0);
     }
 
     public boolean isCarat(List<Point> stroke) {

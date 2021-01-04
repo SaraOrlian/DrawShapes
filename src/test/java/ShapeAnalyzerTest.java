@@ -18,7 +18,7 @@ public class ShapeAnalyzerTest {
         int num = 3;
         //when
         num = 5;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < peakX; i++) {
             Point temp = new Point(peakX + i, i);
             stroke.add(i, temp);
             num++;
