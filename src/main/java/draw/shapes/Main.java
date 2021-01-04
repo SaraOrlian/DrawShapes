@@ -5,7 +5,7 @@ public class Main {
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
         StrokeManager strokeManager = new StrokeManager(analyzer);
         StrokeListener listener = new StrokeListener(strokeManager);
-        ShapesView shapesView = new ShapesView();
+        ShapesView shapesView = new ShapesView(listener);
         DrawShapesFrame drawShapesFrame = new DrawShapesFrame(listener, shapesView);
         drawShapesFrame.setVisible(true);
     }

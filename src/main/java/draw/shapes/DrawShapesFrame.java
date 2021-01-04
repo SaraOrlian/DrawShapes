@@ -13,6 +13,11 @@ public class DrawShapesFrame extends JFrame {
         setLayout(new BorderLayout());
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+        add(shapesView, BorderLayout.CENTER);
+        shapesView.addMouseListener(listener);
+        shapesView.addMouseMotionListener(listener);
+
+
 
     }
 

@@ -54,6 +54,10 @@ public class StrokeManager extends JComponent {
     }
 
 
+
+
+
+
     //testing
     public void whichStroke() {
         if (analyzer.isHorizontal(stroke)) {
