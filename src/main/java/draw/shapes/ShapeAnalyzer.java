@@ -1,5 +1,6 @@
 package draw.shapes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Determine which shape- if any
@@ -44,13 +45,15 @@ public class ShapeAnalyzer {
      */
 
     public boolean isVertical(List<Point> stroke) {
+        List<Point> newStroke = new ArrayList<>();
         for (Point point : stroke) {
-            point.invert();
+
+            newStroke.add(point.invert());
         }
-        return isHorizontal(stroke);
+        return isHorizontal(newStroke);
     }
 
-    public boolean isV(List<Point> stroke) {
+    public boolean isVee(List<Point> stroke) {
 
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);

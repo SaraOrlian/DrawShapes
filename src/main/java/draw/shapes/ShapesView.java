@@ -2,20 +2,74 @@ package draw.shapes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+
+import static draw.shapes.Shape.*;
 
 public class ShapesView extends JComponent {
     StrokeListener listener;
     ArrayList<Point> drawing = new ArrayList<Point>();
+    GhostManager ghostManager;
+    Random random = new Random();
 
-    public ShapesView(StrokeListener listener) {
+    public ShapesView(StrokeListener listener, GhostManager ghostManager) {
         this.listener = listener;
+        this.ghostManager = ghostManager;
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         paintStroke(g);
+        paintGhosts(g);
+    }
+
+    private void paintGhosts(Graphics g) {
+        List<Queue<Shape>> ghostList = ghostManager.getGhostList();
+        g.setFont(new Font("", Font.PLAIN, 30));
+        for (Queue<Shape> ghost : ghostList) {
+            int randX = random.nextInt(400);
+            int randY = random.nextInt(400);
+
+            for (Shape shape : ghost) {
+                switch (shape) {
+                    case CARAT:
+                        g.setColor(Color.GREEN);
+                        g.drawString("^", randX++, randY);
+                        randX += 10;
+                        break;
+                    case VEE:
+                        g.setColor(Color.ORANGE);
+                        g.drawString("V", randX++, randY);
+                        randX += 30;
+                        break;
+                    case HORIZONTAL:
+                        g.setColor(Color.BLUE);
+                        g.drawString("\u2796", randX++, randY);
+                        randX += 50;
+                        break;
+                    case VERTICAL:
+                        g.setColor(Color.RED);
+                        randX += 10;
+                        Graphics2D g2d = (Graphics2D) g;
+                        AffineTransform orig = g2d.getTransform();
+                        g2d.rotate(Math.toRadians(-90), randX++, randY);
+                        g2d.drawString("\u2796", randX++, randY);
+                        g2d.setTransform(orig);
+                        randX += 10;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+
     }
 
     private void paintStroke(Graphics g) {
@@ -24,10 +78,11 @@ public class ShapesView extends JComponent {
         Point point = listener.getPoint();
         if (listener.isReleased()) {
             drawing.clear();
+            ghostManager.dequeueShape();
         } else {
             if (point != null) {
                 drawing.add(point);
-                for (int i = 0; i < drawing.size() -2; i++) {
+                for (int i = 0; i < drawing.size() - 2; i++) {
                     g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
                 }
             }

@@ -1,7 +1,6 @@
 package draw.shapes;
 
 import javax.swing.event.MouseInputAdapter;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +8,13 @@ import java.util.List;
 //Shana
 public class StrokeListener extends MouseInputAdapter {
 
-    private StrokeManager strokeManager;
+    private GhostManager ghostManager;
     private List<Point> stroke = new ArrayList<>();
     private boolean released = false;
     private Point point;
 
-    public StrokeListener(StrokeManager strokeManager) {
-        this.strokeManager = strokeManager;
+    public StrokeListener(GhostManager ghostManager) {
+        this.ghostManager = ghostManager;
     }
 
     public boolean isReleased() {
@@ -35,9 +34,11 @@ public class StrokeListener extends MouseInputAdapter {
 
     public void mouseReleased(MouseEvent e) {
         released = true;
+
+        ghostManager.setStroke(stroke);
+
+        ghostManager.whichStroke();
         e.getComponent().repaint();
-        strokeManager.setStroke(stroke);
         stroke.clear();
-        strokeManager.whichStroke();
     }
 }
