@@ -19,9 +19,7 @@ public class ShapeAnalyzerTest {
         for (int i = 0; i < 40; i++) {
             stroke.add(new Point(i, i + 40));
         }
-//        stroke.add(new Point(10,50));
-//        stroke.add(new Point(20,60));
-//        stroke.add(new Point(30,70));
+
         stroke.add(new Point(40, 80)); //vertex
 
         int num = 79;
@@ -29,9 +27,6 @@ public class ShapeAnalyzerTest {
             stroke.add(new Point(i, num));
             num--;
         }
-//        stroke.add(new Point(50, 70));
-//        stroke.add(new Point(60, 60));
-//        stroke.add(new Point(70, 50));
 
         //then
         assertTrue(analyzer.isVee(stroke));
@@ -90,5 +85,57 @@ public class ShapeAnalyzerTest {
 
         //then
         assertTrue(analyzer.isCarat(stroke));
+    }
+
+    @Test
+    public void calcPosSlope(){
+        //given
+        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+        Point point1 = new Point(1,2);
+        Point point2 = new Point(2,1);
+        int expectedSlope = 1;
+        //when
+        int slopeResult = (int) analyzer.calcSlope(point1, point2);
+        //then
+        assertEquals(expectedSlope,slopeResult);
+    }
+
+    @Test
+    public void calcNegSlope(){
+        //given
+        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+        Point point1 = new Point(1,1);
+        Point point2 = new Point(2,2);
+        int expectedSlope = -1;
+        //when
+        int slopeResult = (int) analyzer.calcSlope(point1, point2);
+        //then
+        assertEquals(expectedSlope,slopeResult);
+    }
+
+    @Test
+    public void calcUndefSlope(){
+        //given
+        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+        Point point1 = new Point(1,2);
+        Point point2 = new Point(1,1);
+        double expectedSlope = Double.NEGATIVE_INFINITY;
+        //when
+        double slopeResult = analyzer.calcSlope(point1, point2);
+        //then
+        assertEquals((int)expectedSlope,(int)slopeResult);
+    }
+
+    @Test
+    public void calcNaNSlope(){
+        //given
+        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+        Point point1 = new Point(1,2);
+        Point point2 = new Point(1,2);
+        double expectedSlope = Double.NaN;
+        //when
+        double slopeResult = analyzer.calcSlope(point1, point2);
+        //then
+        assertEquals((int)expectedSlope,(int)slopeResult);
     }
 }
