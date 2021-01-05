@@ -19,7 +19,7 @@ public class StrokeManager extends JComponent {
     public StrokeManager(ShapeAnalyzer analyzer, GhostManager ghostManager) {
         this.analyzer = analyzer;
         this.ghostManager = ghostManager;
-        ghosts = new LinkedList<>(ghostManager.getGhostList());
+        ghosts = ghostManager.getGhostList();
     }
 
     public void setStroke(List<Point> stroke) {
