@@ -73,14 +73,15 @@ public class GhostManager {
     public void whichStroke() {
         if (analyzer.isHorizontal(stroke)) {
             System.out.println("horizontal");
-        } else if (analyzer.isVertical(stroke)) {
+        }
+        if (analyzer.isVertical(stroke)) {
             System.out.println("vertical");
-        } else if (analyzer.isVee(stroke)) {
+        }
+        if (analyzer.isVee(stroke)) {
             System.out.println("v");
-        } else if (analyzer.isCarat(stroke)) {
+        }
+        if (analyzer.isCarat(stroke)) {
             System.out.println("^");
-        } else {
-            System.out.println("not recognized");
         }
     }
 }

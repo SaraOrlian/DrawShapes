@@ -33,10 +33,9 @@ public class Point {
         y--;
     }
 
-    public void invert() {
-        int tempX = x;
-        int tempY = y;
-        y = tempX;
-        x = tempY;
+    public Point invert() {
+        int newX = y;
+        int newY = x;
+        return new Point(newX, newY);
     }
 }

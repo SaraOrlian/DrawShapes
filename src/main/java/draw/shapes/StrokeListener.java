@@ -34,9 +34,11 @@ public class StrokeListener extends MouseInputAdapter {
 
     public void mouseReleased(MouseEvent e) {
         released = true;
-        e.getComponent().repaint();
+
         ghostManager.setStroke(stroke);
-        stroke.clear();
+
         ghostManager.whichStroke();
+        e.getComponent().repaint();
+        stroke.clear();
     }
 }
