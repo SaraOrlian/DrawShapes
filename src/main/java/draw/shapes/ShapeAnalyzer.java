@@ -18,16 +18,14 @@ public class ShapeAnalyzer {
         Point end = stroke.get(stroke.size() - 1);
         double slope = calcSlope(start, end);
 
-        if (!isInZeroRange(slope)) {
-            return false;
-        } else {
-            return hasOnlyValidSlopes(stroke, start);
-        }
+        return isInZeroRange(slope) && hasOnlyValidSlopes(stroke, start);
+
     }
 
     private boolean hasOnlyValidSlopes(List<Point> stroke, Point start) {
         Point previousPoint = start;
         double prevSlope = 0;
+        //take out starts and dont use foreach
         for (Point point : stroke) {
             double currSlope = calcSlope(point, previousPoint);
             if (currSlope - prevSlope > HORIZONTAL_ERROR_ALLOWANCE) {
@@ -38,6 +36,12 @@ public class ShapeAnalyzer {
         }
         return true;
     }
+
+    /**
+     * explain inversion
+     * @param stroke
+     * @return
+     */
 
     public boolean isVertical(List<Point> stroke) {
         for (Point point : stroke) {
@@ -50,9 +54,9 @@ public class ShapeAnalyzer {
 
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
-        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
-            return false;
-        }
+//        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
+//            return false;
+//        }
 
         Point previousPoint = start;
         int vertexIndex = 0;
@@ -143,7 +147,11 @@ public class ShapeAnalyzer {
         return true;
     }
 
-
+    /**
+     * checks if slope is within the loose allowance of a zero slope
+     * @param slope
+     * @return
+     */
     private boolean isInZeroRange(double slope) {
         return slope > MAX_NEG_SLOPE && slope < MIN_POS_SLOPE;
     }
