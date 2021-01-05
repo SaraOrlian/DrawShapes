@@ -4,6 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 public enum Shape {
-    HORIZONTAL, VERTICAL, UP_SLOPE, DOWN_SLOPE;
+    HORIZONTAL, VERTICAL, CARAT, VEE;
 
 }

@@ -34,7 +34,7 @@ public class ShapeAnalyzerTest {
 //        stroke.add(new Point(70, 50));
 
         //then
-        assertTrue(analyzer.isV(stroke));
+        assertTrue(analyzer.isVee(stroke));
 
     }
 

@@ -5,11 +5,7 @@ import java.util.Queue;
 
 public class GhostFactory {
 
-    ShapeFactory shapeFactory;
-
-    public GhostFactory(ShapeFactory shapeFactory) {
-        this.shapeFactory = shapeFactory;
-    }
+    ShapeFactory shapeFactory = new ShapeFactory();
 
     public Queue<Shape> newInstance(int numShapes) {
         Queue<Shape> ghost = new LinkedList<>();
