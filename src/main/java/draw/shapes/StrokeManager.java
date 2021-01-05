@@ -3,32 +3,34 @@ package draw.shapes;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 //Sara
 public class StrokeManager extends JComponent {
 
+    GhostManager ghostManager;
     ShapeAnalyzer analyzer;
     List<Point> stroke;
-    List<Queue<Shape>> shapeQueues = new ArrayList<>();
+    List<Queue<Shape>> ghosts;
 
-    public StrokeManager(ShapeAnalyzer analyzer) {
+
+    public StrokeManager(ShapeAnalyzer analyzer, GhostManager ghostManager) {
         this.analyzer = analyzer;
-    }
-
-    public List<Point> getStroke() {
-        return stroke;
+        this.ghostManager = ghostManager;
+        ghosts = new LinkedList<>(ghostManager.getGhostList());
     }
 
     public void setStroke(List<Point> stroke) {
         this.stroke = new ArrayList<>(stroke);
     }
 
+
     public void dequeueShape() {
-        for (Queue shapeQueue : shapeQueues) {
-            if (strokeIsShape(stroke, (Shape) shapeQueue.peek())) {
-                shapeQueue.remove();
+        for (Queue<Shape> ghost : ghosts) {
+            if (ghost.peek() != null && strokeIsShape(stroke, (Shape) ghost.peek())) {
+                ghost.remove();
             }
         }
     }
