@@ -159,8 +159,13 @@ public class ShapeAnalyzer {
         return slope > MAX_NEG_SLOPE && slope < MIN_POS_SLOPE;
     }
 
-    private double calcSlope(Point point1, Point point2) {
-        return -1 * (point1.getY() - point2.getY()) / (double) (point1.getX() - point2.getX());
+    public double calcSlope(Point point1, Point point2) {
+        try {
+            return -1 * (point1.getY() - point2.getY()) / (double) (point1.getX() - point2.getX());
+       }catch (Exception e){
+            e.printStackTrace();
+            return Double.NaN;
+        }
     }
 
 }
