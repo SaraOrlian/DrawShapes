@@ -9,7 +9,7 @@ import java.util.Queue;
 public class GhostManager {
 
     GhostFactory ghostFactory;
-    List<Queue<Shape>> ghostList = new ArrayList<>();
+    List<Queue<Shape>> ghostList = new LinkedList<>();
 
     public GhostManager(GhostFactory ghostFactory) {
         this.ghostFactory = ghostFactory;
