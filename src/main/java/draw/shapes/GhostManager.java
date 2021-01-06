@@ -7,7 +7,7 @@ import java.util.*;
 public class GhostManager {
     ShapeAnalyzer analyzer;
     GhostFactory ghostFactory = new GhostFactory();
-    List<Queue<Shape>> ghostList = new LinkedList<>();
+    List<Ghost> ghostList = new LinkedList<>();
 
     public GhostManager(ShapeAnalyzer analyzer) {
         this.analyzer = analyzer;
@@ -21,19 +21,19 @@ public class GhostManager {
         ghostList.add(ghostFactory.newInstance(numShapes));
     }
 
-    public List<Queue<Shape>> getGhostList() {
+    public List<Ghost> getGhostList() {
         return ghostList;
     }
 
     public void dequeueShape() {
         Shape drawing = analyzer.strokeIsShape();
-        Iterator<Queue<Shape>> iterator = ghostList.iterator();
+        Iterator<Ghost> iterator = ghostList.iterator();
         while(iterator.hasNext()) {
-            Queue<Shape> ghost = iterator.next();
-            if (ghost.peek() == drawing){
-                ghost.remove();
+            Ghost ghost = iterator.next();
+            if (ghost.getShapeQueue().peek() == drawing){
+                ghost.shapeQueue.remove();
             }
-            if(ghost.isEmpty()) {
+            if(ghost.getShapeQueue().isEmpty()) {
                 iterator.remove();
             }
         }
