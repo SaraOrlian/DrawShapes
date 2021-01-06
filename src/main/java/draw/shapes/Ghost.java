@@ -8,11 +8,12 @@ public class Ghost {
 
     private int xVal;
     private int yVal;
+    static final Random random = new Random();
     Queue<Shape> shapeQueue;
 
     public Ghost() {
-        xVal = new Random().nextInt(400);
-        yVal = new Random().nextInt(400);
+        xVal = random.nextInt(400);
+        yVal = random.nextInt(400);
         shapeQueue = new LinkedList<>();
     }
 

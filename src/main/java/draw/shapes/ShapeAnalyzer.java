@@ -9,8 +9,6 @@ import static draw.shapes.Shape.*;
 //Ricki
 public class ShapeAnalyzer {
 
-    List<Point> stroke;
-
     private final double HORIZONTAL_ERROR_ALLOWANCE = 3;
     private final double V_ERROR_ALLOWANCE = 10;
     private final double V_POINT_ERROR_ALLOWANCE = 50;
@@ -18,11 +16,8 @@ public class ShapeAnalyzer {
     private final double MIN_POS_SLOPE = 0.47;
     private final double MAX_NEG_SLOPE = -0.42;
 
-    public void setStroke(List<Point> stroke) {
-        this.stroke = new ArrayList<>(stroke);
-    }
 
-    public Shape strokeIsShape() {
+    public Shape getShape(List<Point> stroke) {
         if (isHorizontal(stroke)) {
             return HORIZONTAL;
         }
@@ -191,24 +186,4 @@ public class ShapeAnalyzer {
             return Double.NaN;
         }
     }
-
-
-    //testing
-    public void whichStroke() {
-        if (isHorizontal(stroke)) {
-            System.out.println("horizontal");
-        } else
-        if (isVertical(stroke)) {
-            System.out.println("vertical");
-        } else
-        if (isCarat(stroke)) {
-            System.out.println("^");
-        } else
-        if (isVee(stroke)) {
-            System.out.println("v");
-        } else {
-            System.out.println("nothing");
-        }
-    }
-
 }
