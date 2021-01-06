@@ -1,16 +1,16 @@
 package draw.shapes;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
+/**
+ * build ghosts
+ */
 public class GhostFactory {
 
     ShapeFactory shapeFactory = new ShapeFactory();
 
-    public Queue<Shape> newInstance(int numShapes) {
-        Queue<Shape> ghost = new LinkedList<>();
+    public Ghost newInstance(int numShapes) {
+        Ghost ghost = new Ghost();
         for(int i = 0; i < numShapes; i++) {
-            ghost.add(shapeFactory.newInstance());
+            ghost.shapeQueue.add(shapeFactory.newInstance());
         }
         return ghost;
     }

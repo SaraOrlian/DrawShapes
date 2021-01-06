@@ -21,7 +21,7 @@ public class StrokeListener extends MouseInputAdapter {
     public void mouseDragged(MouseEvent e) {
         Point point = new draw.shapes.Point((int) e.getPoint().getX(), (int) e.getPoint().getY());
         stroke.add(point);
-        shapesView.setPoint(point);
+        shapesView.addPoint(point);
         e.getComponent().repaint();
     }
 

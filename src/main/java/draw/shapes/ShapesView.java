@@ -5,16 +5,12 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-
-import static draw.shapes.Shape.*;
 
 public class ShapesView extends JComponent {
-    Point point;
     ArrayList<Point> drawing = new ArrayList<Point>();
     GhostManager ghostManager;
-    Random random = new Random();
+    int ghostXval;
+    int ghostYval;
 
     public ShapesView(GhostManager ghostManager) {
         this.ghostManager = ghostManager;
@@ -24,8 +20,8 @@ public class ShapesView extends JComponent {
         drawing.clear();
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
+    public void addPoint(Point point) {
+        drawing.add(point);
     }
 
     @Override
@@ -36,38 +32,23 @@ public class ShapesView extends JComponent {
     }
 
     private void paintGhosts(Graphics g) {
-        List<Queue<Shape>> ghostList = ghostManager.getGhostList();
-        g.setFont(new Font("", Font.PLAIN, 30));
-        for (Queue<Shape> ghost : ghostList) {
-            int randX = random.nextInt(400);
-            int randY = random.nextInt(400);
-
-            for (Shape shape : ghost) {
+        List<Ghost> ghostList = ghostManager.getGhostList();
+        for (Ghost ghost : ghostList) {
+            ghostXval = ghost.getxVal();
+            ghostYval = ghost.getyVal();
+            for (Shape shape : ghost.getShapeQueue()) {
                 switch (shape) {
                     case CARAT:
-                        g.setColor(Color.GREEN);
-                        g.drawString("^", randX++, randY);
-                        randX += 10;
+                        drawCarat(g);
                         break;
                     case VEE:
-                        g.setColor(Color.ORANGE);
-                        g.drawString("V", randX++, randY);
-                        randX += 30;
+                        drawVee(g);
                         break;
                     case HORIZONTAL:
-                        g.setColor(Color.BLUE);
-                        g.drawString("\u2796", randX++, randY);
-                        randX += 50;
+                        drawHorizontal(g);
                         break;
                     case VERTICAL:
-                        g.setColor(Color.RED);
-                        randX += 10;
-                        Graphics2D g2d = (Graphics2D) g;
-                        AffineTransform orig = g2d.getTransform();
-                        g2d.rotate(Math.toRadians(-90), randX++, randY);
-                        g2d.drawString("\u2796", randX++, randY);
-                        g2d.setTransform(orig);
-                        randX += 10;
+                        drawVertical(g);
                         break;
                     default:
                         break;
@@ -76,15 +57,44 @@ public class ShapesView extends JComponent {
         }
     }
 
+    private void drawVertical(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 30));
+        g.setColor(Color.RED);
+        ghostXval += 10;
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform orig = g2d.getTransform();
+        g2d.rotate(Math.toRadians(-90), ghostXval++, ghostYval);
+        g2d.drawString("\u2796", ghostXval++, ghostYval);
+        g2d.setTransform(orig);
+        ghostXval += 10;
+    }
+
+    private void drawVee(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 50));
+        g.setColor(Color.ORANGE);
+        g.drawString("\u02c5", ghostXval++, ghostYval);
+        ghostXval += 30;
+    }
+
+    private void drawHorizontal(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 30));
+        g.setColor(Color.BLUE);
+        g.drawString("\u2796", ghostXval++, ghostYval);
+        ghostXval += 50;
+    }
+
+    private void drawCarat(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 50));
+        g.setColor(Color.GREEN);
+        g.drawString("\u02c4", ghostXval++, ghostYval);
+        ghostXval += 30;
+    }
+
     private void paintStroke(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            if (point != null) {
-                drawing.add(point);
-                for (int i = 0; i < drawing.size() - 2; i++) {
-                    g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
-                }
-            }
+        for (int i = 0; i < drawing.size() - 2; i++) {
+            g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
         }
-
+    }
 }
