@@ -11,12 +11,8 @@ public class ShapeAnalyzer {
 
     List<Point> stroke;
 
-    private final double HORIZONTAL_ERROR_ALLOWANCE = 3;
-    private final double V_ERROR_ALLOWANCE = 10;
-    private final double V_POINT_ERROR_ALLOWANCE = 50;
+    private final double ANGLE_RANGE_ALLOWANCE = Math.PI / 9;
 
-    private final double MIN_POS_SLOPE = 0.47;
-    private final double MAX_NEG_SLOPE = -0.42;
 
     public void setStroke(List<Point> stroke) {
         this.stroke = new ArrayList<>(stroke);
@@ -53,6 +49,7 @@ public class ShapeAnalyzer {
         //take out starts and dont use foreach
         for (Point point : stroke) {
             double currSlope = calcSlope(point, previousPoint);
+            double HORIZONTAL_ERROR_ALLOWANCE = 3;
             if (currSlope - prevSlope > HORIZONTAL_ERROR_ALLOWANCE) {
                 return false;
             }
@@ -64,6 +61,7 @@ public class ShapeAnalyzer {
 
     /**
      * explain inversion
+     *
      * @param stroke
      * @return
      */
@@ -79,119 +77,105 @@ public class ShapeAnalyzer {
 
     public boolean isVee(List<Point> stroke) {
 
-        Point start = stroke.get(0);
-        Point end = stroke.get(stroke.size() - 1);
-//        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
-//            return false;
-//        }
+        int vertexIndex = findVeeVertexIndex(stroke);
+        int zeroY = stroke.get(vertexIndex).getX(); // define a relative x axis
+        int zeroX = stroke.get(vertexIndex).getY(); // define a relative y axis
+        Point origin = new Point(zeroX, zeroY); //define a relative origin
 
-        Point previousPoint = start;
+
+        return isDownLine(stroke, origin, vertexIndex) && isUpLine(stroke, origin, vertexIndex);
+    }
+
+    public boolean isDownLine(List<Point> stroke, Point origin, int vertexIndex) {
+        double maxAngle = Double.MIN_VALUE;
+        double minAngle = Double.MAX_VALUE;
+        double MAX_POS_ANGLE = Math.PI / 3;
+        double MIN_POS_ANGLE = Math.PI / 6;
+
+
+        
+        for (int i = vertexIndex; i < stroke.size(); i++) {
+            double currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
+
+            if (currentAngle > MAX_POS_ANGLE || currentAngle < MIN_POS_ANGLE) {
+                return false;
+            }
+
+            if (currentAngle > maxAngle) {
+                maxAngle = currentAngle;
+            }
+            if (currentAngle < minAngle) {
+                minAngle = currentAngle;
+            }
+        }
+        return maxAngle - minAngle < ANGLE_RANGE_ALLOWANCE;
+    }
+    public boolean isUpLine(List<Point> stroke, Point origin, int vertexIndex) {
+
+        double maxAngle = Double.MIN_VALUE;
+        double minAngle = Double.MAX_VALUE;
+        for (int i = vertexIndex; i < stroke.size(); i++) {
+            double currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
+
+            double MAX_POS_ANGLE = Math.PI / 3;
+            double MIN_POS_ANGLE = Math.PI / 6;
+            if (currentAngle > MAX_POS_ANGLE || currentAngle < MIN_POS_ANGLE) {
+                return false;
+            }
+
+            if (currentAngle > maxAngle) {
+                maxAngle = currentAngle;
+            }
+            if (currentAngle < minAngle) {
+                minAngle = currentAngle;
+            }
+        }
+        return maxAngle - minAngle < ANGLE_RANGE_ALLOWANCE;
+    }
+
+    private double getRadiansFromXAxis(Point pt, Point origin) {
+        Point point = pt;
+        double opposite = Math.abs(point.getY() - origin.getY());
+        double adjacent = Math.abs(point.getX() - origin.getX());
+        double angle=  Math.atan(opposite / adjacent);
+        return angle;
+    }
+
+    private int findVeeVertexIndex(List<Point> stroke) {
         int vertexIndex = 0;
 
-
-        for (Point point : stroke) {
-            if (point.getY() > previousPoint.getY()) {
-                vertexIndex = stroke.indexOf(point);
+        for (int i = 0; i < stroke.size(); i++) {
+            if (stroke.get(i).getY() > stroke.get(vertexIndex).getY()) {
+                vertexIndex = i;
             }
-            previousPoint = point;
         }
-        if (calcSlope(start, stroke.get(vertexIndex)) > 0 || calcSlope(stroke.get(vertexIndex), end) < 0) {
-            return false;
-        }
-
-        previousPoint = start;
-        double prevSlope = 0;
-        for (int i = 1; i < vertexIndex; i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-        previousPoint = stroke.get(vertexIndex);
-        prevSlope = 0;
-
-        for (int i = vertexIndex + 1; i < stroke.size(); i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-
-        return true;
+        return vertexIndex;
     }
 
     public boolean isCarat(List<Point> stroke) {
-        Point start = stroke.get(0);
-        Point end = stroke.get(stroke.size() - 1);
-        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
-            return false;
-        }
-
-        Point previousPoint = start;
-        int vertexIndex = 0;
-
-
-        for (Point point : stroke) {
-            if (point.getY() < previousPoint.getY()) {
-                vertexIndex = stroke.indexOf(point);
-            }
-            previousPoint = point;
-        }
-        if (calcSlope(start, stroke.get(vertexIndex)) < 0 || calcSlope(stroke.get(vertexIndex), end) > 0) {
-            return false;
-        }
-
-        previousPoint = start;
-        double prevSlope = 0;
-        for (int i = 1; i < vertexIndex; i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-        previousPoint = stroke.get(vertexIndex);
-        prevSlope = 0;
-
-        for (int i = vertexIndex + 1; i < stroke.size(); i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-
-        return true;
+        return false;
     }
 
     /**
      * checks if slope is within the loose allowance of a zero slope
+     *
      * @param slope
      * @return
      */
     private boolean isInZeroRange(double slope) {
+        double MAX_NEG_SLOPE = -0.42;
+        double MIN_POS_SLOPE = 0.47;
         return slope > MAX_NEG_SLOPE && slope < MIN_POS_SLOPE;
     }
 
     public double calcSlope(Point point1, Point point2) {
         try {
             return -1 * (point1.getY() - point2.getY()) / (double) (point1.getX() - point2.getX());
-       }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return Double.NaN;
         }
     }
-
 
     //testing
     public void whichStroke() {

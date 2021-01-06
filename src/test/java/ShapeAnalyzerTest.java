@@ -9,12 +9,48 @@ import static org.junit.Assert.*;
 
 public class ShapeAnalyzerTest {
 
+
     @Test
-    public void isV() {
+    public void isDownLine(){
+        //given
+        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+        List<Point> stroke = new ArrayList<Point>();
+        Point origin = new Point(10,10);
+        //when
+            stroke.add(new Point(5,5));
+            stroke.add(new Point(6,6));
+            stroke.add(new Point(7,7));
+            stroke.add(new Point(8,8));
+            stroke.add(new Point(9,9));
+            stroke.add(new Point(10,10));
+        //then
+        assertTrue(analyzer.isDownLine(stroke,origin,stroke.size()));
+    }
+
+    @Test
+    public void isUpLine(){
+        //given
+        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+        List<Point> stroke = new ArrayList<Point>();
+        Point origin = new Point(5,5);
+        //when
+        stroke.add(new Point(10,10));
+        stroke.add(new Point(9,9));
+        stroke.add(new Point(8,8));
+        stroke.add(new Point(7,7));
+        stroke.add(new Point(6,6));
+        stroke.add(new Point(5,5));
+
+        //then
+        assertTrue(analyzer.isUpLine(stroke,origin,stroke.size()));
+    }
+
+    @Test
+    public void isVee() {
 //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
         List<Point> stroke = new ArrayList<Point>();
-        int slope = 1;
+
         //when
         for (int i = 0; i < 40; i++) {
             stroke.add(new Point(i, i + 40));
