@@ -11,38 +11,40 @@ public class ShapeAnalyzerTest {
 
 
     @Test
-    public void isDownLine(){
+    public void isDownLine() {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
         List<Point> stroke = new ArrayList<Point>();
-        Point origin = new Point(10,10);
+        Point origin = new Point(10, 10);
         //when
-            stroke.add(new Point(5,5));
-            stroke.add(new Point(6,6));
-            stroke.add(new Point(7,7));
-            stroke.add(new Point(8,8));
-            stroke.add(new Point(9,9));
-            stroke.add(new Point(10,10));
+        stroke.add(new Point(5, 5));
+        stroke.add(new Point(6, 6));
+        stroke.add(new Point(7, 7));
+        stroke.add(new Point(8, 8));
+        stroke.add(new Point(9, 9));
+        stroke.add(new Point(10, 10));
         //then
-        assertTrue(analyzer.isDownLine(stroke,origin,stroke.size()));
+        assertFalse(analyzer.isUpLine(stroke, origin, stroke.size()));
+        assertTrue(analyzer.isDownLine(stroke, origin, stroke.size()));
     }
 
     @Test
-    public void isUpLine(){
+    public void isUpLine() {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
         List<Point> stroke = new ArrayList<Point>();
-        Point origin = new Point(5,5);
+        Point origin = new Point(5, 5);
         //when
-        stroke.add(new Point(10,10));
-        stroke.add(new Point(9,9));
-        stroke.add(new Point(8,8));
-        stroke.add(new Point(7,7));
-        stroke.add(new Point(6,6));
-        stroke.add(new Point(5,5));
+        stroke.add(new Point(10, 10));
+        stroke.add(new Point(9, 9));
+        stroke.add(new Point(8, 8));
+        stroke.add(new Point(7, 7));
+        stroke.add(new Point(6, 6));
+        stroke.add(new Point(5, 5));
 
         //then
-        assertTrue(analyzer.isUpLine(stroke,origin,stroke.size()));
+        assertFalse(analyzer.isDownLine(stroke,origin,stroke.size()));
+        assertTrue(analyzer.isUpLine(stroke, origin, stroke.size()));
     }
 
     @Test
@@ -124,54 +126,54 @@ public class ShapeAnalyzerTest {
     }
 
     @Test
-    public void calcPosSlope(){
+    public void calcPosSlope() {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
-        Point point1 = new Point(1,2);
-        Point point2 = new Point(2,1);
+        Point point1 = new Point(1, 2);
+        Point point2 = new Point(2, 1);
         int expectedSlope = 1;
         //when
         int slopeResult = (int) analyzer.calcSlope(point1, point2);
         //then
-        assertEquals(expectedSlope,slopeResult);
+        assertEquals(expectedSlope, slopeResult);
     }
 
     @Test
-    public void calcNegSlope(){
+    public void calcNegSlope() {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
-        Point point1 = new Point(1,1);
-        Point point2 = new Point(2,2);
+        Point point1 = new Point(1, 1);
+        Point point2 = new Point(2, 2);
         int expectedSlope = -1;
         //when
         int slopeResult = (int) analyzer.calcSlope(point1, point2);
         //then
-        assertEquals(expectedSlope,slopeResult);
+        assertEquals(expectedSlope, slopeResult);
     }
 
     @Test
-    public void calcUndefSlope(){
+    public void calcUndefSlope() {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
-        Point point1 = new Point(1,2);
-        Point point2 = new Point(1,1);
+        Point point1 = new Point(1, 2);
+        Point point2 = new Point(1, 1);
         double expectedSlope = Double.NEGATIVE_INFINITY;
         //when
         double slopeResult = analyzer.calcSlope(point1, point2);
         //then
-        assertEquals((int)expectedSlope,(int)slopeResult);
+        assertEquals((int) expectedSlope, (int) slopeResult);
     }
 
     @Test
-    public void calcNaNSlope(){
+    public void calcNaNSlope() {
         //given
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
-        Point point1 = new Point(1,2);
-        Point point2 = new Point(1,2);
+        Point point1 = new Point(1, 2);
+        Point point2 = new Point(1, 2);
         double expectedSlope = Double.NaN;
         //when
         double slopeResult = analyzer.calcSlope(point1, point2);
         //then
-        assertEquals((int)expectedSlope,(int)slopeResult);
+        assertEquals((int) expectedSlope, (int) slopeResult);
     }
 }

@@ -89,56 +89,50 @@ public class ShapeAnalyzer {
     public boolean isDownLine(List<Point> stroke, Point origin, int vertexIndex) {
         double maxAngle = Double.MIN_VALUE;
         double minAngle = Double.MAX_VALUE;
-        double MAX_POS_ANGLE = Math.PI / 3;
-        double MIN_POS_ANGLE = Math.PI / 6;
+        double MAX_DOWN_ANGLE = 2*Math.PI / 3;
+        double MIN_DOWN_ANGLE = 5*Math.PI / 6;
+        double currentAngle = 0;
 
-
-        
-        for (int i = vertexIndex; i < stroke.size(); i++) {
-            double currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
-
-            if (currentAngle > MAX_POS_ANGLE || currentAngle < MIN_POS_ANGLE) {
+        for (int i = 0; i < vertexIndex; i++) {
+            currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
+            if (currentAngle < MIN_DOWN_ANGLE || currentAngle > MAX_DOWN_ANGLE || stroke.get(i).getY() < origin.getY()) {
                 return false;
-            }
-
-            if (currentAngle > maxAngle) {
-                maxAngle = currentAngle;
-            }
-            if (currentAngle < minAngle) {
-                minAngle = currentAngle;
             }
         }
         return maxAngle - minAngle < ANGLE_RANGE_ALLOWANCE;
     }
-    public boolean isUpLine(List<Point> stroke, Point origin, int vertexIndex) {
+
+
+    public boolean isUpLine(List<Point> stroke, Point origin, int startIndex) {
 
         double maxAngle = Double.MIN_VALUE;
         double minAngle = Double.MAX_VALUE;
-        for (int i = vertexIndex; i < stroke.size(); i++) {
-            double currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
+        double MAX_UP_ANGLE = Math.PI / 3;
+        double MIN_UP_ANGLE = Math.PI / 6;
+        double currentAngle = 0;
 
-            double MAX_POS_ANGLE = Math.PI / 3;
-            double MIN_POS_ANGLE = Math.PI / 6;
-            if (currentAngle > MAX_POS_ANGLE || currentAngle < MIN_POS_ANGLE) {
+        for (int i = startIndex; i < stroke.size(); i++) {
+            currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
+            if (currentAngle < MIN_UP_ANGLE || currentAngle > MAX_UP_ANGLE || stroke.get(i).getY() > origin.getY()) {
                 return false;
-            }
-
-            if (currentAngle > maxAngle) {
-                maxAngle = currentAngle;
-            }
-            if (currentAngle < minAngle) {
-                minAngle = currentAngle;
             }
         }
         return maxAngle - minAngle < ANGLE_RANGE_ALLOWANCE;
     }
 
     private double getRadiansFromXAxis(Point pt, Point origin) {
-        Point point = pt;
-        double opposite = Math.abs(point.getY() - origin.getY());
-        double adjacent = Math.abs(point.getX() - origin.getX());
-        double angle=  Math.atan(opposite / adjacent);
-        return angle;
+        double opposite = 0;
+        double adjacent = 0;
+        if (pt.getY() > origin.getY()) {
+            opposite = pt.getY() - origin.getY();
+            adjacent = pt.getX() - origin.getX();
+
+        } else {
+            opposite = origin.getY() - pt.getY();
+            adjacent = origin.getX() - pt.getX();
+        }
+
+        return Math.atan(opposite / adjacent);
     }
 
     private int findVeeVertexIndex(List<Point> stroke) {
@@ -181,14 +175,11 @@ public class ShapeAnalyzer {
     public void whichStroke() {
         if (isHorizontal(stroke)) {
             System.out.println("horizontal");
-        } else
-        if (isVertical(stroke)) {
+        } else if (isVertical(stroke)) {
             System.out.println("vertical");
-        } else
-        if (isCarat(stroke)) {
+        } else if (isCarat(stroke)) {
             System.out.println("^");
-        } else
-        if (isVee(stroke)) {
+        } else if (isVee(stroke)) {
             System.out.println("v");
         } else {
             System.out.println("nothing");
