@@ -3,9 +3,13 @@ package draw.shapes;
 import java.util.ArrayList;
 import java.util.List;
 
+import static draw.shapes.Shape.*;
+
 //Determine which shape- if any
 //Ricki
 public class ShapeAnalyzer {
+
+    List<Point> stroke;
 
     private final double HORIZONTAL_ERROR_ALLOWANCE = 3;
     private final double V_ERROR_ALLOWANCE = 10;
@@ -13,6 +17,26 @@ public class ShapeAnalyzer {
 
     private final double MIN_POS_SLOPE = 0.47;
     private final double MAX_NEG_SLOPE = -0.42;
+
+    public void setStroke(List<Point> stroke) {
+        this.stroke = new ArrayList<>(stroke);
+    }
+
+    public Shape strokeIsShape() {
+        if (isHorizontal(stroke)) {
+            return HORIZONTAL;
+        }
+        if (isVertical(stroke)) {
+            return VERTICAL;
+        }
+        if (isCarat(stroke)) {
+            return CARAT;
+        }
+        if (isVee(stroke)) {
+            return VEE;
+        }
+        return null;
+    }
 
     public boolean isHorizontal(List<Point> stroke) {
         Point start = stroke.get(0);
@@ -153,6 +177,25 @@ public class ShapeAnalyzer {
 
     private double calcSlope(Point point1, Point point2) {
         return -1 * (point1.getY() - point2.getY()) / (double) (point1.getX() - point2.getX());
+    }
+
+
+    //testing
+    public void whichStroke() {
+        if (isHorizontal(stroke)) {
+            System.out.println("horizontal");
+        } else
+        if (isVertical(stroke)) {
+            System.out.println("vertical");
+        } else
+        if (isCarat(stroke)) {
+            System.out.println("^");
+        } else
+        if (isVee(stroke)) {
+            System.out.println("v");
+        } else {
+            System.out.println("nothing");
+        }
     }
 
 }

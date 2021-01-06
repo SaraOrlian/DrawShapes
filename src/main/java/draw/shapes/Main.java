@@ -4,8 +4,8 @@ public class Main {
     public static void main(String[] args) {
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
         GhostManager ghostManager = new GhostManager(analyzer);
-        StrokeListener listener = new StrokeListener(ghostManager);
-        ShapesView shapesView = new ShapesView(listener, ghostManager);
+        ShapesView shapesView = new ShapesView(ghostManager);
+        StrokeListener listener = new StrokeListener(ghostManager, shapesView, analyzer);
         DrawShapesFrame drawShapesFrame = new DrawShapesFrame(listener, shapesView);
         drawShapesFrame.setVisible(true);
     }
