@@ -11,7 +11,6 @@ import java.util.Random;
 import static draw.shapes.Shape.*;
 
 public class ShapesView extends JComponent {
-    Point point;
     ArrayList<Point> drawing = new ArrayList<Point>();
     GhostManager ghostManager;
     Random random = new Random();
@@ -24,8 +23,8 @@ public class ShapesView extends JComponent {
         drawing.clear();
     }
 
-    public void setPoint(Point point) {
-        this.point = point;
+    public void addPoint(Point point) {
+        drawing.add(point);
     }
 
     @Override
@@ -79,12 +78,8 @@ public class ShapesView extends JComponent {
     private void paintStroke(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            if (point != null) {
-                drawing.add(point);
                 for (int i = 0; i < drawing.size() - 2; i++) {
                     g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
                 }
             }
-        }
-
 }
