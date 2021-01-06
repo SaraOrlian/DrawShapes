@@ -99,7 +99,7 @@ public class ShapeAnalyzer {
                 return false;
             }
         }
-        return maxAngle - minAngle < ANGLE_RANGE_ALLOWANCE;
+        return true;
     }
 
 
@@ -117,7 +117,7 @@ public class ShapeAnalyzer {
                 return false;
             }
         }
-        return maxAngle - minAngle < ANGLE_RANGE_ALLOWANCE;
+        return true;
     }
 
     private double getRadiansFromXAxis(Point pt, Point origin) {
