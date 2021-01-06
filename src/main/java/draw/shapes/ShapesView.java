@@ -9,6 +9,8 @@ import java.util.List;
 public class ShapesView extends JComponent {
     ArrayList<Point> drawing = new ArrayList<Point>();
     GhostManager ghostManager;
+    int ghostXval;
+    int ghostYval;
 
     public ShapesView(GhostManager ghostManager) {
         this.ghostManager = ghostManager;
@@ -31,47 +33,61 @@ public class ShapesView extends JComponent {
 
     private void paintGhosts(Graphics g) {
         List<Ghost> ghostList = ghostManager.getGhostList();
-        int ghostXval;
-        int ghostYval;
         for (Ghost ghost : ghostList) {
             ghostXval = ghost.getxVal();
             ghostYval = ghost.getyVal();
             for (Shape shape : ghost.getShapeQueue()) {
                 switch (shape) {
                     case CARAT:
-                        g.setFont(new Font("", Font.PLAIN, 50));
-                        g.setColor(Color.GREEN);
-                        g.drawString("\u02c4", ghostXval++, ghostYval);
-                        ghostXval += 30;
+                        drawCarat(g);
                         break;
                     case VEE:
-                        g.setFont(new Font("", Font.PLAIN, 50));
-                        g.setColor(Color.ORANGE);
-                        g.drawString("\u02c5", ghostXval++, ghostYval);
-                        ghostXval += 30;
+                        drawVee(g);
                         break;
                     case HORIZONTAL:
-                        g.setFont(new Font("", Font.PLAIN, 30));
-                        g.setColor(Color.BLUE);
-                        g.drawString("\u2796", ghostXval++, ghostYval);
-                        ghostXval += 50;
+                        drawHorizontal(g);
                         break;
                     case VERTICAL:
-                        g.setFont(new Font("", Font.PLAIN, 30));
-                        g.setColor(Color.RED);
-                        ghostXval += 10;
-                        Graphics2D g2d = (Graphics2D) g;
-                        AffineTransform orig = g2d.getTransform();
-                        g2d.rotate(Math.toRadians(-90), ghostXval++, ghostYval);
-                        g2d.drawString("\u2796", ghostXval++, ghostYval);
-                        g2d.setTransform(orig);
-                        ghostXval += 10;
+                        drawVertical(g);
                         break;
                     default:
                         break;
                 }
             }
         }
+    }
+
+    private void drawVertical(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 30));
+        g.setColor(Color.RED);
+        ghostXval += 10;
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform orig = g2d.getTransform();
+        g2d.rotate(Math.toRadians(-90), ghostXval++, ghostYval);
+        g2d.drawString("\u2796", ghostXval++, ghostYval);
+        g2d.setTransform(orig);
+        ghostXval += 10;
+    }
+
+    private void drawVee(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 50));
+        g.setColor(Color.ORANGE);
+        g.drawString("\u02c5", ghostXval++, ghostYval);
+        ghostXval += 30;
+    }
+
+    private void drawHorizontal(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 30));
+        g.setColor(Color.BLUE);
+        g.drawString("\u2796", ghostXval++, ghostYval);
+        ghostXval += 50;
+    }
+
+    private void drawCarat(Graphics g) {
+        g.setFont(new Font("", Font.PLAIN, 50));
+        g.setColor(Color.GREEN);
+        g.drawString("\u02c4", ghostXval++, ghostYval);
+        ghostXval += 30;
     }
 
     private void paintStroke(Graphics g) {

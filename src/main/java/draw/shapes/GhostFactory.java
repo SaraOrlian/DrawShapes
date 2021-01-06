@@ -1,5 +1,8 @@
 package draw.shapes;
 
+/**
+ * build ghosts
+ */
 public class GhostFactory {
 
     ShapeFactory shapeFactory = new ShapeFactory();
