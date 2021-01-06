@@ -11,15 +11,21 @@ import java.util.Random;
 import static draw.shapes.Shape.*;
 
 public class ShapesView extends JComponent {
-    StrokeListener listener;
+    Point point;
     ArrayList<Point> drawing = new ArrayList<Point>();
     GhostManager ghostManager;
     Random random = new Random();
 
-    public ShapesView(StrokeListener listener, GhostManager ghostManager) {
-        this.listener = listener;
+    public ShapesView(GhostManager ghostManager) {
         this.ghostManager = ghostManager;
+    }
 
+    public void clearDrawing() {
+        drawing.clear();
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
     }
 
     @Override
@@ -67,19 +73,12 @@ public class ShapesView extends JComponent {
                         break;
                 }
             }
-
         }
-
     }
 
     private void paintStroke(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        Point point = listener.getPoint();
-        if (listener.isReleased()) {
-            drawing.clear();
-            ghostManager.dequeueShape();
-        } else {
             if (point != null) {
                 drawing.add(point);
                 for (int i = 0; i < drawing.size() - 2; i++) {
@@ -87,5 +86,5 @@ public class ShapesView extends JComponent {
                 }
             }
         }
-    }
+
 }

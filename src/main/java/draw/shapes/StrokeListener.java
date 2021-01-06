@@ -5,40 +5,32 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-//Shana
 public class StrokeListener extends MouseInputAdapter {
 
-    private GhostManager ghostManager;
-    private List<Point> stroke = new ArrayList<>();
-    private boolean released = false;
-    private Point point;
+    private final ShapesView shapesView;
+    private final GhostManager ghostManager;
+    private final List<Point> stroke = new ArrayList<>();
+    private final ShapeAnalyzer shapeAnalyzer;
 
-    public StrokeListener(GhostManager ghostManager) {
+    public StrokeListener(GhostManager ghostManager, ShapesView shapesView, ShapeAnalyzer shapeAnalyzer) {
         this.ghostManager = ghostManager;
-    }
-
-    public boolean isReleased() {
-        return released;
-    }
-
-    public Point getPoint() {
-        return point;
+        this.shapesView = shapesView;
+        this.shapeAnalyzer = shapeAnalyzer;
     }
 
     public void mouseDragged(MouseEvent e) {
-        released = false;
-        point = new draw.shapes.Point((int)e.getPoint().getX(), (int)e.getPoint().getY());
+        Point point = new draw.shapes.Point((int) e.getPoint().getX(), (int) e.getPoint().getY());
         stroke.add(point);
+        shapesView.setPoint(point);
         e.getComponent().repaint();
     }
 
     public void mouseReleased(MouseEvent e) {
-        released = true;
-
-        ghostManager.setStroke(stroke);
-
-        ghostManager.whichStroke();
-        e.getComponent().repaint();
+        shapeAnalyzer.setStroke(stroke);
+        shapeAnalyzer.whichStroke();
+        ghostManager.dequeueShape();
         stroke.clear();
+        shapesView.clearDrawing();
+        e.getComponent().repaint();
     }
 }
