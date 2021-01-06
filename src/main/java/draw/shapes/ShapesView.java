@@ -36,7 +36,7 @@ public class ShapesView extends JComponent {
 
     private void paintGhosts(Graphics g) {
         List<Queue<Shape>> ghostList = ghostManager.getGhostList();
-        g.setFont(new Font("", Font.PLAIN, 30));
+
         for (Queue<Shape> ghost : ghostList) {
             int randX = random.nextInt(400);
             int randY = random.nextInt(400);
@@ -44,21 +44,25 @@ public class ShapesView extends JComponent {
             for (Shape shape : ghost) {
                 switch (shape) {
                     case CARAT:
+                        g.setFont(new Font("", Font.PLAIN, 50));
                         g.setColor(Color.GREEN);
-                        g.drawString("^", randX++, randY);
-                        randX += 10;
+                        g.drawString("\u02c4", randX++, randY);
+                        randX += 30;
                         break;
                     case VEE:
+                        g.setFont(new Font("", Font.PLAIN, 50));
                         g.setColor(Color.ORANGE);
-                        g.drawString("V", randX++, randY);
+                        g.drawString("\u02c5", randX++, randY);
                         randX += 30;
                         break;
                     case HORIZONTAL:
+                        g.setFont(new Font("", Font.PLAIN, 30));
                         g.setColor(Color.BLUE);
                         g.drawString("\u2796", randX++, randY);
                         randX += 50;
                         break;
                     case VERTICAL:
+                        g.setFont(new Font("", Font.PLAIN, 30));
                         g.setColor(Color.RED);
                         randX += 10;
                         Graphics2D g2d = (Graphics2D) g;
@@ -78,8 +82,8 @@ public class ShapesView extends JComponent {
     private void paintStroke(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-                for (int i = 0; i < drawing.size() - 2; i++) {
-                    g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
-                }
-            }
+        for (int i = 0; i < drawing.size() - 2; i++) {
+            g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
+        }
+    }
 }
