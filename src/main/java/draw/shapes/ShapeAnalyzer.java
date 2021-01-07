@@ -5,14 +5,17 @@ import java.util.List;
 
 import static draw.shapes.Shape.*;
 
-//Determine which shape- if any
-//Ricki
+/**
+ * TODO: write javadoc
+ */
 public class ShapeAnalyzer {
 
 
-    List<Point> stroke;
-
-    ShapeReducer reducer = new ShapeReducer();
+    private List<Point> stroke;
+    private final ShapeReducer REDUCER = new ShapeReducer();
+    private final int VEE_CARAT_MIN_HEIGHT = 300;
+    private final int VEE_CARAT_SKEW_ALLOWANCE = 200;
+    private final int VEE_CARAT_VERTICES = 3;
 
 
     public Shape getShape(List<Point> stroke) {
@@ -75,23 +78,25 @@ public class ShapeAnalyzer {
     }
 
     public boolean isVee(List<Point> stroke) {
-        final int vertices = 3;
-        int errorAllowance = 200;
-        int minHeight = 300;
 
-        List<Point> smoothStroke = reducer.smooth(stroke);
+        List<Point> smoothStroke = reduceCaratOrVee(stroke);
+        return isCentered(VEE_CARAT_SKEW_ALLOWANCE, smoothStroke)
+                && notTooShortVee(VEE_CARAT_MIN_HEIGHT, smoothStroke)
+                && smoothStroke.get(1).getY() > smoothStroke.get(0).getY() && smoothStroke.get(1).getY() > smoothStroke.get(2).getY();
 
-        while (smoothStroke.size() > vertices) {
-            int prevSize =smoothStroke.size();
-            smoothStroke = reducer.smooth(smoothStroke);
+    }
+
+    private List<Point> reduceCaratOrVee(List<Point> stroke) {
+        List<Point> smoothStroke = REDUCER.smooth(stroke);
+
+        while (smoothStroke.size() > VEE_CARAT_VERTICES) {
+            int prevSize = smoothStroke.size();
+            smoothStroke = REDUCER.smooth(smoothStroke);
             if (smoothStroke.size() == prevSize) {
                 break;
             }
         }
-        return isCentered(errorAllowance, smoothStroke)
-                && notTooShort(minHeight, smoothStroke);
-
-
+        return smoothStroke;
     }
 
     private boolean isCentered(int errorAllowance, List<Point> smoothStroke) {
@@ -107,13 +112,20 @@ public class ShapeAnalyzer {
         return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance;
     }
 
-    private boolean notTooShort(int minHeight, List<Point> smoothStroke) {
+    private boolean notTooShortVee(int minHeight, List<Point> smoothStroke) {
         return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + minHeight;
+    }
+
+    private boolean notTooShortCarat(int minHeight, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getY() > ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) - minHeight;
     }
 
 
     public boolean isCarat(List<Point> stroke) {
-        return false;
+        List<Point> smoothStroke = reduceCaratOrVee(stroke);
+        return isCentered(VEE_CARAT_SKEW_ALLOWANCE, smoothStroke)
+                && notTooShortCarat(VEE_CARAT_MIN_HEIGHT, smoothStroke)
+                && smoothStroke.get(1).getY() < smoothStroke.get(0).getY() && smoothStroke.get(1).getY() < smoothStroke.get(2).getY();
     }
 
     /**
