@@ -5,12 +5,10 @@ import java.util.*;
 
 //Get shape drawn and remove shape from ghost
 public class GhostManager {
-    ShapeAnalyzer analyzer;
     GhostFactory ghostFactory = new GhostFactory();
     List<Ghost> ghostList = new LinkedList<>();
 
-    public GhostManager(ShapeAnalyzer analyzer) {
-        this.analyzer = analyzer;
+    public GhostManager() {
         createGhost(2);
         createGhost(2);
         createGhost(2);
@@ -25,8 +23,7 @@ public class GhostManager {
         return ghostList;
     }
 
-    public void dequeueShape() {
-        Shape drawing = analyzer.strokeIsShape();
+    public void dequeueShape(Shape drawing) {
         Iterator<Ghost> iterator = ghostList.iterator();
         while(iterator.hasNext()) {
             Ghost ghost = iterator.next();
