@@ -14,7 +14,7 @@ public class GhostThread extends Thread{
     }
 
     public void run() {
-        while (counter < 100) {
+        while (!ghostManager.isGameOver()) {
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
