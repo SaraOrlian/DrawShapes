@@ -32,6 +32,7 @@ public class ShapeAnalyzer {
     }
 
     public boolean isHorizontal(List<Point> stroke) {
+
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
         double slope = calcSlope(start, end);
@@ -74,8 +75,9 @@ public class ShapeAnalyzer {
     }
 
     public boolean isVee(List<Point> stroke) {
-        final int vertices = 3;
-        int errorAllowance = 50;
+//        final int vertices = 3;
+        int errorAllowance = 500;
+        int minHeight =800;
         List<Point> smoothStroke = reducer.smooth(stroke);
 
         for (int i = 0; i < stroke.size() / 2; i++) {
@@ -84,11 +86,23 @@ public class ShapeAnalyzer {
                 break;
             }
         }
-        return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance
-                && smoothStroke.get(1).getX() < ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) + errorAllowance
-                && smoothStroke.get(1).getY() > ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + errorAllowance;
+        return notSkewedRight(errorAllowance, smoothStroke)
+                && notSkewedLeft(errorAllowance, smoothStroke)
+                && noTooShort(minHeight, smoothStroke);
 
 
+    }
+
+    private boolean notSkewedLeft(int errorAllowance, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getX() < ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) + errorAllowance;
+    }
+
+    private boolean notSkewedRight(int errorAllowance, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance;
+    }
+
+    private boolean noTooShort(int minHeight, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + minHeight;
     }
 
 

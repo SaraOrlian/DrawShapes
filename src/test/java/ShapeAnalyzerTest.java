@@ -55,6 +55,7 @@ public class ShapeAnalyzerTest {
         List<Point> stroke = new ArrayList<Point>();
 
         //when
+
         stroke.add(new Point(103, 130));
         stroke.add(new Point(103, 131));
         stroke.add(new Point(104, 133));
