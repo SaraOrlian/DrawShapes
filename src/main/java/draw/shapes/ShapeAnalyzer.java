@@ -76,10 +76,13 @@ public class ShapeAnalyzer {
     public boolean isVee(List<Point> stroke) {
         final int vertices = 3;
         int errorAllowance = 50;
-        List<Point> smoothStroke = new ArrayList<Point>();
+        List<Point> smoothStroke = reducer.smooth(stroke);
 
-        while (smoothStroke.size() != 3) {
+        for (int i = 0; i < stroke.size() / 2; i++) {
             smoothStroke = reducer.smooth(smoothStroke);
+            if(smoothStroke.size()<=3){
+                break;
+            }
         }
         return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance
                 && smoothStroke.get(1).getX() < ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) + errorAllowance

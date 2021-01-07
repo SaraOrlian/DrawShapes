@@ -250,7 +250,7 @@ public class ShapeAnalyzerTest {
         List<Point> newList = reducer.smooth(stroke);
 
 
-        int newSize= newList.size();
+        int newSize = newList.size();
         System.out.println(oldSize);
         System.out.println(newSize);
 
@@ -264,6 +264,7 @@ public class ShapeAnalyzerTest {
         assertTrue(shrunk);
 
     }
+
     @Test
     public void reallySmooth() {
         //given
@@ -311,19 +312,18 @@ public class ShapeAnalyzerTest {
 
 
         int oldSize = stroke.size();
+        System.out.println(oldSize);
 
         List<Point> newList = reducer.smooth(stroke);
 
-        while(newList.size()!=3){
+        while (newList.size() > 3) {
             newList = reducer.smooth(newList);
             System.out.println(newList.size());
-
         }
 
 
+        int newSize = newList.size();
 
-        int newSize= newList.size();
-        System.out.println(oldSize);
         System.out.println(newSize);
 
         for (Point point : newList) {
@@ -334,6 +334,7 @@ public class ShapeAnalyzerTest {
 
         //then
         assertTrue(shrunk);
+
 
     }
 }
