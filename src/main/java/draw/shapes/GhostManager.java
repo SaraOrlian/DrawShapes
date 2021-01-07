@@ -34,10 +34,10 @@ public class GhostManager {
 
     private boolean isOccupied(Point location) {
         for (Ghost ghost : ghostList) {
-            if (location.getX() >= ghost.getLocation().getX()
-                    && location.getX() <= ghost.getLocation().getX() + GHOST_WIDTH
-                    && location.getY() >= ghost.getLocation().getY()
-                    && location.getY() <= ghost.getLocation().getY() + GHOST_HEIGHT) {
+            if (location.getX() > ghost.getLocation().getX()
+                    && location.getX() < ghost.getLocation().getX() + GHOST_WIDTH
+                    && location.getY() > ghost.getLocation().getY()
+                    && location.getY() < ghost.getLocation().getY() + GHOST_HEIGHT) {
                 return true;
             }
         }

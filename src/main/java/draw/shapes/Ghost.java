@@ -9,6 +9,7 @@ public class Ghost {
     private Point location;
     Queue<Shape> shapeQueue;
 
+    //pass list of shapes and location in constructor
     public Ghost() {
         shapeQueue = new LinkedList<>();
     }
@@ -23,5 +24,9 @@ public class Ghost {
 
     public void setLocation(Point point) {
         this.location = point;
+    }
+
+    public boolean intersects(Ghost other){
+        
     }
 }
