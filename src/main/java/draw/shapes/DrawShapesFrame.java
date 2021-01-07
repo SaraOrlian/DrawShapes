@@ -7,7 +7,7 @@ import java.awt.*;
 public class DrawShapesFrame extends JFrame {
 
     public DrawShapesFrame(StrokeListener listener, ShapesView shapesView) {
-        setSize(500, 500);
+        setSize(1000, 800);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Draw Shapes");
         setLayout(new BorderLayout());
