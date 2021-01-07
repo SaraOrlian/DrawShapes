@@ -13,8 +13,8 @@ public class ShapeAnalyzer {
 
     private List<Point> stroke;
     private final ShapeReducer REDUCER = new ShapeReducer();
-    private final int VEE_CARAT_MIN_HEIGHT = 300;
-    private final int VEE_CARAT_SKEW_ALLOWANCE = 200;
+    private final int VEE_CARAT_MIN_HEIGHT = 100;
+    private final int VEE_CARAT_SKEW_ALLOWANCE = 300;
     private final int VEE_CARAT_EXPECTED_POINTS = 3;
 
 
@@ -117,13 +117,15 @@ public class ShapeAnalyzer {
     }
 
     private boolean notTooShortVee(List<Point> smoothStroke) {
-        return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + VEE_CARAT_MIN_HEIGHT && smoothStroke.get(1).getY() > smoothStroke.get(0).getY()
+        return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + VEE_CARAT_MIN_HEIGHT
+                && smoothStroke.get(1).getY() > smoothStroke.get(0).getY()
                 && smoothStroke.get(1).getY() > smoothStroke.get(2).getY();
     }
 
     private boolean notTooShortCarat(List<Point> smoothStroke) {
-        return smoothStroke.get(1).getY() > ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) - VEE_CARAT_MIN_HEIGHT
-                && smoothStroke.get(1).getY() < smoothStroke.get(0).getY() && smoothStroke.get(1).getY() < smoothStroke.get(2).getY();
+        return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) - VEE_CARAT_MIN_HEIGHT
+                && smoothStroke.get(1).getY() < smoothStroke.get(0).getY()
+           && smoothStroke.get(1).getY() < smoothStroke.get(2).getY();
     }
 
 
