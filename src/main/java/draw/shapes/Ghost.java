@@ -6,9 +6,8 @@ import java.util.Random;
 
 public class Ghost {
 
-    private int xVal;
-    private int yVal;
-    static final Random random = new Random();
+    private Point location;
+//    static final Random random = new Random();
     Queue<Shape> shapeQueue;
 
     public Ghost() {
@@ -21,19 +20,11 @@ public class Ghost {
         return shapeQueue;
     }
 
-    public int getxVal() {
-        return xVal;
+    public Point getLocation(){
+        return new Point(location.getX(),location.getY());
     }
 
-    public int getyVal() {
-        return yVal;
-    }
-
-    public void setxVal(int xVal) {
-        this.xVal = xVal;
-    }
-    
-    public void setyVal(int yVal){
-        this.yVal =yVal;
+    public void setLocation(Point point) {
+        this.location = point;
     }
 }
