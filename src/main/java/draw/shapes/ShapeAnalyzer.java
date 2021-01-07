@@ -9,16 +9,13 @@ import static draw.shapes.Shape.*;
 //Ricki
 public class ShapeAnalyzer {
 
+
     List<Point> stroke;
 
-    private final double ANGLE_RANGE_ALLOWANCE = Math.PI / 9;
+    ShapeReducer reducer = new ShapeReducer();
 
 
-    public void setStroke(List<Point> stroke) {
-        this.stroke = new ArrayList<>(stroke);
-    }
-
-    public Shape strokeIsShape() {
+    public Shape getShape(List<Point> stroke) {
         if (isHorizontal(stroke)) {
             return HORIZONTAL;
         }
@@ -67,6 +64,7 @@ public class ShapeAnalyzer {
      */
 
     public boolean isVertical(List<Point> stroke) {
+
         List<Point> newStroke = new ArrayList<>();
         for (Point point : stroke) {
 
@@ -76,56 +74,18 @@ public class ShapeAnalyzer {
     }
 
     public boolean isVee(List<Point> stroke) {
-//stach exchange link, unit crcle link in javadoc
-        double[] leftRightVector1 = {1, 1.5};
-        double[] leftRightVector2 = {1, -1.5};
-        double[] rightLeftVector1 = {-1, 1.5};
-        double[] rightLeftVector2 = {-1, -1.5};
-        double scale = 1;
-        final double EXPECTED_ANGLE = Math.PI / 6;
-        final double JITTER_RANGE = Math.PI / 12;
-        int lineStart = 0;
-//add distance method to point
-        for (int i = 0; i < stroke.size(); i++) {
-            if (passesThresholdAngle(stroke, EXPECTED_ANGLE, JITTER_RANGE, lineStart, i)) {
-                scale = getDistance(stroke.get(lineStart), stroke.get(i));
-                leftRightVector1[0] += stroke.get(lineStart).getX();
-                leftRightVector1[1] += stroke.get(lineStart).getY();
-                leftRightVector2[0] += stroke.get(i).getX();
-                leftRightVector2[1] += stroke.get(i).getX();
-                lineStart = i;
-            }
+        final int vertices = 3;
+        int errorAllowance = 50;
+        List<Point> smoothStroke = new ArrayList<Point>();
+
+        while (smoothStroke.size() != 3) {
+            smoothStroke = reducer.smooth(smoothStroke);
         }
-        return  false;
-    }
-
-    private double getDistance(Point point1, Point point2) {
-        double xDiff = point2.getX() - point1.getX();
-        double yDiff = point2.getY() - point1.getY();
-
-        return Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
-    }
-
-    private boolean passesThresholdAngle(List<Point> stroke, double EXPECTED_ANGLE, double JITTER_RANGE, int lineStart, int i) {
-        return isGreaterThanThresholdRange(stroke, EXPECTED_ANGLE, JITTER_RANGE, lineStart, i)
-                || isLessThanThresholdRange(stroke, EXPECTED_ANGLE, JITTER_RANGE, lineStart, i);
-    }
-
-    private boolean isLessThanThresholdRange(List<Point> stroke, double EXPECTED_ANGLE, double JITTER_RANGE, int lineStart, int i) {
-        return getRadiansFromOrigin(stroke.get(i), stroke.get(lineStart)) < EXPECTED_ANGLE - JITTER_RANGE;
-    }
+        return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance
+                && smoothStroke.get(1).getX() < ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) + errorAllowance
+                && smoothStroke.get(1).getY() > ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + errorAllowance;
 
 
-    private boolean isGreaterThanThresholdRange(List<Point> stroke, double EXPECTED_ANGLE, double JITTER_RANGE, int lineStart, int i) {
-        return getRadiansFromOrigin(stroke.get(i), stroke.get(lineStart)) > EXPECTED_ANGLE + JITTER_RANGE;
-    }
-
-
-    private double getRadiansFromOrigin(Point pt, Point origin) {
-
-        double opposite = pt.getY() - origin.getY();
-        double adjacent = pt.getX() - origin.getX();
-        return Math.atan(opposite / adjacent);
     }
 
 
@@ -154,6 +114,7 @@ public class ShapeAnalyzer {
         }
     }
 
+
     //testing
     public void whichStroke() {
         if (isHorizontal(stroke)) {
@@ -168,5 +129,6 @@ public class ShapeAnalyzer {
             System.out.println("nothing");
         }
     }
+
 
 }

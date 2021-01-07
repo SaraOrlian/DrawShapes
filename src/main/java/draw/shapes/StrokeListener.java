@@ -27,9 +27,9 @@ public class StrokeListener extends MouseInputAdapter {
     }
 
     public void mouseReleased(MouseEvent e) {
-        shapeAnalyzer.setStroke(stroke);
-        shapeAnalyzer.whichStroke();
-        ghostManager.dequeueShape();
+
+        Shape drawing = shapeAnalyzer.getShape(stroke);
+        ghostManager.dequeueShape(drawing);
         stroke.clear();
         shapesView.clearDrawing();
         e.getComponent().repaint();
