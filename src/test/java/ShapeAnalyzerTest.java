@@ -9,43 +9,43 @@ import static org.junit.Assert.*;
 
 public class ShapeAnalyzerTest {
 
-
-    @Test
-    public void isDownLine() {
-        //given
-        ShapeAnalyzer analyzer = new ShapeAnalyzer();
-        List<Point> stroke = new ArrayList<Point>();
-        Point origin = new Point(10, 10);
-        //when
-        stroke.add(new Point(5, 5));
-        stroke.add(new Point(6, 6));
-        stroke.add(new Point(7, 7));
-        stroke.add(new Point(8, 8));
-        stroke.add(new Point(9, 9));
-        stroke.add(new Point(10, 10));
-        //then
-        assertFalse(analyzer.isUpLine(stroke, origin, stroke.size()));
-        assertTrue(analyzer.isDownLine(stroke, origin, stroke.size()));
-    }
-
-    @Test
-    public void isUpLine() {
-        //given
-        ShapeAnalyzer analyzer = new ShapeAnalyzer();
-        List<Point> stroke = new ArrayList<Point>();
-        Point origin = new Point(5, 5);
-        //when
-        stroke.add(new Point(10, 10));
-        stroke.add(new Point(9, 9));
-        stroke.add(new Point(8, 8));
-        stroke.add(new Point(7, 7));
-        stroke.add(new Point(6, 6));
-        stroke.add(new Point(5, 5));
-
-        //then
-        assertFalse(analyzer.isDownLine(stroke,origin,stroke.size()));
-        assertTrue(analyzer.isUpLine(stroke, origin, stroke.size()));
-    }
+//
+//    @Test
+//    public void isDownLine() {
+//        //given
+//        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+//        List<Point> stroke = new ArrayList<Point>();
+//        Point origin = new Point(10, 10);
+//        //when
+//        stroke.add(new Point(5, 5));
+//        stroke.add(new Point(6, 6));
+//        stroke.add(new Point(7, 7));
+//        stroke.add(new Point(8, 8));
+//        stroke.add(new Point(9, 9));
+//        stroke.add(new Point(10, 10));
+//        //then
+//        assertFalse(analyzer.isUpLine(stroke, origin, stroke.size()));
+//        assertTrue(analyzer.isDownLine(stroke, origin, stroke.size()));
+//    }
+//
+//    @Test
+//    public void isUpLine() {
+//        //given
+//        ShapeAnalyzer analyzer = new ShapeAnalyzer();
+//        List<Point> stroke = new ArrayList<Point>();
+//        Point origin = new Point(5, 5);
+//        //when
+//        stroke.add(new Point(10, 10));
+//        stroke.add(new Point(9, 9));
+//        stroke.add(new Point(8, 8));
+//        stroke.add(new Point(7, 7));
+//        stroke.add(new Point(6, 6));
+//        stroke.add(new Point(5, 5));
+//
+//        //then
+//        assertFalse(analyzer.isDownLine(stroke,origin,stroke.size()));
+//        assertTrue(analyzer.isUpLine(stroke, origin, stroke.size()));
+//    }
 
     @Test
     public void isVee() {
@@ -54,17 +54,42 @@ public class ShapeAnalyzerTest {
         List<Point> stroke = new ArrayList<Point>();
 
         //when
-        for (int i = 0; i < 40; i++) {
-            stroke.add(new Point(i, i + 40));
-        }
-
-        stroke.add(new Point(40, 80)); //vertex
-
-        int num = 79;
-        for (int i = 41; i < 70; i++) {
-            stroke.add(new Point(i, num));
-            num--;
-        }
+        stroke.add( new Point(110,385));
+        stroke.add( new Point(112,381));
+        stroke.add( new Point(113,379));
+        stroke.add( new Point(116,377));
+        stroke.add( new Point(118,373));
+        stroke.add( new Point(122,368));
+        stroke.add( new Point(127,362));
+        stroke.add( new Point(133,354));
+        stroke.add( new Point(139,345));
+        stroke.add( new Point(146,335));
+        stroke.add( new Point(152,325));
+        stroke.add( new Point(158,315));
+        stroke.add( new Point(163,305));
+        stroke.add( new Point(169,297));
+        stroke.add( new Point(174,288));
+        stroke.add( new Point(175,287));
+        stroke.add( new Point(179,284));
+        stroke.add( new Point(180,284));
+        stroke.add( new Point(184,286));
+        stroke.add( new Point(185,289));
+        stroke.add( new Point(188,293));
+        stroke.add( new Point(189,295));
+        stroke.add( new Point(190,300));
+        stroke.add( new Point(193,308));
+        stroke.add( new Point(198,317));
+        stroke.add( new Point(202,327));
+        stroke.add( new Point(206,338));
+        stroke.add( new Point(211,350));
+        stroke.add( new Point(215,361));
+        stroke.add( new Point(220,371));
+        stroke.add( new Point(223,380));
+        stroke.add( new Point(226,385));
+        stroke.add( new Point(226,386));
+        stroke.add( new Point(227,388));
+        stroke.add( new Point(227,389));
+        stroke.add( new Point(228,390));
 
         //then
         assertTrue(analyzer.isVee(stroke));

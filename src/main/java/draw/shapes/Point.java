@@ -38,4 +38,11 @@ public class Point {
         int newY = x;
         return new Point(newX, newY);
     }
+
+    @Override
+    public String toString() {
+        return
+                x +
+                " " + y ;
+    }
 }

@@ -76,75 +76,58 @@ public class ShapeAnalyzer {
     }
 
     public boolean isVee(List<Point> stroke) {
-
-        int vertexIndex = findVeeVertexIndex(stroke);
-        int zeroY = stroke.get(vertexIndex).getX(); // define a relative x axis
-        int zeroX = stroke.get(vertexIndex).getY(); // define a relative y axis
-        Point origin = new Point(zeroX, zeroY); //define a relative origin
-
-
-        return isDownLine(stroke, origin, vertexIndex) && isUpLine(stroke, origin, vertexIndex);
-    }
-
-    public boolean isDownLine(List<Point> stroke, Point origin, int vertexIndex) {
-        double maxAngle = Double.MIN_VALUE;
-        double minAngle = Double.MAX_VALUE;
-        double MAX_DOWN_ANGLE = 2*Math.PI / 3;
-        double MIN_DOWN_ANGLE = 5*Math.PI / 6;
-        double currentAngle = 0;
-
-        for (int i = 0; i < vertexIndex; i++) {
-            currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
-            if (currentAngle < MIN_DOWN_ANGLE || currentAngle > MAX_DOWN_ANGLE || stroke.get(i).getY() < origin.getY()) {
-                return false;
+//stach exchange link, unit crcle link in javadoc
+        double[] leftRightVector1 = {1, 1.5};
+        double[] leftRightVector2 = {1, -1.5};
+        double[] rightLeftVector1 = {-1, 1.5};
+        double[] rightLeftVector2 = {-1, -1.5};
+        double scale = 1;
+        final double EXPECTED_ANGLE = Math.PI / 6;
+        final double JITTER_RANGE = Math.PI / 12;
+        int lineStart = 0;
+//add distance method to point
+        for (int i = 0; i < stroke.size(); i++) {
+            if (passesThresholdAngle(stroke, EXPECTED_ANGLE, JITTER_RANGE, lineStart, i)) {
+                scale = getDistance(stroke.get(lineStart), stroke.get(i));
+                leftRightVector1[0] += stroke.get(lineStart).getX();
+                leftRightVector1[1] += stroke.get(lineStart).getY();
+                leftRightVector2[0] += stroke.get(i).getX();
+                leftRightVector2[1] += stroke.get(i).getX();
+                lineStart = i;
             }
         }
-        return true;
+        return  false;
+    }
+
+    private double getDistance(Point point1, Point point2) {
+        double xDiff = point2.getX() - point1.getX();
+        double yDiff = point2.getY() - point1.getY();
+
+        return Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
+    }
+
+    private boolean passesThresholdAngle(List<Point> stroke, double EXPECTED_ANGLE, double JITTER_RANGE, int lineStart, int i) {
+        return isGreaterThanThresholdRange(stroke, EXPECTED_ANGLE, JITTER_RANGE, lineStart, i)
+                || isLessThanThresholdRange(stroke, EXPECTED_ANGLE, JITTER_RANGE, lineStart, i);
+    }
+
+    private boolean isLessThanThresholdRange(List<Point> stroke, double EXPECTED_ANGLE, double JITTER_RANGE, int lineStart, int i) {
+        return getRadiansFromOrigin(stroke.get(i), stroke.get(lineStart)) < EXPECTED_ANGLE - JITTER_RANGE;
     }
 
 
-    public boolean isUpLine(List<Point> stroke, Point origin, int startIndex) {
-
-        double maxAngle = Double.MIN_VALUE;
-        double minAngle = Double.MAX_VALUE;
-        double MAX_UP_ANGLE = Math.PI / 3;
-        double MIN_UP_ANGLE = Math.PI / 6;
-        double currentAngle = 0;
-
-        for (int i = startIndex; i < stroke.size(); i++) {
-            currentAngle = getRadiansFromXAxis(stroke.get(i), origin);
-            if (currentAngle < MIN_UP_ANGLE || currentAngle > MAX_UP_ANGLE || stroke.get(i).getY() > origin.getY()) {
-                return false;
-            }
-        }
-        return true;
+    private boolean isGreaterThanThresholdRange(List<Point> stroke, double EXPECTED_ANGLE, double JITTER_RANGE, int lineStart, int i) {
+        return getRadiansFromOrigin(stroke.get(i), stroke.get(lineStart)) > EXPECTED_ANGLE + JITTER_RANGE;
     }
 
-    private double getRadiansFromXAxis(Point pt, Point origin) {
-        double opposite = 0;
-        double adjacent = 0;
-        if (pt.getY() > origin.getY()) {
-            opposite = pt.getY() - origin.getY();
-            adjacent = pt.getX() - origin.getX();
 
-        } else {
-            opposite = origin.getY() - pt.getY();
-            adjacent = origin.getX() - pt.getX();
-        }
+    private double getRadiansFromOrigin(Point pt, Point origin) {
 
+        double opposite = pt.getY() - origin.getY();
+        double adjacent = pt.getX() - origin.getX();
         return Math.atan(opposite / adjacent);
     }
 
-    private int findVeeVertexIndex(List<Point> stroke) {
-        int vertexIndex = 0;
-
-        for (int i = 0; i < stroke.size(); i++) {
-            if (stroke.get(i).getY() > stroke.get(vertexIndex).getY()) {
-                vertexIndex = i;
-            }
-        }
-        return vertexIndex;
-    }
 
     public boolean isCarat(List<Point> stroke) {
         return false;
