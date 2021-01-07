@@ -8,7 +8,7 @@ public class ShapeReducer {
     private static final double FORTY_FIVE_DEGREES = Math.PI / 3;
 
     public List<Point> smooth(List<Point> stroke) {
-        Point lastPoint =stroke.get(stroke.size()-1);
+        Point lastPoint = stroke.get(stroke.size() - 1);
 
         List<Point> smoothStroke = new ArrayList<Point>();
 
@@ -25,7 +25,9 @@ public class ShapeReducer {
             }
             smoothStroke.add(c);
         }
-        smoothStroke.add(lastPoint);
+        if (!smoothStroke.contains(lastPoint)) {
+            smoothStroke.add(lastPoint);
+        }
 
         return smoothStroke;
     }
