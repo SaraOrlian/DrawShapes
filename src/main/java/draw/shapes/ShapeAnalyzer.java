@@ -76,8 +76,8 @@ public class ShapeAnalyzer {
 
     public boolean isVee(List<Point> stroke) {
 //        final int vertices = 3;
-        int errorAllowance = 500;
-        int minHeight =800;
+        int errorAllowance = 200;
+        int minHeight =300;
         List<Point> smoothStroke = reducer.smooth(stroke);
 
         for (int i = 0; i < stroke.size() / 2; i++) {
