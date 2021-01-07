@@ -7,7 +7,6 @@ import java.util.Random;
 public class Ghost {
 
     private Point location;
-//    static final Random random = new Random();
     Queue<Shape> shapeQueue;
 
     public Ghost() {
@@ -19,7 +18,7 @@ public class Ghost {
     }
 
     public Point getLocation(){
-        return new Point(location.getX(),location.getY());
+        return location;
     }
 
     public void setLocation(Point point) {

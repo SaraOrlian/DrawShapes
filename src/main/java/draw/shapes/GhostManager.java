@@ -9,8 +9,8 @@ public class GhostManager {
     private List<Ghost> ghostList = new LinkedList<>();
     private boolean gameOver = false;
     static final Random random = new Random();
-    public static final int GHOST_WIDTH = 400;
-    public static final int GHOST_HEIGHT = 200;
+    public static final int GHOST_WIDTH = 600;
+    public static final int GHOST_HEIGHT = 600;
 
     public GhostManager() {
         createGhost(1);
@@ -20,20 +20,24 @@ public class GhostManager {
 
     public void createGhost(int numShapes) {
 
-        Point location;
+        Point location = new Point(0, 0);
         do {
-            location = (new Point(random.nextInt(1000), random.nextInt(650) + 50));
+            location.setX(random.nextInt(1000));
+            location.setY(random.nextInt(650) + 50);
 
         } while (isOccupied(location));
 
-        ghostList.add(ghostFactory.newInstance(numShapes));
-        ghostList.get(ghostList.size() - 1).setLocation(location);
+        Ghost newGhost = ghostFactory.newInstance(numShapes);
+        newGhost.setLocation(location);
+        ghostList.add(newGhost);
     }
 
     private boolean isOccupied(Point location) {
         for (Ghost ghost : ghostList) {
-            if ((location.getX() > ghost.getLocation().getX() && location.getX() < ghost.getLocation().getX() + GHOST_WIDTH)
-                    && (location.getY() > ghost.getLocation().getY() && location.getY() < ghost.getLocation().getY() + GHOST_HEIGHT)) {
+            if (location.getX() >= ghost.getLocation().getX()
+                    && location.getX() <= ghost.getLocation().getX() + GHOST_WIDTH
+                    && location.getY() >= ghost.getLocation().getY()
+                    && location.getY() <= ghost.getLocation().getY() + GHOST_HEIGHT) {
                 return true;
             }
         }

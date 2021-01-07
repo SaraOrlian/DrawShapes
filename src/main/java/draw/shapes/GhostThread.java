@@ -2,7 +2,7 @@ package draw.shapes;
 
 public class GhostThread extends Thread{
 
-    private int delay = 5000;
+    private int delay = 50;
     private final int POPULATION_DELAY= 500;
     private int counter;
     private final int MIN_DELAY = 2000;
