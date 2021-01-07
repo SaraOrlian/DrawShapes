@@ -88,11 +88,15 @@ public class ShapeAnalyzer {
                 break;
             }
         }
+        return isCentered(errorAllowance, smoothStroke)
+                && notTooShort(minHeight, smoothStroke);
+
+
+    }
+
+    private boolean isCentered(int errorAllowance, List<Point> smoothStroke) {
         return notSkewedRight(errorAllowance, smoothStroke)
-                && notSkewedLeft(errorAllowance, smoothStroke)
-                && noTooShort(minHeight, smoothStroke);
-
-
+                && notSkewedLeft(errorAllowance, smoothStroke);
     }
 
     private boolean notSkewedLeft(int errorAllowance, List<Point> smoothStroke) {
@@ -103,7 +107,7 @@ public class ShapeAnalyzer {
         return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance;
     }
 
-    private boolean noTooShort(int minHeight, List<Point> smoothStroke) {
+    private boolean notTooShort(int minHeight, List<Point> smoothStroke) {
         return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + minHeight;
     }
 
