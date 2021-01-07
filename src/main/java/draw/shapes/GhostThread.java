@@ -3,8 +3,13 @@ package draw.shapes;
 public class GhostThread extends Thread{
 
     private int delay = 5000;
+    private final int POPULATION_DELAY= 200;
     private int counter;
+    private final int MIN_DELAY = 2000;
+    private final int MAX_GHOSTS = 10;
+    private final int MAX_SHAPES = 6;
     private int numShapes = 2;
+    private int numGhosts = 1;
     private final GhostManager ghostManager;
     private final ShapesView shapesView;
 
@@ -14,17 +19,37 @@ public class GhostThread extends Thread{
     }
 
     public void run() {
-        while (counter < 100) {
+        while (!ghostManager.isGameOver()) {
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ghostManager.createGhost(numShapes);
+            for(int i = 0; i < numGhosts; i++) {
+                ghostManager.createGhost(numShapes);
+                try {
+                    Thread.sleep(POPULATION_DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             counter++;
-            if(counter%5 == 0) {
-                numShapes++;
-                delay -=100;
+            if(counter%20 == 0) {
+                if (numGhosts < MAX_GHOSTS){
+                    numGhosts++;
+                }
+                if(delay > MIN_DELAY) {
+                    delay -=100;
+                }
+
+            }
+            if(counter%10 == 0) {
+                if (numShapes < MAX_SHAPES) {
+                    numShapes++;
+                }
+                if(delay > MIN_DELAY) {
+                    delay -=50;
+                }
             }
             shapesView.repaint();
         }

@@ -5,8 +5,9 @@ import java.util.*;
 
 //Get shape drawn and remove shape from ghost
 public class GhostManager {
-    GhostFactory ghostFactory = new GhostFactory();
-    List<Ghost> ghostList = new LinkedList<>();
+    private final GhostFactory ghostFactory = new GhostFactory();
+    private List<Ghost> ghostList = new LinkedList<>();
+    private boolean gameOver = false;
 
     public GhostManager() {
         createGhost(1);
@@ -33,5 +34,9 @@ public class GhostManager {
                 iterator.remove();
             }
         }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }
