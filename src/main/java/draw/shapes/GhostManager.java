@@ -9,10 +9,9 @@ public class GhostManager {
     List<Ghost> ghostList = new LinkedList<>();
 
     public GhostManager() {
-        createGhost(2);
-        createGhost(2);
-        createGhost(2);
-        createGhost(2);
+        createGhost(1);
+        createGhost(1);
+        createGhost(1);
     }
 
     public void createGhost(int numShapes) {
