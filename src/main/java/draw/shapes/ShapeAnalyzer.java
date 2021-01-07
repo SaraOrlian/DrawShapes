@@ -5,16 +5,17 @@ import java.util.List;
 
 import static draw.shapes.Shape.*;
 
-//Determine which shape- if any
-//Ricki
+/**
+ * TODO: write javadoc
+ */
 public class ShapeAnalyzer {
 
-    private final double HORIZONTAL_ERROR_ALLOWANCE = 3;
-    private final double V_ERROR_ALLOWANCE = 10;
-    private final double V_POINT_ERROR_ALLOWANCE = 50;
 
-    private final double MIN_POS_SLOPE = 0.47;
-    private final double MAX_NEG_SLOPE = -0.42;
+    private List<Point> stroke;
+    private final ShapeReducer REDUCER = new ShapeReducer();
+    private final int VEE_CARAT_MIN_HEIGHT = 300;
+    private final int VEE_CARAT_SKEW_ALLOWANCE = 200;
+    private final int VEE_CARAT_VERTICES = 3;
 
 
     public Shape getShape(List<Point> stroke) {
@@ -34,6 +35,7 @@ public class ShapeAnalyzer {
     }
 
     public boolean isHorizontal(List<Point> stroke) {
+
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
         double slope = calcSlope(start, end);
@@ -48,6 +50,7 @@ public class ShapeAnalyzer {
         //take out starts and dont use foreach
         for (Point point : stroke) {
             double currSlope = calcSlope(point, previousPoint);
+            double HORIZONTAL_ERROR_ALLOWANCE = 3;
             if (currSlope - prevSlope > HORIZONTAL_ERROR_ALLOWANCE) {
                 return false;
             }
@@ -59,11 +62,13 @@ public class ShapeAnalyzer {
 
     /**
      * explain inversion
+     *
      * @param stroke
      * @return
      */
 
     public boolean isVertical(List<Point> stroke) {
+
         List<Point> newStroke = new ArrayList<>();
         for (Point point : stroke) {
 
@@ -74,116 +79,91 @@ public class ShapeAnalyzer {
 
     public boolean isVee(List<Point> stroke) {
 
-        Point start = stroke.get(0);
-        Point end = stroke.get(stroke.size() - 1);
-//        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
-//            return false;
-//        }
+        List<Point> smoothStroke = reduceCaratOrVee(stroke);
+        return isCentered(VEE_CARAT_SKEW_ALLOWANCE, smoothStroke)
+                && notTooShortVee(VEE_CARAT_MIN_HEIGHT, smoothStroke)
+                && smoothStroke.get(1).getY() > smoothStroke.get(0).getY() && smoothStroke.get(1).getY() > smoothStroke.get(2).getY();
 
-        Point previousPoint = start;
-        int vertexIndex = 0;
-
-
-        for (Point point : stroke) {
-            if (point.getY() > previousPoint.getY()) {
-                vertexIndex = stroke.indexOf(point);
-            }
-            previousPoint = point;
-        }
-        if (calcSlope(start, stroke.get(vertexIndex)) > 0 || calcSlope(stroke.get(vertexIndex), end) < 0) {
-            return false;
-        }
-
-        previousPoint = start;
-        double prevSlope = 0;
-        for (int i = 1; i < vertexIndex; i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-        previousPoint = stroke.get(vertexIndex);
-        prevSlope = 0;
-
-        for (int i = vertexIndex + 1; i < stroke.size(); i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-
-        return true;
     }
 
+    private List<Point> reduceCaratOrVee(List<Point> stroke) {
+        List<Point> smoothStroke = REDUCER.smooth(stroke);
+
+        while (smoothStroke.size() > VEE_CARAT_VERTICES) {
+            int prevSize = smoothStroke.size();
+            smoothStroke = REDUCER.smooth(smoothStroke);
+            if (smoothStroke.size() == prevSize) {
+                break;
+            }
+        }
+        return smoothStroke;
+    }
+
+    private boolean isCentered(int errorAllowance, List<Point> smoothStroke) {
+        return notSkewedRight(errorAllowance, smoothStroke)
+                && notSkewedLeft(errorAllowance, smoothStroke);
+    }
+
+    private boolean notSkewedLeft(int errorAllowance, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getX() < ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) + errorAllowance;
+    }
+
+    private boolean notSkewedRight(int errorAllowance, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getX() > ((smoothStroke.get(0).getX() + smoothStroke.get(2).getX()) / 2) - errorAllowance;
+    }
+
+    private boolean notTooShortVee(int minHeight, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getY() < ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) + minHeight;
+    }
+
+    private boolean notTooShortCarat(int minHeight, List<Point> smoothStroke) {
+        return smoothStroke.get(1).getY() > ((smoothStroke.get(0).getY() + smoothStroke.get(2).getY()) / 2) - minHeight;
+    }
+
+
     public boolean isCarat(List<Point> stroke) {
-        Point start = stroke.get(0);
-        Point end = stroke.get(stroke.size() - 1);
-        if (Math.abs(start.getY()) - end.getY() > V_POINT_ERROR_ALLOWANCE) {
-            return false;
-        }
-
-        Point previousPoint = start;
-        int vertexIndex = 0;
-
-
-        for (Point point : stroke) {
-            if (point.getY() < previousPoint.getY()) {
-                vertexIndex = stroke.indexOf(point);
-            }
-            previousPoint = point;
-        }
-        if (calcSlope(start, stroke.get(vertexIndex)) < 0 || calcSlope(stroke.get(vertexIndex), end) > 0) {
-            return false;
-        }
-
-        previousPoint = start;
-        double prevSlope = 0;
-        for (int i = 1; i < vertexIndex; i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-        previousPoint = stroke.get(vertexIndex);
-        prevSlope = 0;
-
-        for (int i = vertexIndex + 1; i < stroke.size(); i++) {
-            double currSlope = calcSlope(stroke.get(i), previousPoint);
-
-            if (currSlope - prevSlope > V_ERROR_ALLOWANCE) {
-                return false;
-            }
-            prevSlope = currSlope;
-        }
-
-
-        return true;
+        List<Point> smoothStroke = reduceCaratOrVee(stroke);
+        return isCentered(VEE_CARAT_SKEW_ALLOWANCE, smoothStroke)
+                && notTooShortCarat(VEE_CARAT_MIN_HEIGHT, smoothStroke)
+                && smoothStroke.get(1).getY() < smoothStroke.get(0).getY() && smoothStroke.get(1).getY() < smoothStroke.get(2).getY();
     }
 
     /**
      * checks if slope is within the loose allowance of a zero slope
+     *
      * @param slope
      * @return
      */
     private boolean isInZeroRange(double slope) {
+        double MAX_NEG_SLOPE = -0.42;
+        double MIN_POS_SLOPE = 0.47;
         return slope > MAX_NEG_SLOPE && slope < MIN_POS_SLOPE;
     }
 
     public double calcSlope(Point point1, Point point2) {
         try {
             return -1 * (point1.getY() - point2.getY()) / (double) (point1.getX() - point2.getX());
-       }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return Double.NaN;
         }
     }
+
+
+    //testing
+    public void whichStroke() {
+        if (isHorizontal(stroke)) {
+            System.out.println("horizontal");
+        } else if (isVertical(stroke)) {
+            System.out.println("vertical");
+        } else if (isCarat(stroke)) {
+            System.out.println("^");
+        } else if (isVee(stroke)) {
+            System.out.println("v");
+        } else {
+            System.out.println("nothing");
+        }
+    }
+
+
 }
