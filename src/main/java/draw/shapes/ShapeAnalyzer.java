@@ -39,8 +39,7 @@ public class ShapeAnalyzer {
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
         double slope = calcSlope(start, end);
-
-        return isInZeroRange(slope) && hasOnlyValidSlopes(stroke, start);
+        return isInZeroRange(slope) && hasOnlyValidSlopes(stroke);
 
     }
 
@@ -101,14 +100,14 @@ public class ShapeAnalyzer {
             }
         }
 
-        for (int i = 1; i < smoothStroke.size() - 3; i++) {
-            if (smoothStroke.get(i).getDistance(smoothStroke.get(i + 1)) < 4) {
+        for (int i = 1; i <= smoothStroke.size() - 3; i++) {
+            if (smoothStroke.get(i).getDistance(smoothStroke.get(i + 1)) < 6) {
                 smoothStroke.remove(i);
             }
         }
         return smoothStroke;
     }
-    
+
 
     private boolean isVeeOrientation(List<Point> smoothStroke) {
         return smoothStroke.get(1).getY() > smoothStroke.get(0).getY()
