@@ -1,5 +1,6 @@
 import draw.shapes.Point;
 import draw.shapes.ShapeAnalyzer;
+import draw.shapes.ShapeReducer;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -54,43 +55,42 @@ public class ShapeAnalyzerTest {
         List<Point> stroke = new ArrayList<Point>();
 
         //when
-        stroke.add( new Point(110,385));
-        stroke.add( new Point(112,381));
-        stroke.add( new Point(113,379));
-        stroke.add( new Point(116,377));
-        stroke.add( new Point(118,373));
-        stroke.add( new Point(122,368));
-        stroke.add( new Point(127,362));
-        stroke.add( new Point(133,354));
-        stroke.add( new Point(139,345));
-        stroke.add( new Point(146,335));
-        stroke.add( new Point(152,325));
-        stroke.add( new Point(158,315));
-        stroke.add( new Point(163,305));
-        stroke.add( new Point(169,297));
-        stroke.add( new Point(174,288));
-        stroke.add( new Point(175,287));
-        stroke.add( new Point(179,284));
-        stroke.add( new Point(180,284));
-        stroke.add( new Point(184,286));
-        stroke.add( new Point(185,289));
-        stroke.add( new Point(188,293));
-        stroke.add( new Point(189,295));
-        stroke.add( new Point(190,300));
-        stroke.add( new Point(193,308));
-        stroke.add( new Point(198,317));
-        stroke.add( new Point(202,327));
-        stroke.add( new Point(206,338));
-        stroke.add( new Point(211,350));
-        stroke.add( new Point(215,361));
-        stroke.add( new Point(220,371));
-        stroke.add( new Point(223,380));
-        stroke.add( new Point(226,385));
-        stroke.add( new Point(226,386));
-        stroke.add( new Point(227,388));
-        stroke.add( new Point(227,389));
-        stroke.add( new Point(228,390));
-
+        stroke.add(new Point(103, 130));
+        stroke.add(new Point(103, 131));
+        stroke.add(new Point(104, 133));
+        stroke.add(new Point(105, 137));
+        stroke.add(new Point(106, 143));
+        stroke.add(new Point(108, 151));
+        stroke.add(new Point(111, 161));
+        stroke.add(new Point(114, 173));
+        stroke.add(new Point(116, 185));
+        stroke.add(new Point(119, 197));
+        stroke.add(new Point(122, 209));
+        stroke.add(new Point(125, 223));
+        stroke.add(new Point(129, 235));
+        stroke.add(new Point(132, 246));
+        stroke.add(new Point(134, 255));
+        stroke.add(new Point(136, 262));
+        stroke.add(new Point(136, 264));
+        stroke.add(new Point(137, 265));
+        stroke.add(new Point(138, 265));
+        stroke.add(new Point(140, 265));
+        stroke.add(new Point(144, 263));
+        stroke.add(new Point(148, 259));
+        stroke.add(new Point(149, 256));
+        stroke.add(new Point(152, 252));
+        stroke.add(new Point(153, 250));
+        stroke.add(new Point(155, 245));
+        stroke.add(new Point(159, 239));
+        stroke.add(new Point(165, 232));
+        stroke.add(new Point(170, 225));
+        stroke.add(new Point(175, 217));
+        stroke.add(new Point(180, 209));
+        stroke.add(new Point(186, 200));
+        stroke.add(new Point(191, 193));
+        stroke.add(new Point(195, 184));
+        stroke.add(new Point(198, 177));
+        stroke.add(new Point(201, 171));
         //then
         assertTrue(analyzer.isVee(stroke));
 
@@ -200,5 +200,140 @@ public class ShapeAnalyzerTest {
         double slopeResult = analyzer.calcSlope(point1, point2);
         //then
         assertEquals((int) expectedSlope, (int) slopeResult);
+    }
+
+    @Test
+    public void smooth() {
+        //given
+        ShapeReducer reducer = new ShapeReducer();
+
+        List<Point> stroke = new ArrayList<>();
+        stroke.add(new Point(103, 130));
+        stroke.add(new Point(103, 131));
+        stroke.add(new Point(104, 133));
+        stroke.add(new Point(105, 137));
+        stroke.add(new Point(106, 143));
+        stroke.add(new Point(108, 151));
+        stroke.add(new Point(111, 161));
+        stroke.add(new Point(114, 173));
+        stroke.add(new Point(116, 185));
+        stroke.add(new Point(119, 197));
+        stroke.add(new Point(122, 209));
+        stroke.add(new Point(125, 223));
+        stroke.add(new Point(129, 235));
+        stroke.add(new Point(132, 246));
+        stroke.add(new Point(134, 255));
+        stroke.add(new Point(136, 262));
+        stroke.add(new Point(136, 264));
+        stroke.add(new Point(137, 265));
+        stroke.add(new Point(138, 265));
+        stroke.add(new Point(140, 265));
+        stroke.add(new Point(144, 263));
+        stroke.add(new Point(148, 259));
+        stroke.add(new Point(149, 256));
+        stroke.add(new Point(152, 252));
+        stroke.add(new Point(153, 250));
+        stroke.add(new Point(155, 245));
+        stroke.add(new Point(159, 239));
+        stroke.add(new Point(165, 232));
+        stroke.add(new Point(170, 225));
+        stroke.add(new Point(175, 217));
+        stroke.add(new Point(180, 209));
+        stroke.add(new Point(186, 200));
+        stroke.add(new Point(191, 193));
+        stroke.add(new Point(195, 184));
+        stroke.add(new Point(198, 177));
+        stroke.add(new Point(201, 171));
+
+        //when
+        int oldSize = stroke.size();
+        List<Point> newList = reducer.smooth(stroke);
+
+
+        int newSize= newList.size();
+        System.out.println(oldSize);
+        System.out.println(newSize);
+
+        for (Point point : newList) {
+            System.out.println(point);
+        }
+
+        boolean shrunk = newSize < oldSize;
+
+        //then
+        assertTrue(shrunk);
+
+    }
+    @Test
+    public void reallySmooth() {
+        //given
+        ShapeReducer reducer = new ShapeReducer();
+
+        List<Point> stroke = new ArrayList<>();
+        stroke.add(new Point(103, 130));
+        stroke.add(new Point(103, 131));
+        stroke.add(new Point(104, 133));
+        stroke.add(new Point(105, 137));
+        stroke.add(new Point(106, 143));
+        stroke.add(new Point(108, 151));
+        stroke.add(new Point(111, 161));
+        stroke.add(new Point(114, 173));
+        stroke.add(new Point(116, 185));
+        stroke.add(new Point(119, 197));
+        stroke.add(new Point(122, 209));
+        stroke.add(new Point(125, 223));
+        stroke.add(new Point(129, 235));
+        stroke.add(new Point(132, 246));
+        stroke.add(new Point(134, 255));
+        stroke.add(new Point(136, 262));
+        stroke.add(new Point(136, 264));
+        stroke.add(new Point(137, 265));
+        stroke.add(new Point(138, 265));
+        stroke.add(new Point(140, 265));
+        stroke.add(new Point(144, 263));
+        stroke.add(new Point(148, 259));
+        stroke.add(new Point(149, 256));
+        stroke.add(new Point(152, 252));
+        stroke.add(new Point(153, 250));
+        stroke.add(new Point(155, 245));
+        stroke.add(new Point(159, 239));
+        stroke.add(new Point(165, 232));
+        stroke.add(new Point(170, 225));
+        stroke.add(new Point(175, 217));
+        stroke.add(new Point(180, 209));
+        stroke.add(new Point(186, 200));
+        stroke.add(new Point(191, 193));
+        stroke.add(new Point(195, 184));
+        stroke.add(new Point(198, 177));
+        stroke.add(new Point(201, 171));
+
+        //when
+
+
+        int oldSize = stroke.size();
+
+        List<Point> newList = reducer.smooth(stroke);
+
+        while(newList.size()!=3){
+            newList = reducer.smooth(newList);
+            System.out.println(newList.size());
+
+        }
+
+
+
+        int newSize= newList.size();
+        System.out.println(oldSize);
+        System.out.println(newSize);
+
+        for (Point point : newList) {
+            System.out.println(point);
+        }
+
+        boolean shrunk = newSize < oldSize;
+
+        //then
+        assertTrue(shrunk);
+
     }
 }
