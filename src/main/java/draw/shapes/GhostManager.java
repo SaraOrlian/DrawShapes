@@ -16,6 +16,7 @@ public class GhostManager {
     }
 
     public void createGhost(int numShapes) {
+
         ghostList.add(ghostFactory.newInstance(numShapes));
     }
 

@@ -12,8 +12,8 @@ public class Ghost {
     Queue<Shape> shapeQueue;
 
     public Ghost() {
-        xVal = random.nextInt(400);
-        yVal = random.nextInt(400);
+        //xVal = random.nextInt(400);
+        //yVal = random.nextInt(400);
         shapeQueue = new LinkedList<>();
     }
 
@@ -27,5 +27,13 @@ public class Ghost {
 
     public int getyVal() {
         return yVal;
+    }
+
+    public void setxVal(int xVal) {
+        this.xVal = xVal;
+    }
+    
+    public void setyVal(int yVal){
+        this.yVal =yVal;
     }
 }
