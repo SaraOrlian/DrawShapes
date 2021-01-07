@@ -3,7 +3,7 @@ package draw.shapes;
 public class GhostThread extends Thread{
 
     private int delay = 5000;
-    private final int POPULATION_DELAY= 200;
+    private final int POPULATION_DELAY= 500;
     private int counter;
     private final int MIN_DELAY = 2000;
     private final int MAX_GHOSTS = 10;
@@ -32,9 +32,10 @@ public class GhostThread extends Thread{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                shapesView.repaint();
             }
             counter++;
-            if(counter%20 == 0) {
+            if(counter%10 == 0) {
                 if (numGhosts < MAX_GHOSTS){
                     numGhosts++;
                 }
@@ -43,7 +44,7 @@ public class GhostThread extends Thread{
                 }
 
             }
-            if(counter%10 == 0) {
+            if(counter%20 == 0) {
                 if (numShapes < MAX_SHAPES) {
                     numShapes++;
                 }
@@ -51,7 +52,6 @@ public class GhostThread extends Thread{
                     delay -=50;
                 }
             }
-            shapesView.repaint();
         }
     }
 }
