@@ -49,26 +49,28 @@ public class ShapesView extends JComponent {
     }
 
     private void paintBomb(Graphics g, Ghost ghost) {
-        int bombOutlineX = ghostXval - 15;
+        int bombOutlineX = ghostXval - 70;
         int bombOutlineY = ghostYval + 27;
-        int bombX = ghostXval - 10;
+        int bombX = ghostXval - 65;
         int bombY = ghostYval + 32;
 
 
-        g.setColor(getCurrentColor(0));
-        g.fillOval(bombOutlineX, bombOutlineY, BOMB_BORDER_DIAMETER, BOMB_BORDER_DIAMETER);
+        drawOutline(g, bombOutlineX, bombOutlineY, 0);
         g.setColor(BOMB_COLOR);
         g.fillOval(bombX, bombY, BOMB_DIAMETER, BOMB_DIAMETER);
-        g.setColor(BOMB_COLOR);
-
 
         int bombRadius = BOMB_BORDER_DIAMETER / 2;
 
         g.fillRect(bombOutlineX + (bombRadius - BOMB_TOP_DIMENSION / 2), ghostYval + 20, BOMB_TOP_DIMENSION, BOMB_TOP_DIMENSION);
-        g.fillOval(bombX - 5 + (bombRadius - BOMB_TOP_DIMENSION / 2), ghostYval + 10, BOMB_TOP_DIMENSION, BOMB_TOP_DIMENSION / 2);
+        g.fillOval(bombOutlineX + (bombRadius - BOMB_TOP_DIMENSION / 2), ghostYval + 10, BOMB_TOP_DIMENSION, BOMB_TOP_DIMENSION / 2);
 
         g.setColor(SHINE_COLOR);
         g.fillArc(bombX + 25, bombY + 30, 10, 25, 50, 180);
+    }
+
+    private void drawOutline(Graphics g, int bombOutlineX, int bombOutlineY, int age) {
+        g.setColor(getCurrentColor(age));
+        g.fillOval(bombOutlineX, bombOutlineY, BOMB_BORDER_DIAMETER, BOMB_BORDER_DIAMETER);
     }
 
     private void paintShapes(Graphics g, Ghost ghost) {
