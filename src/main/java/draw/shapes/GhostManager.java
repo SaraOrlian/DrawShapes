@@ -38,14 +38,16 @@ public class GhostManager {
     }
 
     public void dequeueShape(Shape drawing) {
-        Iterator<Ghost> iterator = ghostList.iterator();
-        while (iterator.hasNext()) {
-            Ghost ghost = iterator.next();
-            if (ghost.getShapeQueue().peek() == drawing) {
-                ghost.shapeQueue.remove();
-            }
-            if (ghost.getShapeQueue().isEmpty()) {
-                iterator.remove();
+        if(!isGameOver()) {
+            Iterator<Ghost> iterator = ghostList.iterator();
+            while (iterator.hasNext()) {
+                Ghost ghost = iterator.next();
+                if (ghost.getShapeQueue().peek() == drawing) {
+                    ghost.shapeQueue.remove();
+                }
+                if (ghost.getShapeQueue().isEmpty()) {
+                    iterator.remove();
+                }
             }
         }
     }
