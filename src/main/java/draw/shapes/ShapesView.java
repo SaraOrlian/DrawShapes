@@ -7,10 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShapesView extends JComponent {
-    ArrayList<Point> drawing = new ArrayList<Point>();
-    GhostManager ghostManager;
-    int ghostXval;
-    int ghostYval;
+    private ArrayList<Point> drawing = new ArrayList<Point>();
+    private GhostManager ghostManager;
+    private int ghostXval;
+    private int ghostYval;
+    public static final int BOMB_DIAMETER = 130;
+    public static int BOMB_BORDER_DIAMETER = 140;
+    private final int BOMB_TOP_DIMENSION = 35;
+    private final Color BOMB_COLOR = Color.BLACK;
+    private final Color START_COLOR = new Color(10, 240, 120);
+    private final Color SHINE_COLOR = Color.WHITE;
 
     public ShapesView(GhostManager ghostManager) {
         this.ghostManager = ghostManager;
@@ -36,23 +42,52 @@ public class ShapesView extends JComponent {
         for (Ghost ghost : ghostList) {
             ghostXval = ghost.getLocation().getX();
             ghostYval = ghost.getLocation().getY();
-            for (Shape shape : ghost.getShapeQueue()) {
-                switch (shape) {
-                    case CARAT:
-                        drawCarat(g);
-                        break;
-                    case VEE:
-                        drawVee(g);
-                        break;
-                    case HORIZONTAL:
-                        drawHorizontal(g);
-                        break;
-                    case VERTICAL:
-                        drawVertical(g);
-                        break;
-                    default:
-                        break;
-                }
+            paintShapes(g, ghost);
+            paintBomb(g, ghost);
+
+        }
+    }
+
+    private void paintBomb(Graphics g, Ghost ghost) {
+        int bombOutlineX = ghostXval - 15;
+        int bombOutlineY = ghostYval + 27;
+        int bombX = ghostXval - 10;
+        int bombY = ghostYval + 32;
+
+
+        g.setColor(getCurrentColor(0));
+        g.fillOval(bombOutlineX, bombOutlineY, BOMB_BORDER_DIAMETER, BOMB_BORDER_DIAMETER);
+        g.setColor(BOMB_COLOR);
+        g.fillOval(bombX, bombY, BOMB_DIAMETER, BOMB_DIAMETER);
+        g.setColor(BOMB_COLOR);
+
+
+        int bombRadius = BOMB_BORDER_DIAMETER / 2;
+
+        g.fillRect(bombOutlineX + (bombRadius - BOMB_TOP_DIMENSION / 2), ghostYval + 20, BOMB_TOP_DIMENSION, BOMB_TOP_DIMENSION);
+        g.fillOval(bombX - 5 + (bombRadius - BOMB_TOP_DIMENSION / 2), ghostYval + 10, BOMB_TOP_DIMENSION, BOMB_TOP_DIMENSION / 2);
+
+        g.setColor(SHINE_COLOR);
+        g.fillArc(bombX + 25, bombY + 30, 10, 25, 50, 180);
+    }
+
+    private void paintShapes(Graphics g, Ghost ghost) {
+        for (Shape shape : ghost.getShapeQueue()) {
+            switch (shape) {
+                case CARAT:
+                    drawCarat(g);
+                    break;
+                case VEE:
+                    drawVee(g);
+                    break;
+                case HORIZONTAL:
+                    drawHorizontal(g);
+                    break;
+                case VERTICAL:
+                    drawVertical(g);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -96,5 +131,10 @@ public class ShapesView extends JComponent {
         for (int i = 0; i < drawing.size() - 2; i++) {
             g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
         }
+    }
+
+    //chnage to take ghost object
+    private Color getCurrentColor(int age) {
+        return new Color(START_COLOR.getRed() + age, START_COLOR.getGreen() - age, START_COLOR.getBlue());
     }
 }
