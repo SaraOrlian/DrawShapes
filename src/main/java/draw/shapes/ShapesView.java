@@ -43,7 +43,7 @@ public class ShapesView extends JComponent {
             ghostXval = ghost.getLocation().getX();
             ghostYval = ghost.getLocation().getY();
             paintShapes(g, ghost);
-            //paintBomb(g, ghost);
+            paintBomb(g, ghost);
 
         }
     }
