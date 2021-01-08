@@ -1,6 +1,7 @@
 package draw.shapes;
 
 import javax.swing.event.MouseInputAdapter;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ public class StrokeListener extends MouseInputAdapter {
     }
 
     public void mouseDragged(MouseEvent e) {
+        if(ghostManager.isGameOver()) {
+            shapesView.removeComponentListener((ComponentListener) this);
+        }
         Point point = new draw.shapes.Point((int) e.getPoint().getX(), (int) e.getPoint().getY());
         stroke.add(point);
         //System.out.println(point);
