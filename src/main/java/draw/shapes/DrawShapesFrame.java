@@ -5,9 +5,11 @@ import java.awt.*;
 
 //Sara
 public class DrawShapesFrame extends JFrame {
+    public static final int WIDTH = 1500;
+    public static final int HEIGHT = 1000;
 
     public DrawShapesFrame(StrokeListener listener, ShapesView shapesView) {
-        setSize(500, 500);
+        setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Draw Shapes");
         setLayout(new BorderLayout());
@@ -16,7 +18,6 @@ public class DrawShapesFrame extends JFrame {
         add(shapesView, BorderLayout.CENTER);
         shapesView.addMouseListener(listener);
         shapesView.addMouseMotionListener(listener);
-
 
 
     }

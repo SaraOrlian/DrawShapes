@@ -6,26 +6,29 @@ import java.util.Random;
 
 public class Ghost {
 
-    private int xVal;
-    private int yVal;
-    static final Random random = new Random();
+    private Point location;
     Queue<Shape> shapeQueue;
+    private final int RADIUS = 100;
 
-    public Ghost() {
-        xVal = random.nextInt(400);
-        yVal = random.nextInt(400);
-        shapeQueue = new LinkedList<>();
+    //pass list of shapes and location in constructor
+    public Ghost(Queue<Shape> shapeQueue, Point location) {
+        this.shapeQueue = shapeQueue;
+        this.location = location;
     }
 
     public Queue<Shape> getShapeQueue() {
         return shapeQueue;
     }
 
-    public int getxVal() {
-        return xVal;
+    public Point getLocation() {
+        return location;
     }
 
-    public int getyVal() {
-        return yVal;
+    public void setLocation(Point point) {
+        this.location = point;
+    }
+
+    public boolean intersects(Ghost other) {
+        return this.getLocation().getDistance(other.getLocation()) < RADIUS;
     }
 }

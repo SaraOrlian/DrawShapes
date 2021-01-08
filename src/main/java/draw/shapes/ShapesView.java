@@ -34,8 +34,8 @@ public class ShapesView extends JComponent {
     private void paintGhosts(Graphics g) {
         List<Ghost> ghostList = ghostManager.getGhostList();
         for (Ghost ghost : ghostList) {
-            ghostXval = ghost.getxVal();
-            ghostYval = ghost.getyVal();
+            ghostXval = ghost.getLocation().getX();
+            ghostYval = ghost.getLocation().getY();
             for (Shape shape : ghost.getShapeQueue()) {
                 switch (shape) {
                     case CARAT:
