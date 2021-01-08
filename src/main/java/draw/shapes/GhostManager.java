@@ -19,25 +19,16 @@ public class GhostManager {
     }
 
     public void createGhost(int numShapes) {
-
-        Point location = new Point(0, 0);
+        Ghost newGhost;
         do {
-            location.setX(random.nextInt(1000));
-            location.setY(random.nextInt(650) + 50);
-
-        } while (isOccupied(location));
-
-        Ghost newGhost = ghostFactory.newInstance(numShapes);
-        newGhost.setLocation(location);
+            newGhost = ghostFactory.newInstance(numShapes);
+        } while (overlaps(newGhost));
         ghostList.add(newGhost);
     }
 
-    private boolean isOccupied(Point location) {
+    private boolean overlaps(Ghost newGhost) {
         for (Ghost ghost : ghostList) {
-            if (location.getX() > ghost.getLocation().getX()
-                    && location.getX() < ghost.getLocation().getX() + GHOST_WIDTH
-                    && location.getY() > ghost.getLocation().getY()
-                    && location.getY() < ghost.getLocation().getY() + GHOST_HEIGHT) {
+            if (ghost.intersects(newGhost)) {
                 return true;
             }
         }
