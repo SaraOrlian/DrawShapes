@@ -1,5 +1,8 @@
 package draw.shapes;
 
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 public class GhostThread extends Thread{
 
     private int delay = 50;
@@ -16,10 +19,14 @@ public class GhostThread extends Thread{
     public GhostThread(GhostManager ghostManager, ShapesView shapesView) {
         this.ghostManager = ghostManager;
         this.shapesView = shapesView;
+        ghostManager.createGhost(1);
+        ghostManager.createGhost(1);
+        ghostManager.createGhost(1);
     }
 
     public void run() {
         while (!ghostManager.isGameOver()) {
+            ghostManager.exploded();
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
@@ -27,11 +34,6 @@ public class GhostThread extends Thread{
             }
             for(int i = 0; i < numGhosts; i++) {
                 ghostManager.createGhost(numShapes);
-                try {
-                    Thread.sleep(POPULATION_DELAY);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 shapesView.repaint();
             }
             counter++;
@@ -42,7 +44,6 @@ public class GhostThread extends Thread{
                 if(delay > MIN_DELAY) {
                     delay -=100;
                 }
-
             }
             if(counter%20 == 0) {
                 if (numShapes < MAX_SHAPES) {
@@ -52,6 +53,8 @@ public class GhostThread extends Thread{
                     delay -=50;
                 }
             }
+            ghostManager.exploded();
         }
+        MouseListener[] mouseListeners = shapesView.getMouseListeners();
     }
 }
