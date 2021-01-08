@@ -1,15 +1,14 @@
 package draw.shapes;
 
-import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
 public class Ghost {
 
     private Point location;
     Queue<Shape> shapeQueue;
-    private final int RADIUS = 100;
+    private final int RADIUS = ShapesView.BOMB_BORDER_DIAMETER + 40;
     private long birthday;
+
 
     //pass list of shapes and location in constructor
     public Ghost(Queue<Shape> shapeQueue, Point location) {

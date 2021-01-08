@@ -9,7 +9,7 @@ import java.util.Random;
  */
 
 public class GhostFactory {
-    private final int OFFSET = 50;
+    private final int OFFSET = 200;
     private final ShapeFactory SHAPE_FACTORY = new ShapeFactory();
     private final Random RANDOM = new Random();
 
@@ -26,6 +26,6 @@ public class GhostFactory {
     }
 
     private Point getRandomLocation() {
-        return new Point(RANDOM.nextInt(DrawShapesFrame.WIDTH - OFFSET), RANDOM.nextInt(DrawShapesFrame.HEIGHT - 2 * OFFSET) + OFFSET);
+        return new Point(RANDOM.nextInt(DrawShapesFrame.WIDTH - OFFSET), RANDOM.nextInt(DrawShapesFrame.HEIGHT - OFFSET) );
     }
 }
