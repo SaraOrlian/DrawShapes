@@ -26,6 +26,7 @@ public class GhostThread extends Thread{
 
     public void run() {
         while (!ghostManager.isGameOver()) {
+
             ghostManager.exploded();
             try {
                 Thread.sleep(delay);
@@ -38,6 +39,7 @@ public class GhostThread extends Thread{
             }
             counter++;
             if(counter%10 == 0) {
+
                 if (numGhosts < MAX_GHOSTS){
                     numGhosts++;
                 }
@@ -46,6 +48,7 @@ public class GhostThread extends Thread{
                 }
             }
             if(counter%20 == 0) {
+
                 if (numShapes < MAX_SHAPES) {
                     numShapes++;
                 }

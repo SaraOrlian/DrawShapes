@@ -43,7 +43,7 @@ public class ShapesView extends JComponent {
             ghostXval = ghost.getLocation().getX();
             ghostYval = ghost.getLocation().getY();
             paintShapes(g, ghost);
-            paintBomb(g, ghost);
+            //paintBomb(g, ghost);
 
         }
     }
@@ -55,7 +55,7 @@ public class ShapesView extends JComponent {
         int bombY = ghostYval + 32;
 
 
-        drawOutline(g, bombOutlineX, bombOutlineY, 0);
+        drawOutline(g, bombOutlineX, bombOutlineY, ghost.getAge());
         g.setColor(BOMB_COLOR);
         g.fillOval(bombX, bombY, BOMB_DIAMETER, BOMB_DIAMETER);
 
@@ -68,7 +68,7 @@ public class ShapesView extends JComponent {
         g.fillArc(bombX + 25, bombY + 30, 10, 25, 50, 180);
     }
 
-    private void drawOutline(Graphics g, int bombOutlineX, int bombOutlineY, int age) {
+    private void drawOutline(Graphics g, int bombOutlineX, int bombOutlineY, float age) {
         g.setColor(getCurrentColor(age));
         g.fillOval(bombOutlineX, bombOutlineY, BOMB_BORDER_DIAMETER, BOMB_BORDER_DIAMETER);
     }
@@ -136,7 +136,8 @@ public class ShapesView extends JComponent {
     }
 
     //chnage to take ghost object
-    private Color getCurrentColor(int age) {
-        return new Color(START_COLOR.getRed() + age, START_COLOR.getGreen() - age, START_COLOR.getBlue());
+    private Color getCurrentColor(float age) {
+        age *= 15;
+        return new Color(START_COLOR.getRed() + (int) age, START_COLOR.getGreen() - (int) age, START_COLOR.getBlue());
     }
 }
