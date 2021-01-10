@@ -15,7 +15,7 @@ public class ShapesView extends JComponent {
     public static int BOMB_BORDER_DIAMETER = 140;
     private final int BOMB_TOP_DIMENSION = 35;
     private final Color BOMB_COLOR = Color.BLACK;
-    private final Color START_COLOR = new Color(10, 240, 120);
+    private final Color START_COLOR = Color.GREEN;
     private final Color SHINE_COLOR = Color.WHITE;
 
     public ShapesView(BombManager bombManager) {
@@ -137,9 +137,9 @@ public class ShapesView extends JComponent {
         }
     }
 
-    //chnage to take ghost object?
+
     private Color getCurrentColor(float age) {
-        age *= 20;
-        return new Color(START_COLOR.getRed() + (int) age, START_COLOR.getGreen() - (int) age, START_COLOR.getBlue());
+    age *= (float)Color.RED.getRed()/(float) BombManager.LIFESPAN;
+        return new Color(START_COLOR.getRed() + (int) age, START_COLOR.getGreen() - (int) age, 0);
     }
 }
