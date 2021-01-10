@@ -5,8 +5,8 @@ import java.awt.*;
 
 //Sara
 public class DrawShapesFrame extends JFrame {
-    public static final int WIDTH = 1500;
-    public static final int HEIGHT = 1000;
+    public static final int WIDTH = 1400;
+    public static final int HEIGHT = 900;
 
     public DrawShapesFrame(StrokeListener listener, ShapesView shapesView) {
         setSize(WIDTH, HEIGHT);

@@ -23,11 +23,15 @@ public class GhostThread extends Thread {
     public void run() {
         while (!ghostManager.isGameOver()) {
             shapesView.repaint();
-
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(ghostManager.getGhostList().size() > 1) {
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(ghostManager.isGameOver()) {
+                break;
             }
 
             for (int i = 0; i < numGhosts; i++) {
@@ -53,7 +57,6 @@ public class GhostThread extends Thread {
                     delay -= 50;
                 }
             }
-            ghostManager.bombExploded();
         }
     }
 }
