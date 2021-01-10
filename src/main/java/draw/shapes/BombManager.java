@@ -6,6 +6,7 @@ import java.util.*;
 //Get shape drawn and remove shape from ghost
 public class BombManager {
     public static final int LIFESPAN = 12;
+    public static final int MAX_BOMBS = 10;
     private final List<Bomb> bombList = new LinkedList<>();
 
 
@@ -18,7 +19,10 @@ public class BombManager {
         do {
             newBomb = bombFactory.newInstance(numShapes);
         } while (overlaps(newBomb));
-        bombList.add(newBomb);
+        if(bombList.size() != MAX_BOMBS) {
+            bombList.add(newBomb);
+        }
+
     }
 
     private boolean overlaps(Bomb newBomb) {
@@ -62,5 +66,9 @@ public class BombManager {
 
     public boolean isGameOver() {
         return bombExploded();
+    }
+
+    public void clearBombs() {
+        bombList.clear();
     }
 }

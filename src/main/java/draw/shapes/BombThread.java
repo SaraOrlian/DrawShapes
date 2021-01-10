@@ -4,23 +4,27 @@ import java.util.Timer;
 
 public class BombThread extends Thread {
 
-    private int delay = 5000;
+    private int delay;
     private int counter;
     private final int MIN_DELAY = 2000;
     private final int MAX_BOMBS = 10;
     private final int MAX_SHAPES = 6;
-    private int numShapes = 1;
-    private int numBombs = 3;
+    private int numShapes;
+    private int numBombs;
     private final BombManager bombManager;
     private final PaintTask paintTask ;
 
     private final int BOMB_INTERVAL = 5;
     private final int SHAPE_INTERVAL = 10;
-    private final Timer timer = new Timer();
+    private final Timer timer;
 
     public BombThread(BombManager bombManager, PaintTask paintTask) {
         this.bombManager = bombManager;
         this.paintTask = paintTask;
+        timer = new Timer();
+        delay = 5000;
+        numShapes = 1;
+        numBombs = 3;
         bombManager.createBomb(1);
         bombManager.createBomb(1);
         bombManager.createBomb(1);
@@ -36,7 +40,7 @@ public class BombThread extends Thread {
     private void generateBombs() {
         while (!bombManager.isGameOver()) {
 
-            if (bombManager.getBombList().size() > 1) {
+            if (bombManager.getBombList().size() != 0) {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {

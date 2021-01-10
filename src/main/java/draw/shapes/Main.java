@@ -11,7 +11,6 @@ public class Main {
         drawShapesFrame.setVisible(true);
         PaintTask paintTask = new PaintTask(shapesView, bombManager);
         BombThread thread = new BombThread(bombManager, paintTask);
-
         thread.start();
     }
 }

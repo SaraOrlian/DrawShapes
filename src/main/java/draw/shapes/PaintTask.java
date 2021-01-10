@@ -1,5 +1,6 @@
 package draw.shapes;
 
+import javax.swing.*;
 import java.util.TimerTask;
 
 public class PaintTask extends TimerTask {
@@ -14,6 +15,18 @@ public class PaintTask extends TimerTask {
     @Override
     public void run() {
         view.repaint();
+
+        if(manager.isGameOver()) {
+            int response = JOptionPane.showConfirmDialog(view, "Play Again?", "Game Over :(", JOptionPane.YES_NO_OPTION);
+            if(response == JOptionPane.YES_OPTION) {
+                //restartGame
+                manager.clearBombs();
+                BombThread thread = new BombThread(manager, new PaintTask(this.view, this.manager));
+                thread.start();
+            } else {
+                System.exit(0);
+            }
+        }
 
     }
 }
