@@ -7,30 +7,30 @@ import java.util.List;
 
 public class StrokeListener extends MouseInputAdapter {
 
-    private final ShapesView shapesView;
-    private final BombManager bombManager;
-    private final List<Point> stroke = new ArrayList<>();
-    private final ShapeAnalyzer shapeAnalyzer;
+    private final ShapesView VIEW;
+    private final BombManager MANAGER;
+    private final List<Point> STROKE = new ArrayList<>();
+    private final ShapeAnalyzer ANALYZER;
 
     public StrokeListener(BombManager bombManager, ShapesView shapesView, ShapeAnalyzer shapeAnalyzer) {
-        this.bombManager = bombManager;
-        this.shapesView = shapesView;
-        this.shapeAnalyzer = shapeAnalyzer;
+        this.MANAGER = bombManager;
+        this.VIEW = shapesView;
+        this.ANALYZER = shapeAnalyzer;
     }
 
     public void mouseDragged(MouseEvent e) {
         Point point = new draw.shapes.Point((int) e.getPoint().getX(), (int) e.getPoint().getY());
-        stroke.add(point);
-        shapesView.addPoint(point);
+        STROKE.add(point);
+        VIEW.addPoint(point);
         e.getComponent().repaint();
     }
 
     public void mouseReleased(MouseEvent e) {
 
-        Shape drawing = shapeAnalyzer.getShape(stroke);
-        bombManager.dequeueShape(drawing);
-        stroke.clear();
-        shapesView.clearDrawing();
+        Shape drawing = ANALYZER.getShape(STROKE);
+        MANAGER.dequeueShape(drawing);
+        STROKE.clear();
+        VIEW.clearDrawing();
         e.getComponent().repaint();
     }
 }

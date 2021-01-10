@@ -9,7 +9,7 @@ public class Main {
 
         DrawShapesFrame drawShapesFrame = new DrawShapesFrame(listener, shapesView);
         drawShapesFrame.setVisible(true);
-        PaintTask paintTask = new PaintTask(shapesView, bombManager);
+        PaintTask paintTask = new PaintTask(shapesView);
         BombThread thread = new BombThread(bombManager, paintTask);
 
         thread.start();
