@@ -9,8 +9,7 @@ public class ShapeReducer {
 
     public List<Point> smooth(List<Point> stroke) {
         Point lastPoint = stroke.get(stroke.size() - 1);
-
-        List<Point> smoothStroke = new ArrayList<Point>();
+        List<Point> smoothStroke = new ArrayList<>();
 
         for (int i = 0; i < stroke.size() - 2; i += 3) {
 
