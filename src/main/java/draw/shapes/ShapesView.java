@@ -6,6 +6,8 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
+import static draw.shapes.BombManager.LIFESPAN;
+
 public class ShapesView extends JComponent {
     private ArrayList<Point> drawing = new ArrayList<Point>();
     private BombManager bombManager;
@@ -49,6 +51,10 @@ public class ShapesView extends JComponent {
     }
 
     private void paintBomb(Graphics g, Bomb bomb) {
+        if (bomb.getAge() >= LIFESPAN) {
+            paintExplosion(g);
+            return;
+        }
         int bombOutlineX = bombXval - 70;
         int bombOutlineY = bombYval + 27;
         int bombX = bombXval - 65;
@@ -66,6 +72,50 @@ public class ShapesView extends JComponent {
 
         g.setColor(SHINE_COLOR);
         g.fillArc(bombX + 25, bombY + 30, 10, 25, 50, 180);
+    }
+
+    private void paintExplosion(Graphics g) {
+        g.setColor(Color.RED);
+        int[] xpoints = new int[] {
+                bombXval,
+                bombXval + 30,
+                bombXval + 50,
+                bombXval + 130,
+                bombXval + 110,
+                bombXval + 170,
+                bombXval + 90,
+                bombXval + 110,
+                bombXval + 80,
+                bombXval + 60,
+                bombXval + 30,
+                bombXval -40,
+                bombXval -30,
+                bombXval -90,
+                bombXval -30,
+                bombXval -50,
+                bombXval
+        };
+        int[] ypoints = new int[] {
+                bombYval - 20,
+                bombYval - 70,
+                bombYval - 20,
+                bombYval -40,
+                bombYval - 20,
+                bombYval + 30,
+                bombYval + 50,
+                bombYval + 90,
+                bombYval + 80,
+                bombYval + 160,
+                bombYval + 120,
+                bombYval + 170,
+                bombYval + 80,
+                bombYval + 20,
+                bombYval + 40,
+                bombYval -40,
+                bombYval - 20
+        };
+        int npoints = 17;
+        g.fillPolygon(xpoints, ypoints, npoints);
     }
 
     private void drawOutline(Graphics g, int bombOutlineX, int bombOutlineY, float age) {
