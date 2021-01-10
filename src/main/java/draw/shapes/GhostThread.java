@@ -11,6 +11,8 @@ public class GhostThread extends Thread {
     private int numGhosts = 3;
     private final GhostManager ghostManager;
     private final ShapesView shapesView;
+    private final int GHOST_INTERVAL = 5;
+    private final int SHAPE_INTERVAL = 10;
 
     public GhostThread(GhostManager ghostManager, ShapesView shapesView) {
         this.ghostManager = ghostManager;
@@ -35,7 +37,7 @@ public class GhostThread extends Thread {
             }
             counter++;
 
-            if (counter % 5 == 0) {
+            if (counter % GHOST_INTERVAL == 0) {
 
                 if (numGhosts < MAX_GHOSTS) {
                     numGhosts++;
@@ -44,7 +46,7 @@ public class GhostThread extends Thread {
                     delay -= 100;
                 }
             }
-            if (counter % 10 == 0) {
+            if (counter % SHAPE_INTERVAL == 0) {
 
                 if (numShapes < MAX_SHAPES) {
                     numShapes++;
@@ -53,7 +55,6 @@ public class GhostThread extends Thread {
                     delay -= 50;
                 }
             }
-            ghostManager.bombExploded();
         }
     }
 }
