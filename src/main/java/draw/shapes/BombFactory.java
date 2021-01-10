@@ -8,13 +8,13 @@ import java.util.Random;
  * build ghosts
  */
 
-public class GhostFactory {
+public class BombFactory {
     private final int OFFSET = 200;
     private final ShapeFactory SHAPE_FACTORY = new ShapeFactory();
     private final Random RANDOM = new Random();
 
-    public Ghost newInstance(int numShapes) {
-        return new Ghost(getNewShapeQueue(numShapes), getRandomLocation());
+    public Bomb newInstance(int numShapes) {
+        return new Bomb(getNewShapeQueue(numShapes), getRandomLocation());
     }
 
     private Queue<Shape> getNewShapeQueue(int numShapes) {

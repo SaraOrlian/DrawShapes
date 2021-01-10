@@ -2,7 +2,7 @@ package draw.shapes;
 
 import java.util.Queue;
 
-public class Ghost {
+public class Bomb {
 
     private Point location;
     Queue<Shape> shapeQueue;
@@ -11,7 +11,7 @@ public class Ghost {
 
 
     //pass list of shapes and location in constructor
-    public Ghost(Queue<Shape> shapeQueue, Point location) {
+    public Bomb(Queue<Shape> shapeQueue, Point location) {
         this.shapeQueue = shapeQueue;
         this.location = location;
         this.birthday = System.currentTimeMillis()/1000;
@@ -29,7 +29,7 @@ public class Ghost {
         this.location = point;
     }
 
-    public boolean intersects(Ghost other) {
+    public boolean intersects(Bomb other) {
         return this.getLocation().getDistance(other.getLocation()) < RADIUS;
     }
 
