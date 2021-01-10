@@ -26,7 +26,7 @@ public class GhostThread extends Thread {
 
     public void run() {
         while (!ghostManager.isGameOver()) {
-            //shapesView.repaint();
+            shapesView.repaint();
             ghostManager.exploded();
             try {
                 Thread.sleep(delay);
@@ -35,7 +35,7 @@ public class GhostThread extends Thread {
             }
             for (int i = 0; i < numGhosts; i++) {
                 ghostManager.createGhost(numShapes);
-                shapesView.repaint();
+                //shapesView.repaint();
             }
             counter++;
 

@@ -9,9 +9,8 @@ public class GhostManager {
     private final GhostFactory ghostFactory = new GhostFactory();
     private List<Ghost> ghostList = new LinkedList<>();
     private boolean gameOver = false;
-    static final Random random = new Random();
-    public static final int GHOST_WIDTH = 600;
-    public static final int GHOST_HEIGHT = 600;
+    
+
 
     public GhostManager() {
     }
