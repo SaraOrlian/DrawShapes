@@ -1,5 +1,7 @@
 package draw.shapes;
 
+import java.util.Timer;
+
 public class GhostThread extends Thread {
 
     private int delay = 5000;
@@ -10,29 +12,40 @@ public class GhostThread extends Thread {
     private int numShapes = 1;
     private int numGhosts = 3;
     private final GhostManager ghostManager;
-    private final ShapesView shapesView;
+    private final PaintTask paintTask ;
+
     private final int GHOST_INTERVAL = 5;
     private final int SHAPE_INTERVAL = 10;
+    private final Timer timer = new Timer();
 
-    public GhostThread(GhostManager ghostManager, ShapesView shapesView) {
+    public GhostThread(GhostManager ghostManager, ShapesView shapesView, PaintTask paintTask) {
         this.ghostManager = ghostManager;
-        this.shapesView = shapesView;
+        this.paintTask = paintTask;
         ghostManager.createGhost(1);
         ghostManager.createGhost(1);
         ghostManager.createGhost(1);
     }
 
     public void run() {
+        timer.schedule(paintTask, 0, 100);
         while (!ghostManager.isGameOver()) {
-            shapesView.repaint();
-            if(ghostManager.getGhostList().size() > 1) {
+            generateGhosts();
+            }
+
+
+    }
+
+    private void generateGhosts() {
+        while (!ghostManager.isGameOver()) {
+
+            if (ghostManager.getGhostList().size() > 1) {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if(ghostManager.isGameOver()) {
+            if (ghostManager.isGameOver()) {
                 break;
             }
 
