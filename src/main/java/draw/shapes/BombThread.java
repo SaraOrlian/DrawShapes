@@ -12,7 +12,7 @@ public class BombThread extends Thread {
     private int numShapes = 1;
     private int numBombs = 3;
     private final BombManager bombManager;
-    private final PaintTask paintTask ;
+    private final PaintTask paintTask;
 
     private final int BOMB_INTERVAL = 5;
     private final int SHAPE_INTERVAL = 10;
@@ -30,46 +30,65 @@ public class BombThread extends Thread {
         timer.schedule(paintTask, 0, 75);
         while (!bombManager.isGameOver()) {
             generateBombs();
-            }
+        }
     }
 
     private void generateBombs() {
         while (!bombManager.isGameOver()) {
-
-            if (bombManager.getBombList().size() > 1) {
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            delayNewBombs();
             if (bombManager.isGameOver()) {
                 break;
             }
-
-            for (int i = 0; i < numBombs; i++) {
-                bombManager.createBomb(numShapes);
-            }
+            createBombs();
             counter++;
+            adjustBombRate();
+            adjustShapeRate();
+        }
+    }
 
-            if (counter % BOMB_INTERVAL == 0) {
+    private void createBombs() {
+        for (int i = 0; i < numBombs; i++) {
+            bombManager.createBomb(numShapes);
+        }
+    }
 
-                if (numBombs < MAX_BOMBS) {
-                    numBombs++;
-                }
-                if (delay > MIN_DELAY) {
-                    delay -= 100;
-                }
-            }
-            if (counter % SHAPE_INTERVAL == 0) {
+    private void delayNewBombs() {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-                if (numShapes < MAX_SHAPES) {
-                    numShapes++;
-                }
-                if (delay > MIN_DELAY) {
-                    delay -= 50;
-                }
-            }
+    private void adjustShapeRate() {
+        if (counter % SHAPE_INTERVAL == 0) {
+            incrementNumShapes();
+            decreaseDelay(50);
+        }
+    }
+
+    private void adjustBombRate() {
+        if (counter % BOMB_INTERVAL == 0) {
+            incrementNumBombs();
+            decreaseDelay(100);
+        }
+    }
+
+    private void incrementNumShapes() {
+        if (numShapes < MAX_SHAPES) {
+            numShapes++;
+        }
+    }
+
+    private void incrementNumBombs() {
+        if (numBombs < MAX_BOMBS) {
+            numBombs++;
+        }
+    }
+
+    private void decreaseDelay(int change) {
+        if (delay > MIN_DELAY) {
+            delay -= change;
         }
     }
 }
