@@ -140,22 +140,4 @@ public class ShapeAnalyzer {
             return Double.NaN;
         }
     }
-
-
-    //testing
-    public void whichStroke() {
-        if (isHorizontal(stroke)) {
-            System.out.println("horizontal");
-        } else if (isVertical(stroke)) {
-            System.out.println("vertical");
-        } else if (isCarat(stroke)) {
-            System.out.println("^");
-        } else if (isVee(stroke)) {
-            System.out.println("v");
-        } else {
-            System.out.println("nothing");
-        }
-    }
-
-
 }

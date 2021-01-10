@@ -54,7 +54,6 @@ public class BombManager {
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
             if (bomb.getAge() > LIFESPAN) {
-                System.out.println("GAME OVER");
                 return true;
             }
         }
