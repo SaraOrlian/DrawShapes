@@ -4,29 +4,31 @@ import javax.swing.*;
 import java.util.TimerTask;
 
 public class PaintTask extends TimerTask {
-    private final ShapesView view;
-    private final BombManager manager;
+    private final ShapesView VIEW;
+    private final BombManager MANAGER;
 
-    public PaintTask(ShapesView shapesView, BombManager bombManager) {
-        this.view = shapesView;
-        this.manager = bombManager;
+    public PaintTask(ShapesView shapesView, BombManager manager) {
+        this.VIEW = shapesView;
+        this.MANAGER = manager;
     }
 
     @Override
     public void run() {
-        view.repaint();
+        VIEW.repaint();
 
-        if(manager.isGameOver()) {
-            int response = JOptionPane.showConfirmDialog(view, "Play Again?", "Game Over :(", JOptionPane.YES_NO_OPTION);
+        if(MANAGER.isGameOver()) {
+            int response = JOptionPane.showConfirmDialog(VIEW, "Play Again?", "Game Over :(", JOptionPane.YES_NO_OPTION);
             if(response == JOptionPane.YES_OPTION) {
-                //restartGame
-                manager.clearBombs();
-                BombThread thread = new BombThread(manager, new PaintTask(this.view, this.manager));
-                thread.start();
+                restartGame();
             } else {
                 System.exit(0);
             }
         }
+    }
 
+    private void restartGame() {
+        MANAGER.clearBombs();
+        BombThread thread = new BombThread(MANAGER, new PaintTask(this.VIEW, this.MANAGER));
+        thread.start();
     }
 }

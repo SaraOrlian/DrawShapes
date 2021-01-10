@@ -7,11 +7,7 @@ import java.util.*;
 public class BombManager {
     public static final int LIFESPAN = 12;
     public static final int MAX_BOMBS = 10;
-    private final List<Bomb> bombList = new LinkedList<>();
-
-
-    public BombManager() {
-    }
+    private final List<Bomb> BOMB_LIST = new LinkedList<>();
 
     public void createBomb(int numShapes) {
         BombFactory bombFactory = new BombFactory();
@@ -19,14 +15,13 @@ public class BombManager {
         do {
             newBomb = bombFactory.newInstance(numShapes);
         } while (overlaps(newBomb));
-        if(bombList.size() != MAX_BOMBS) {
-            bombList.add(newBomb);
+        if(BOMB_LIST.size() != MAX_BOMBS) {
+            BOMB_LIST.add(newBomb);
         }
-
     }
 
     private boolean overlaps(Bomb newBomb) {
-        for (Bomb bomb : bombList) {
+        for (Bomb bomb : BOMB_LIST) {
             if (bomb.intersects(newBomb)) {
                 return true;
             }
@@ -35,12 +30,12 @@ public class BombManager {
     }
 
     public List<Bomb> getBombList() {
-        return bombList;
+        return BOMB_LIST;
     }
 
     public void dequeueShape(Shape drawing) {
         if (!isGameOver()) {
-            Iterator<Bomb> iterator = bombList.iterator();
+            Iterator<Bomb> iterator = BOMB_LIST.iterator();
             while (iterator.hasNext()) {
                 Bomb bomb = iterator.next();
                 if (bomb.getShapeQueue().peek() == drawing) {
@@ -54,7 +49,7 @@ public class BombManager {
     }
 
     public boolean bombExploded() {
-        Iterator<Bomb> iterator = bombList.iterator();
+        Iterator<Bomb> iterator = BOMB_LIST.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
             if (bomb.getAge() > LIFESPAN) {
@@ -69,6 +64,6 @@ public class BombManager {
     }
 
     public void clearBombs() {
-        bombList.clear();
+        BOMB_LIST.clear();
     }
 }

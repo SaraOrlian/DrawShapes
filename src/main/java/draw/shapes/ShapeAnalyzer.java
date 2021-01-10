@@ -10,13 +10,7 @@ import static draw.shapes.Shape.*;
  */
 public class ShapeAnalyzer {
 
-
-    private List<Point> stroke;
     private final ShapeReducer REDUCER = new ShapeReducer();
-    private final int VEE_CARAT_MIN_HEIGHT = 10;
-    private final int VEE_CARAT_SKEW_ALLOWANCE = 500;
-    private final int VEE_CARAT_EXPECTED_POINTS = 3;
-
 
     public Shape getShape(List<Point> stroke) {
         if (isHorizontal(stroke)) {
@@ -35,19 +29,16 @@ public class ShapeAnalyzer {
     }
 
     public boolean isHorizontal(List<Point> stroke) {
-
         Point start = stroke.get(0);
         Point end = stroke.get(stroke.size() - 1);
         double slope = calcSlope(start, end);
         return isInZeroRange(slope) && hasOnlyValidSlopes(stroke);
-
     }
 
     /**
-     * explain inversion
-     *
+     * inverts points to avoid infinite slopes: if inverse is horizontal, then original line is vertical
      * @param stroke
-     * @return
+     * @return boolean
      */
     public boolean isVertical(List<Point> stroke) {
         List<Point> newStroke = new ArrayList<>();
@@ -84,9 +75,9 @@ public class ShapeAnalyzer {
         return true;
     }
 
-
     private boolean hasCorrectNumPointsForVeeOrCarat(List<Point> smoothStroke) {
-        return smoothStroke.size() == VEE_CARAT_EXPECTED_POINTS;
+        int veeCaratExpectedPoints = 3;
+        return smoothStroke.size() == veeCaratExpectedPoints;
     }
 
     private List<Point> reduceCaratOrVee(List<Point> stroke) {
@@ -118,7 +109,6 @@ public class ShapeAnalyzer {
         return smoothStroke.get(1).getY() < smoothStroke.get(0).getY()
                 && smoothStroke.get(1).getY() < smoothStroke.get(2).getY();
     }
-
 
     /**
      * checks if slope is within the loose allowance of a zero slope
