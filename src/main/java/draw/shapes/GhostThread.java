@@ -1,5 +1,6 @@
 package draw.shapes;
 
+import javax.swing.*;
 import java.util.Timer;
 
 public class GhostThread extends Thread {
@@ -18,7 +19,7 @@ public class GhostThread extends Thread {
     private final int SHAPE_INTERVAL = 10;
     private final Timer timer = new Timer();
 
-    public GhostThread(GhostManager ghostManager, ShapesView shapesView, PaintTask paintTask) {
+    public GhostThread(GhostManager ghostManager, PaintTask paintTask) {
         this.ghostManager = ghostManager;
         this.paintTask = paintTask;
         ghostManager.createGhost(1);
@@ -31,8 +32,6 @@ public class GhostThread extends Thread {
         while (!ghostManager.isGameOver()) {
             generateGhosts();
             }
-
-
     }
 
     private void generateGhosts() {
