@@ -6,13 +6,12 @@ import java.awt.event.MouseMotionListener;
 public class GhostThread extends Thread {
 
     private int delay = 5000;
-    private final int POPULATION_DELAY = 500;
     private int counter;
     private final int MIN_DELAY = 2000;
     private final int MAX_GHOSTS = 10;
     private final int MAX_SHAPES = 6;
-    private int numShapes = 2;
-    private int numGhosts = 1;
+    private int numShapes = 1;
+    private int numGhosts = 3;
     private final GhostManager ghostManager;
     private final ShapesView shapesView;
 
@@ -39,7 +38,7 @@ public class GhostThread extends Thread {
             }
             counter++;
 
-            if (counter % 10 == 0) {
+            if (counter % 5 == 0) {
 
                 if (numGhosts < MAX_GHOSTS) {
                     numGhosts++;
@@ -48,7 +47,7 @@ public class GhostThread extends Thread {
                     delay -= 100;
                 }
             }
-            if (counter % 20 == 0) {
+            if (counter % 10 == 0) {
 
                 if (numShapes < MAX_SHAPES) {
                     numShapes++;
@@ -59,6 +58,5 @@ public class GhostThread extends Thread {
             }
             ghostManager.exploded();
         }
-        MouseListener[] mouseListeners = shapesView.getMouseListeners();
     }
 }
