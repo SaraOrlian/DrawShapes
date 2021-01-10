@@ -9,7 +9,7 @@ import java.util.List;
 import static draw.shapes.BombManager.LIFESPAN;
 
 public class ShapesView extends JComponent {
-    private ArrayList<Point> drawing = new ArrayList<Point>();
+    private ArrayList<Point> drawing = new ArrayList<>();
     private BombManager bombManager;
     private int bombXval;
     private int bombYval;
