@@ -8,7 +8,6 @@ public class GhostManager {
     public static final int LIFESPAN = 12;
     private final GhostFactory ghostFactory = new GhostFactory();
     private List<Ghost> ghostList = new LinkedList<>();
-    private boolean gameOver = false;
 
 
     public GhostManager() {
