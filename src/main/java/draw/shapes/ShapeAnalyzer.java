@@ -10,11 +10,7 @@ import static draw.shapes.Shape.*;
  */
 public class ShapeAnalyzer {
 
-
-    private List<Point> stroke;
     private final ShapeReducer REDUCER = new ShapeReducer();
-    private final int VEE_CARAT_MIN_HEIGHT = 10;
-    private final int VEE_CARAT_SKEW_ALLOWANCE = 500;
     private final int VEE_CARAT_EXPECTED_POINTS = 3;
 
 
