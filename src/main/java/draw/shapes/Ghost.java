@@ -37,4 +37,10 @@ public class Ghost {
         return birthday;
     }
 
+    public long getAge() {
+        return System.currentTimeMillis()/1000- birthday;
+    }
+
+
+
 }

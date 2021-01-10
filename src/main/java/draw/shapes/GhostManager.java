@@ -5,13 +5,10 @@ import java.util.*;
 
 //Get shape drawn and remove shape from ghost
 public class GhostManager {
-    public static final int LIFESPAN = 10;
+    public static final int LIFESPAN = 12;
     private final GhostFactory ghostFactory = new GhostFactory();
     private List<Ghost> ghostList = new LinkedList<>();
-    private boolean gameOver = false;
-    static final Random random = new Random();
-    public static final int GHOST_WIDTH = 600;
-    public static final int GHOST_HEIGHT = 600;
+
 
     public GhostManager() {
     }
@@ -38,7 +35,7 @@ public class GhostManager {
     }
 
     public void dequeueShape(Shape drawing) {
-        if(!isGameOver()) {
+        if (!isGameOver()) {
             Iterator<Ghost> iterator = ghostList.iterator();
             while (iterator.hasNext()) {
                 Ghost ghost = iterator.next();
@@ -52,20 +49,19 @@ public class GhostManager {
         }
     }
 
-    public void exploded() {
+    public boolean bombExploded() {
         Iterator<Ghost> iterator = ghostList.iterator();
         while (iterator.hasNext()) {
             Ghost ghost = iterator.next();
-            long currentTime = System.currentTimeMillis()/1000;
-            if(currentTime - ghost.getBirthday() > LIFESPAN) {
+            if (ghost.getAge() > LIFESPAN) {
                 System.out.println("GAME OVER");
-                gameOver = true;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public boolean isGameOver() {
-        return gameOver;
+        return bombExploded();
     }
 }
