@@ -1,5 +1,6 @@
 package draw.shapes;
 
+import javax.swing.*;
 import java.util.TimerTask;
 
 public class PaintTask extends TimerTask {
@@ -15,6 +16,14 @@ public class PaintTask extends TimerTask {
     public void run() {
         if (!manager.isGameOver()){
             view.repaint();
+        } else {
+            int response = JOptionPane.showConfirmDialog(view, "Play Again?", "Game Over :(", JOptionPane.YES_NO_OPTION);
+            if(response == JOptionPane.YES_OPTION) {
+                //restartGame();
+                System.exit(1);
+            } else {
+                System.exit(0);
+            }
         }
 
     }
