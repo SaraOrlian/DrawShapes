@@ -6,7 +6,7 @@ import java.util.*;
 //Get shape drawn and remove shape from ghost
 public class BombManager {
     public static final int LIFESPAN = 12;
-    private final List<Bomb> bombList = new LinkedList<>();
+    private final List<Bomb> BOMB_LIST = new LinkedList<>();
 
 
     public BombManager() {
@@ -18,11 +18,11 @@ public class BombManager {
         do {
             newBomb = bombFactory.newInstance(numShapes);
         } while (overlaps(newBomb));
-        bombList.add(newBomb);
+        BOMB_LIST.add(newBomb);
     }
 
     private boolean overlaps(Bomb newBomb) {
-        for (Bomb bomb : bombList) {
+        for (Bomb bomb : BOMB_LIST) {
             if (bomb.intersects(newBomb)) {
                 return true;
             }
@@ -31,12 +31,12 @@ public class BombManager {
     }
 
     public List<Bomb> getBombList() {
-        return bombList;
+        return BOMB_LIST;
     }
 
     public void dequeueShape(Shape drawing) {
         if (!isGameOver()) {
-            Iterator<Bomb> iterator = bombList.iterator();
+            Iterator<Bomb> iterator = BOMB_LIST.iterator();
             while (iterator.hasNext()) {
                 Bomb bomb = iterator.next();
                 if (bomb.getShapeQueue().peek() == drawing) {
@@ -50,7 +50,7 @@ public class BombManager {
     }
 
     public boolean bombExploded() {
-        Iterator<Bomb> iterator = bombList.iterator();
+        Iterator<Bomb> iterator = BOMB_LIST.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
             if (bomb.getAge() > LIFESPAN) {
