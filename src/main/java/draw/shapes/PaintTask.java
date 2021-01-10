@@ -3,17 +3,15 @@ package draw.shapes;
 import java.util.TimerTask;
 
 public class PaintTask extends TimerTask {
-    private final ShapesView view;
-    private final BombManager manager;
+    private final ShapesView VIEW;
 
     public PaintTask(ShapesView shapesView, BombManager bombManager) {
-        this.view = shapesView;
-        this.manager = bombManager;
+        this.VIEW = shapesView;
     }
 
     @Override
     public void run() {
-        view.repaint();
+        VIEW.repaint();
 
     }
 }
