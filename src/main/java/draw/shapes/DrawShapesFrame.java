@@ -13,8 +13,6 @@ public class DrawShapesFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Draw Shapes");
         setLayout(new BorderLayout());
-        this.addMouseListener(listener);
-        this.addMouseMotionListener(listener);
         add(shapesView, BorderLayout.CENTER);
         shapesView.addMouseListener(listener);
         shapesView.addMouseMotionListener(listener);
