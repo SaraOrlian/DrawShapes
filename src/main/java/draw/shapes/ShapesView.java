@@ -139,7 +139,7 @@ public class ShapesView extends JComponent {
 
     //chnage to take ghost object?
     private Color getCurrentColor(float age) {
-        age *= 10;
+        age *= 20;
         return new Color(START_COLOR.getRed() + (int) age, START_COLOR.getGreen() - (int) age, START_COLOR.getBlue());
     }
 }

@@ -9,7 +9,9 @@ public class Main {
 
         DrawShapesFrame drawShapesFrame = new DrawShapesFrame(listener, shapesView);
         drawShapesFrame.setVisible(true);
-        GhostThread thread = new GhostThread(ghostManager, shapesView);
+        PaintTask paintTask = new PaintTask(shapesView,ghostManager);
+        GhostThread thread = new GhostThread(ghostManager, shapesView,paintTask);
+
         thread.start();
     }
 }
