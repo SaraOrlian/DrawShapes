@@ -5,7 +5,7 @@ import java.util.TimerTask;
 public class PaintTask extends TimerTask {
     private final ShapesView VIEW;
 
-    public PaintTask(ShapesView shapesView, BombManager bombManager) {
+    public PaintTask(ShapesView shapesView) {
         this.VIEW = shapesView;
     }
 
