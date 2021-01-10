@@ -11,7 +11,6 @@ public class GhostManager {
     private boolean gameOver = false;
 
 
-
     public GhostManager() {
     }
 
@@ -37,7 +36,7 @@ public class GhostManager {
     }
 
     public void dequeueShape(Shape drawing) {
-        if(!isGameOver()) {
+        if (!isGameOver()) {
             Iterator<Ghost> iterator = ghostList.iterator();
             while (iterator.hasNext()) {
                 Ghost ghost = iterator.next();
@@ -51,20 +50,19 @@ public class GhostManager {
         }
     }
 
-    public void exploded() {
+    public boolean bombExploded() {
         Iterator<Ghost> iterator = ghostList.iterator();
         while (iterator.hasNext()) {
             Ghost ghost = iterator.next();
-            long currentTime = System.currentTimeMillis()/1000;
-            if(currentTime - ghost.getBirthday() > LIFESPAN) {
+            if (ghost.getAge() > LIFESPAN) {
                 System.out.println("GAME OVER");
-                gameOver = true;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public boolean isGameOver() {
-        return gameOver;
+        return bombExploded();
     }
 }
