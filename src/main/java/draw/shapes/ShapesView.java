@@ -51,7 +51,7 @@ public class ShapesView extends JComponent {
     }
 
     private void paintBomb(Graphics g, Bomb bomb) {
-        if (bomb.getAge() >= LIFESPAN) {
+        if (bombManager.isGameOver() && bomb.getAge() >= LIFESPAN) {
             paintExplosion(g);
             return;
         }
