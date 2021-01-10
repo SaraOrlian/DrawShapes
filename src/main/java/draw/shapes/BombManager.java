@@ -6,14 +6,14 @@ import java.util.*;
 //Get shape drawn and remove shape from ghost
 public class BombManager {
     public static final int LIFESPAN = 12;
-    private final BombFactory bombFactory = new BombFactory();
-    private List<Bomb> bombList = new LinkedList<>();
+    private final List<Bomb> bombList = new LinkedList<>();
 
 
     public BombManager() {
     }
 
     public void createBomb(int numShapes) {
+        BombFactory bombFactory = new BombFactory();
         Bomb newBomb;
         do {
             newBomb = bombFactory.newInstance(numShapes);

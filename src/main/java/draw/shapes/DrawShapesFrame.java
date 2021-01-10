@@ -17,7 +17,6 @@ public class DrawShapesFrame extends JFrame {
         shapesView.addMouseListener(listener);
         shapesView.addMouseMotionListener(listener);
 
-
     }
 
 }
