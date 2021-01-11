@@ -12,9 +12,7 @@ public class BombThread extends Thread {
     private int numBombs;
     private final BombManager bombManager;
     private final PaintTask paintTask;
-
     private final Timer timer;
-
 
     public BombThread(BombManager bombManager, PaintTask paintTask) {
         this.bombManager = bombManager;
@@ -31,6 +29,7 @@ public class BombThread extends Thread {
     public void run() {
         timer.schedule(paintTask, 0, 60);
         generateBombs();
+        //bombManager.explodeBomb();
     }
 
     private void generateBombs() {
@@ -40,7 +39,6 @@ public class BombThread extends Thread {
             counter++;
             adjustBombRate();
             adjustShapeRate();
-
         }
     }
 

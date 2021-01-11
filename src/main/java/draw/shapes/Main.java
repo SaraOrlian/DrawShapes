@@ -31,7 +31,13 @@ public class Main {
         bombManager.setExplosionListener(explosionListener);
 
 
-        BombThread thread = new BombThread(bombManager, paintTask);
-        thread.start();
+        BombThread bombThread = new BombThread(bombManager, paintTask);
+        bombThread.start();
+        while (true){
+            if(bombManager.isGameOver()){
+                bombThread.interrupt();
+                bombManager.explodeBomb();
+            }
+        }
     }
 }
