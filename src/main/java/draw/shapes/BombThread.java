@@ -13,31 +13,37 @@ public class BombThread extends Thread {
     private int numBombs;
     private final BombManager bombManager;
     private final PaintTask paintTask;
+    private final GameOverTask gameOverTask;
 
     private final int BOMB_INTERVAL = 5;
     private final int SHAPE_INTERVAL = 10;
     private final Timer timer;
 
-    public BombThread(BombManager bombManager, PaintTask paintTask) {
+    public BombThread(BombManager bombManager, PaintTask paintTask, GameOverTask gameOverTask) {
         this.bombManager = bombManager;
         this.paintTask = paintTask;
+        this.gameOverTask = gameOverTask;
         timer = new Timer();
         delay = 5000;
         numShapes = 1;
         numBombs = 3;
-        bombManager.createBomb(1);
-        bombManager.createBomb(1);
-        bombManager.createBomb(1);
+        bombManager.createBomb(numShapes);
+        bombManager.createBomb(numShapes);
+        bombManager.createBomb(numShapes);
     }
 
     public void run() {
         timer.schedule(paintTask, 0, 75);
+        timer.schedule(gameOverTask, 0, 80);
         generateBombs();
     }
 
     private void generateBombs() {
-        while (counter > - 1) {
+        while (!bombManager.isGameOver()) {
             delayNewBombs();
+            if(bombManager.isGameOver()){
+                break;
+            }
             createBombs();
             counter++;
             adjustBombRate();
