@@ -6,17 +6,15 @@ public class BombThread extends Thread {
 
     private int delay;
     private int counter;
-    private final int MIN_DELAY = 2000;
-    private final int MAX_BOMBS = 10;
-    private final int MAX_SHAPES = 6;
+    public static final int MAX_BOMBS = 10;
+    public static final int MAX_SHAPES = 6;
     private int numShapes;
     private int numBombs;
     private final BombManager bombManager;
     private final PaintTask paintTask;
 
-    private final int BOMB_INTERVAL = 5;
-    private final int SHAPE_INTERVAL = 10;
     private final Timer timer;
+
 
     public BombThread(BombManager bombManager, PaintTask paintTask) {
         this.bombManager = bombManager;
@@ -31,17 +29,18 @@ public class BombThread extends Thread {
     }
 
     public void run() {
-        timer.schedule(paintTask, 0, 75);
+        timer.schedule(paintTask, 0, 60);
         generateBombs();
     }
 
     private void generateBombs() {
-        while (counter > - 1) {
+        while (!bombManager.isGameOver()) {
             delayNewBombs();
             createBombs();
             counter++;
             adjustBombRate();
             adjustShapeRate();
+
         }
     }
 
@@ -60,14 +59,16 @@ public class BombThread extends Thread {
     }
 
     private void adjustShapeRate() {
-        if (counter % SHAPE_INTERVAL == 0) {
+        int shapeInterval = 10;
+        if (counter % shapeInterval == 0) {
             incrementNumShapes();
             decreaseDelay(50);
         }
     }
 
     private void adjustBombRate() {
-        if (counter % BOMB_INTERVAL == 0) {
+        int bombInterval = 5;
+        if (counter % bombInterval == 0) {
             incrementNumBombs();
             decreaseDelay(100);
         }
@@ -86,7 +87,8 @@ public class BombThread extends Thread {
     }
 
     private void decreaseDelay(int change) {
-        if (delay > MIN_DELAY) {
+        int minDelay = 2000;
+        if (delay > minDelay) {
             delay -= change;
         }
     }

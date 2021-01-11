@@ -1,23 +1,19 @@
 package draw.shapes;
 
-import javax.swing.*;
 import java.util.TimerTask;
 
 public class PaintTask extends TimerTask {
-    //capitalization is just for static final
-    private final ShapesView VIEW;
-    private final BombManager MANAGER;
+
+    private final ShapesView view;
 
     public PaintTask(ShapesView shapesView, BombManager manager) {
-        this.VIEW = shapesView;
-        this.MANAGER = manager;
+        this.view = shapesView;
+
     }
 
     @Override
     public void run() {
-        VIEW.repaint();
-        MANAGER.isGameOver();
-
+        view.repaint();
     }
 
 
