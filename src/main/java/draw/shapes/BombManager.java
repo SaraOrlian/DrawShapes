@@ -10,6 +10,8 @@ public class BombManager {
     private final List<Bomb> bombList = new LinkedList<>();
     ExplosionListener explosionListener;
 
+
+    //pass bomb factory to constructor to enable better testing
     public void setExplosionListener(ExplosionListener explosionListener) {
         this.explosionListener = explosionListener;
     }
