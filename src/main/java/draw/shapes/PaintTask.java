@@ -16,6 +16,7 @@ public class PaintTask extends TimerTask {
     @Override
     public void run() {
         VIEW.repaint();
+        MANAGER.isGameOver();
 
     }
 
