@@ -55,9 +55,9 @@ public class ShapesView extends JComponent {
             paintExplosion(g);
             return;
         }
-        int bombOutlineX = bombXval - 70;
+        int bombOutlineX = bombXval - 85;
         int bombOutlineY = bombYval + 27;
-        int bombX = bombXval - 65;
+        int bombX = bombXval - 80;
         int bombY = bombYval + 32;
 
 
@@ -150,10 +150,10 @@ public class ShapesView extends JComponent {
         bombXval += 10;
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform orig = g2d.getTransform();
-        g2d.rotate(Math.toRadians(-90), bombXval++, bombYval);
-        g2d.drawString("\u2796", bombXval++, bombYval);
+        g2d.rotate(Math.toRadians(-90), bombXval, bombYval);
+        g2d.drawString("\u2796", bombXval, bombYval+20);
         g2d.setTransform(orig);
-        bombXval += 10;
+        bombXval += 20;
     }
 
     private void drawVee(Graphics g) {
@@ -166,8 +166,9 @@ public class ShapesView extends JComponent {
     private void drawHorizontal(Graphics g) {
         g.setFont(new Font("", Font.PLAIN, 30));
         g.setColor(Color.BLUE);
-        g.drawString("\u2796", bombXval++, bombYval);
-        bombXval += 50;
+        bombXval+=30;
+        g.drawString("\u2796", bombXval-20, bombYval);
+        bombXval+=10;
     }
 
     private void drawCarat(Graphics g) {
