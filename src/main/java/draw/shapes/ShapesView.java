@@ -51,7 +51,7 @@ public class ShapesView extends JComponent {
     }
 
     private void paintBomb(Graphics g, Bomb bomb) {
-        if (bombManager.isGameOver() && bomb.getAge() >= LIFESPAN) {
+        if (bomb.getAge() >= LIFESPAN) {
             paintExplosion(g);
             return;
         }
@@ -178,13 +178,11 @@ public class ShapesView extends JComponent {
     }
 
     private void paintStroke(Graphics g) {
-        if (!bombManager.isGameOver()) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             for (int i = 0; i < drawing.size() - 2; i++) {
                 g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
             }
-        }
     }
 
 

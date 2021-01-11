@@ -8,6 +8,11 @@ public class BombManager {
     public static final int LIFESPAN = 12;
     public static final int MAX_BOMBS = 10;
     private final List<Bomb> BOMB_LIST = new LinkedList<>();
+    ExplosionListener explosionListener;
+
+    public void setExplosionListener(ExplosionListener explosionListener) {
+        this.explosionListener = explosionListener;
+    }
 
     public void createBomb(int numShapes) {
         BombFactory bombFactory = new BombFactory();
@@ -34,7 +39,6 @@ public class BombManager {
     }
 
     public void dequeueShape(Shape drawing) {
-        if (!isGameOver()) {
             Iterator<Bomb> iterator = BOMB_LIST.iterator();
             while (iterator.hasNext()) {
                 Bomb bomb = iterator.next();
@@ -45,14 +49,14 @@ public class BombManager {
                     iterator.remove();
                 }
             }
-        }
     }
 
     public boolean bombExploded() {
         Iterator<Bomb> iterator = BOMB_LIST.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
-            if (bomb.getAge() > LIFESPAN) {
+            if (bomb.getAge() >= LIFESPAN) {
+                explosionListener.onExplosion();
                 return true;
             }
         }
