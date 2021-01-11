@@ -7,7 +7,7 @@ import java.util.*;
 public class BombManager {
     public static final int LIFESPAN = 12;
     public static final int MAX_BOMBS = 10;
-    private final List<Bomb> BOMB_LIST = new LinkedList<>();
+    private final List<Bomb> bombList = new LinkedList<>();
     ExplosionListener explosionListener;
 
     public void setExplosionListener(ExplosionListener explosionListener) {
@@ -20,13 +20,13 @@ public class BombManager {
         do {
             newBomb = bombFactory.newInstance(numShapes);
         } while (overlaps(newBomb));
-        if(BOMB_LIST.size() != MAX_BOMBS) {
-            BOMB_LIST.add(newBomb);
+        if(bombList.size() != MAX_BOMBS) {
+            bombList.add(newBomb);
         }
     }
 
     private boolean overlaps(Bomb newBomb) {
-        for (Bomb bomb : BOMB_LIST) {
+        for (Bomb bomb : bombList) {
             if (bomb.intersects(newBomb)) {
                 return true;
             }
@@ -35,15 +35,15 @@ public class BombManager {
     }
 
     public List<Bomb> getBombList() {
-        return BOMB_LIST;
+        return bombList;
     }
 
     public void dequeueShape(Shape drawing) {
-            Iterator<Bomb> iterator = BOMB_LIST.iterator();
+            Iterator<Bomb> iterator = bombList.iterator();
             while (iterator.hasNext()) {
                 Bomb bomb = iterator.next();
                 if (bomb.getShapeQueue().peek() == drawing) {
-                    bomb.shapeQueue.remove();
+                    bomb.removeShape();
                 }
                 if (bomb.getShapeQueue().isEmpty()) {
                     iterator.remove();
@@ -51,23 +51,23 @@ public class BombManager {
             }
     }
 
-    public boolean bombExploded() {
-        Iterator<Bomb> iterator = BOMB_LIST.iterator();
+    public void explodeBomb() {
+        explosionListener.onExplosion();
+    }
+
+    public boolean isGameOver() {
+        Iterator<Bomb> iterator = bombList.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
             if (bomb.getAge() >= LIFESPAN) {
-                explosionListener.onExplosion();
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isGameOver() {
-        return bombExploded();
-    }
 
     public void clearBombs() {
-        BOMB_LIST.clear();
+        bombList.clear();
     }
 }

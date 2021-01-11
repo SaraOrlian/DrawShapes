@@ -12,7 +12,8 @@ public class Main {
 
         DrawShapesFrame drawShapesFrame = new DrawShapesFrame(listener, shapesView);
         drawShapesFrame.setVisible(true);
-        PaintTask paintTask = new PaintTask(shapesView, bombManager);
+        PaintTask paintTask = new PaintTask(shapesView);
+        GameOverTask  gameOverTask= new GameOverTask(bombManager);
 
         ExplosionListener explosionListener = new ExplosionListener() {
             @Override
@@ -20,7 +21,7 @@ public class Main {
                 int response = JOptionPane.showConfirmDialog(shapesView, "Play Again?", "Game Over :(", JOptionPane.YES_NO_OPTION);
                 if (response == JOptionPane.YES_OPTION) {
                     bombManager.clearBombs();
-                    BombThread thread = new BombThread(bombManager, new PaintTask(shapesView, bombManager));
+                    BombThread thread = new BombThread(bombManager, new PaintTask(shapesView), new GameOverTask(bombManager));
                     thread.start();
                 } else {
                     System.exit(0);
@@ -31,7 +32,7 @@ public class Main {
         bombManager.setExplosionListener(explosionListener);
 
 
-        BombThread thread = new BombThread(bombManager, paintTask);
+        BombThread thread = new BombThread(bombManager, paintTask,gameOverTask);
         thread.start();
     }
 }
