@@ -7,7 +7,7 @@ import java.util.*;
 public class BombManager {
     public static final int LIFESPAN = 12;
     private final List<Bomb> BOMB_LIST = new LinkedList<>();
-    
+
     public void createBomb(int numShapes) {
         BombFactory bombFactory = new BombFactory();
         Bomb newBomb;
