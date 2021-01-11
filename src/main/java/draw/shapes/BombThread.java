@@ -34,20 +34,19 @@ public class BombThread extends Thread {
         timer.schedule(paintTask, 0, 75);
         while (!bombManager.isGameOver()) {
             generateBombs();
+
         }
     }
 
     private void generateBombs() {
-        while (!bombManager.isGameOver()) {
             delayNewBombs();
             if (bombManager.isGameOver()) {
-                break;
+                return;
             }
             createBombs();
             counter++;
             adjustBombRate();
             adjustShapeRate();
-        }
     }
 
     private void createBombs() {
