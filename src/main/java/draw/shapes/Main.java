@@ -21,7 +21,7 @@ public class Main {
                 int response = JOptionPane.showConfirmDialog(shapesView, "Play Again?", "Game Over :(", JOptionPane.YES_NO_OPTION);
                 if (response == JOptionPane.YES_OPTION) {
                     bombManager.clearBombs();
-                    BombThread thread = new BombThread(bombManager,shapesView);
+                    BombThread thread = new BombThread(bombManager, shapesView);
                     thread.start();
                 } else {
                     System.exit(0);

@@ -6,11 +6,11 @@ import java.util.List;
 import static draw.shapes.Shape.*;
 
 /**
- * TODO: write javadoc
+ * analyzes user's stroke to determine if it fits a shape criterion
  */
 public class ShapeAnalyzer {
 
-    private final ShapeReducer REDUCER = new ShapeReducer();
+    private final ShapeReducer reducer = new ShapeReducer();
 
     public Shape getShape(List<Point> stroke) {
         if (isHorizontal(stroke)) {
@@ -81,11 +81,11 @@ public class ShapeAnalyzer {
     }
 
     private List<Point> reduceCaratOrVee(List<Point> stroke) {
-        List<Point> smoothStroke = REDUCER.smooth(stroke);
+        List<Point> smoothStroke = reducer.smooth(stroke);
 
         while (!hasCorrectNumPointsForVeeOrCarat(smoothStroke)) {
             int prevSize = smoothStroke.size();
-            smoothStroke = REDUCER.smooth(smoothStroke);
+            smoothStroke = reducer.smooth(smoothStroke);
             if (smoothStroke.size() == prevSize) {
                 break;
             }

@@ -9,8 +9,6 @@ public class Bomb {
     public static final int RADIUS = ShapesView.BOMB_BORDER_DIAMETER + 60;
     private long birthday;
 
-
-    //pass list of shapes and location in constructor
     public Bomb(Queue<Shape> shapeQueue, Point location) {
         this.shapeQueue = shapeQueue;
         this.location = location;
@@ -37,6 +35,4 @@ public class Bomb {
     public long getAge() {
         return System.currentTimeMillis() / 1000 - birthday;
     }
-
-
 }

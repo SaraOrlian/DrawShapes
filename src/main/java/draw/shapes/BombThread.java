@@ -1,22 +1,20 @@
 package draw.shapes;
 
-import java.util.Timer;
-
 public class BombThread extends Thread {
 
     private long delay;
     private int counter;
-    private final int MIN_DELAY = 2000;
-    private final int MAX_BOMBS = 10;
-    private final int MAX_SHAPES = 6;
+    private final int minDelay = 2000;
+    private final int maxBombs = 10;
+    private final int maxShapes = 6;
     private int numShapes;
     private int numBombs;
     private final BombManager bombManager;
     private final ShapesView view;
     private long generationTime;
 
-    private final int BOMB_INTERVAL = 5;
-    private final int SHAPE_INTERVAL = 10;
+    private final int bombInterval = 5;
+    private final int shapeInterval = 10;
 
 
     public BombThread(BombManager bombManager, ShapesView view) {
@@ -48,13 +46,11 @@ public class BombThread extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     private long getElapsedTime() {
-        return System.currentTimeMillis()  - generationTime;
+        return System.currentTimeMillis() - generationTime;
     }
 
     private void createBombs() {
@@ -66,33 +62,33 @@ public class BombThread extends Thread {
 
 
     private void adjustShapeRate() {
-        if (counter % SHAPE_INTERVAL == 0) {
+        if (counter % shapeInterval == 0) {
             incrementNumShapes();
             decreaseDelay(50);
         }
     }
 
     private void adjustBombRate() {
-        if (counter % BOMB_INTERVAL == 0) {
+        if (counter % bombInterval == 0) {
             incrementNumBombs();
             decreaseDelay(100);
         }
     }
 
     private void incrementNumShapes() {
-        if (numShapes < MAX_SHAPES) {
+        if (numShapes < maxShapes) {
             numShapes++;
         }
     }
 
     private void incrementNumBombs() {
-        if (numBombs < MAX_BOMBS) {
+        if (numBombs < maxBombs) {
             numBombs++;
         }
     }
 
     private void decreaseDelay(int change) {
-        if (delay > MIN_DELAY) {
+        if (delay > minDelay) {
             delay -= change;
         }
     }
