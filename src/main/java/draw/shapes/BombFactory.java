@@ -4,15 +4,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-/**
- * build ghosts
- */
-
 public class BombFactory {
-    private final int X_OFFSET = Bomb.RADIUS;
-    private final int Y_OFFSET = Bomb.RADIUS + 10;
+    private final int xOffset = Bomb.RADIUS;
+    private final int yOffset = Bomb.RADIUS + 10;
     private final ShapeFactory shapeFactory;
-    private final Random RANDOM = new Random();
+    private final Random random = new Random();
 
     public BombFactory(ShapeFactory shapeFactory) {
         this.shapeFactory = shapeFactory;
@@ -31,17 +27,17 @@ public class BombFactory {
     }
 
     private Point getRandomLocation() {
-        return new Point(RANDOM.nextInt(DrawShapesFrame.WIDTH - 2 * X_OFFSET) + X_OFFSET, getRandY());
+        return new Point(random.nextInt(DrawShapesFrame.WIDTH - 2 * xOffset) + xOffset, getRandY());
     }
 
 
     private int getRandY() {
-        int y = RANDOM.nextInt(DrawShapesFrame.HEIGHT);
-        return y < DrawShapesFrame.HEIGHT - Y_OFFSET ? notTooHigh(y) : y - Y_OFFSET;
+        int y = random.nextInt(DrawShapesFrame.HEIGHT);
+        return y < DrawShapesFrame.HEIGHT - yOffset ? notTooHigh(y) : y - yOffset;
 
     }
 
     private int notTooHigh(int y) {
-        return y < 35? y + 35 : y;
+        return y < 35 ? y + 35 : y;
     }
 }
