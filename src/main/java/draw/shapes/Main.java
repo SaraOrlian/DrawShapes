@@ -5,8 +5,9 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
         ShapeAnalyzer analyzer = new ShapeAnalyzer();
-
-        BombManager bombManager = new BombManager();
+        ShapeFactory shapeFactory = new ShapeFactory();
+        BombFactory bombFactory = new BombFactory(shapeFactory);
+        BombManager bombManager = new BombManager(bombFactory);
         ShapesView shapesView = new ShapesView(bombManager);
         StrokeListener listener = new StrokeListener(bombManager, shapesView, analyzer);
 
