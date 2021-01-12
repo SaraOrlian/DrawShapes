@@ -13,7 +13,8 @@ public class Main {
 
         DrawShapesFrame drawShapesFrame = new DrawShapesFrame(listener, shapesView);
         drawShapesFrame.setVisible(true);
-
+        int instruction = JOptionPane.showConfirmDialog(shapesView, "Draw the respective shapes of the bombs to diffuse the bombs and protect the neighboring towns", "Instructions", JOptionPane.OK_CANCEL_OPTION);
+        if (instruction == JOptionPane.OK_OPTION) {
 
         ExplosionListener explosionListener = new ExplosionListener() {
             @Override
@@ -31,8 +32,10 @@ public class Main {
         };
         bombManager.setExplosionListener(explosionListener);
 
-
         BombThread thread = new BombThread(bombManager, shapesView);
         thread.start();
     }
-}
+    else {
+        System.exit(0);
+    }
+}}

@@ -191,4 +191,5 @@ public class ShapesView extends JComponent {
         age *= (float) Color.RED.getRed() / (float) BombManager.LIFESPAN;
         return new Color(START_COLOR.getRed() + (int) age, START_COLOR.getGreen() - (int) age, 0);
     }
+
 }

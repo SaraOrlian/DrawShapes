@@ -9,8 +9,8 @@ public class BombManager {
 
     public static final int MAX_BOMBS = 10;
     private final List<Bomb> bombList = new LinkedList<>();
-    ExplosionListener explosionListener;
-    BombFactory bombFactory;
+    private ExplosionListener explosionListener;
+    private BombFactory bombFactory;
 
     public BombManager(BombFactory bombFactory) {
         this.bombFactory = bombFactory;
