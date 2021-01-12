@@ -9,20 +9,23 @@ public class BombManager {
     public static final int MAX_BOMBS = 10;
     private final List<Bomb> bombList = new LinkedList<>();
     ExplosionListener explosionListener;
+    BombFactory bombFactory;
 
+    public BombManager(BombFactory bombFactory) {
+        this.bombFactory =bombFactory;
+    }
 
-    //pass bomb factory to constructor to enable better testing
     public void setExplosionListener(ExplosionListener explosionListener) {
         this.explosionListener = explosionListener;
+
     }
 
     public void createBomb(int numShapes) {
-        BombFactory bombFactory = new BombFactory();
         Bomb newBomb;
         do {
             newBomb = bombFactory.newInstance(numShapes);
         } while (overlaps(newBomb));
-        if(bombList.size() != MAX_BOMBS) {
+        if (bombList.size() != MAX_BOMBS) {
             bombList.add(newBomb);
         }
     }
@@ -41,16 +44,16 @@ public class BombManager {
     }
 
     public void dequeueShape(Shape drawing) {
-            Iterator<Bomb> iterator = bombList.iterator();
-            while (iterator.hasNext()) {
-                Bomb bomb = iterator.next();
-                if (bomb.getShapeQueue().peek() == drawing) {
-                    bomb.removeShape();
-                }
-                if (bomb.getShapeQueue().isEmpty()) {
-                    iterator.remove();
-                }
+        Iterator<Bomb> iterator = bombList.iterator();
+        while (iterator.hasNext()) {
+            Bomb bomb = iterator.next();
+            if (bomb.getShapeQueue().peek() == drawing) {
+                bomb.removeShape();
             }
+            if (bomb.getShapeQueue().isEmpty()) {
+                iterator.remove();
+            }
+        }
     }
 
     public void explodeBomb() {
