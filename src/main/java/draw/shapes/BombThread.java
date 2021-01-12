@@ -64,13 +64,6 @@ public class BombThread extends Thread {
         generationTime = System.currentTimeMillis();
     }
 
-    private void delayNewBombs() {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void adjustShapeRate() {
         if (counter % SHAPE_INTERVAL == 0) {

@@ -12,7 +12,7 @@ public class BombManager {
     BombFactory bombFactory;
 
     public BombManager(BombFactory bombFactory) {
-        this.bombFactory =bombFactory;
+        this.bombFactory = bombFactory;
     }
 
     public void setExplosionListener(ExplosionListener explosionListener) {
