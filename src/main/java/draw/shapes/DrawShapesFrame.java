@@ -3,17 +3,19 @@ package draw.shapes;
 import javax.swing.*;
 import java.awt.*;
 
-//Sara
+
 public class DrawShapesFrame extends JFrame {
+    public static final int WIDTH = 1200;
+    public static final int HEIGHT = 900;
 
     public DrawShapesFrame(StrokeListener listener, ShapesView shapesView) {
-        setSize(1000, 500);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Draw Shapes");
-        setLayout(new BorderLayout());
-        this.addMouseListener(listener);
-        this.addMouseMotionListener(listener);
-        add(shapesView);
-    }
 
+        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Diffusion");
+        add(shapesView);
+        shapesView.addMouseListener(listener);
+        shapesView.addMouseMotionListener(listener);
+
+    }
 }

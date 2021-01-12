@@ -17,19 +17,26 @@ public class Point {
         return y;
     }
 
-    public void incrementX(){
-        x++;
+    public Point invert() {
+        int newX = y;
+        int newY = x;
+        return new Point(newX, newY);
     }
 
-    public void incrementY(){
-        y++;
+    public double getAngleBetween(Point other) {
+        double opposite = Math.abs(this.getY() - other.getY());
+        double adjacent = Math.abs(this.getX() - other.getX());
+        return Math.atan(opposite / adjacent);
     }
 
-    public void decrementX(){
-        x--;
+    public double getDistance(Point other) {
+        double xDiff = this.getX() - other.getX();
+        double yDiff = this.getY() - other.getY();
+        return Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
     }
 
-    public void decrementY(){
-        y--;
+    @Override
+    public String toString() {
+        return x + " " + y;
     }
 }
