@@ -9,7 +9,8 @@ import java.util.Random;
  */
 
 public class BombFactory {
-    private final int OFFSET = 200;
+    private final int X_OFFSET = Bomb.RADIUS;
+    private final int Y_OFFSET = Bomb.RADIUS + 10;
     private final ShapeFactory shapeFactory;
     private final Random RANDOM = new Random();
 
@@ -30,6 +31,17 @@ public class BombFactory {
     }
 
     private Point getRandomLocation() {
-        return new Point(RANDOM.nextInt(DrawShapesFrame.WIDTH - OFFSET), RANDOM.nextInt(DrawShapesFrame.HEIGHT - OFFSET) );
+        return new Point(RANDOM.nextInt(DrawShapesFrame.WIDTH - 2 * X_OFFSET) + X_OFFSET, getRandY());
+    }
+
+
+    private int getRandY() {
+        int y = RANDOM.nextInt(DrawShapesFrame.HEIGHT);
+        return y < DrawShapesFrame.HEIGHT - Y_OFFSET ? notTooHigh(y) : y - Y_OFFSET;
+
+    }
+
+    private int notTooHigh(int y) {
+        return y < 35? y + 35 : y;
     }
 }
