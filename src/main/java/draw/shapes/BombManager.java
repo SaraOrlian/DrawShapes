@@ -6,19 +6,33 @@ import java.util.*;
 //Get shape drawn and remove shape from ghost
 public class BombManager {
     public static final int LIFESPAN = 12;
-    private final List<Bomb> BOMB_LIST = new LinkedList<>();
+
+    public static final int MAX_BOMBS = 10;
+    private final List<Bomb> bombList = new LinkedList<>();
+    ExplosionListener explosionListener;
+    BombFactory bombFactory;
+
+    public BombManager(BombFactory bombFactory) {
+        this.bombFactory = bombFactory;
+    }
+
+    public void setExplosionListener(ExplosionListener explosionListener) {
+        this.explosionListener = explosionListener;
+
+    }
 
     public void createBomb(int numShapes) {
-        BombFactory bombFactory = new BombFactory();
         Bomb newBomb;
         do {
             newBomb = bombFactory.newInstance(numShapes);
         } while (overlaps(newBomb));
-        BOMB_LIST.add(newBomb);
+        if (bombList.size() != MAX_BOMBS) {
+            bombList.add(newBomb);
+        }
     }
 
     private boolean overlaps(Bomb newBomb) {
-        for (Bomb bomb : BOMB_LIST) {
+        for (Bomb bomb : bombList) {
             if (bomb.intersects(newBomb)) {
                 return true;
             }
@@ -27,36 +41,38 @@ public class BombManager {
     }
 
     public List<Bomb> getBombList() {
-        return BOMB_LIST;
+        return bombList;
     }
 
     public void dequeueShape(Shape drawing) {
-        if (!isGameOver()) {
-            Iterator<Bomb> iterator = BOMB_LIST.iterator();
-            while (iterator.hasNext()) {
-                Bomb bomb = iterator.next();
-                if (bomb.getShapeQueue().peek() == drawing) {
-                    bomb.shapeQueue.remove();
-                }
-                if (bomb.getShapeQueue().isEmpty()) {
-                    iterator.remove();
-                }
+        Iterator<Bomb> iterator = bombList.iterator();
+        while (iterator.hasNext()) {
+            Bomb bomb = iterator.next();
+            if (bomb.getShapeQueue().peek() == drawing) {
+                bomb.removeShape();
+            }
+            if (bomb.getShapeQueue().isEmpty()) {
+                iterator.remove();
             }
         }
     }
 
-    public boolean bombExploded() {
-        Iterator<Bomb> iterator = BOMB_LIST.iterator();
+    public void explodeBomb() {
+        explosionListener.onExplosion();
+    }
+
+    public boolean isGameOver() {
+        Iterator<Bomb> iterator = bombList.iterator();
         while (iterator.hasNext()) {
             Bomb bomb = iterator.next();
-            if (bomb.getAge() > LIFESPAN) {
+            if (bomb.getAge() >= LIFESPAN) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isGameOver() {
-        return bombExploded();
+    public void clearBombs() {
+        bombList.clear();
     }
-}
+}git

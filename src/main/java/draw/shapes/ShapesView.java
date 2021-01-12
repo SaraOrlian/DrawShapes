@@ -51,13 +51,13 @@ public class ShapesView extends JComponent {
     }
 
     private void paintBomb(Graphics g, Bomb bomb) {
-        if (bombManager.isGameOver() && bomb.getAge() >= LIFESPAN) {
+        if (bomb.getAge() >= LIFESPAN) {
             paintExplosion(g);
             return;
         }
-        int bombOutlineX = bombXval - 70;
+        int bombOutlineX = bombXval - 150;
         int bombOutlineY = bombYval + 27;
-        int bombX = bombXval - 65;
+        int bombX = bombXval - 145;
         int bombY = bombYval + 32;
 
 
@@ -76,7 +76,7 @@ public class ShapesView extends JComponent {
 
     private void paintExplosion(Graphics g) {
         g.setColor(Color.RED);
-        int[] xpoints = new int[] {
+        int[] xpoints = new int[]{
                 bombXval,
                 bombXval + 30,
                 bombXval + 50,
@@ -88,18 +88,18 @@ public class ShapesView extends JComponent {
                 bombXval + 80,
                 bombXval + 60,
                 bombXval + 30,
-                bombXval -40,
-                bombXval -30,
-                bombXval -90,
-                bombXval -30,
-                bombXval -50,
+                bombXval - 40,
+                bombXval - 30,
+                bombXval - 90,
+                bombXval - 30,
+                bombXval - 50,
                 bombXval
         };
-        int[] ypoints = new int[] {
+        int[] ypoints = new int[]{
                 bombYval - 20,
                 bombYval - 70,
                 bombYval - 20,
-                bombYval -40,
+                bombYval - 40,
                 bombYval - 20,
                 bombYval + 30,
                 bombYval + 50,
@@ -111,7 +111,7 @@ public class ShapesView extends JComponent {
                 bombYval + 80,
                 bombYval + 20,
                 bombYval + 40,
-                bombYval -40,
+                bombYval - 40,
                 bombYval - 20
         };
         int npoints = 17;
@@ -150,10 +150,10 @@ public class ShapesView extends JComponent {
         bombXval += 10;
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform orig = g2d.getTransform();
-        g2d.rotate(Math.toRadians(-90), bombXval++, bombYval);
-        g2d.drawString("\u2796", bombXval++, bombYval);
+        g2d.rotate(Math.toRadians(-90), bombXval, bombYval);
+        g2d.drawString("\u2796", bombXval, bombYval + 20);
         g2d.setTransform(orig);
-        bombXval += 10;
+        bombXval += 20;
     }
 
     private void drawVee(Graphics g) {
@@ -166,8 +166,9 @@ public class ShapesView extends JComponent {
     private void drawHorizontal(Graphics g) {
         g.setFont(new Font("", Font.PLAIN, 30));
         g.setColor(Color.BLUE);
-        g.drawString("\u2796", bombXval++, bombYval);
-        bombXval += 50;
+        bombXval += 30;
+        g.drawString("\u2796", bombXval - 20, bombYval);
+        bombXval += 10;
     }
 
     private void drawCarat(Graphics g) {
@@ -178,18 +179,16 @@ public class ShapesView extends JComponent {
     }
 
     private void paintStroke(Graphics g) {
-        if (!bombManager.isGameOver()) {
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            for (int i = 0; i < drawing.size() - 2; i++) {
-                g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
-            }
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        for (int i = 0; i < drawing.size() - 2; i++) {
+            g2.drawLine(drawing.get(i).getX(), drawing.get(i).getY(), drawing.get(i + 1).getX(), drawing.get(i + 1).getY());
         }
     }
 
 
     private Color getCurrentColor(float age) {
-    age *= (float)Color.RED.getRed()/(float) BombManager.LIFESPAN;
+        age *= (float) Color.RED.getRed() / (float) BombManager.LIFESPAN;
         return new Color(START_COLOR.getRed() + (int) age, START_COLOR.getGreen() - (int) age, 0);
     }
 }

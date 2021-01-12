@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ShapeReducer {
 
-    private static final double FORTY_FIVE_DEGREES = Math.PI / 3;
+    public static final double FORTY_FIVE_DEGREES = Math.PI / 3;
 
     public List<Point> smooth(List<Point> stroke) {
         Point lastPoint = stroke.get(stroke.size() - 1);

@@ -1,93 +1,94 @@
 package draw.shapes;
 
-import java.util.Timer;
-
 public class BombThread extends Thread {
 
-    private int delay = 5000;
+    private long delay;
     private int counter;
-    private final int MIN_DELAY = 2000;
-    private final int MAX_BOMBS = 10;
-    private final int MAX_SHAPES = 6;
-    private int numShapes = 1;
-    private int numBombs = 3;
+    private final int minDelay = 2000;
+    private final int maxBombs = 10;
+    private final int maxShapes = 6;
+    private int numShapes;
+    private int numBombs;
     private final BombManager bombManager;
-    private final PaintTask paintTask;
+    private final ShapesView view;
+    private long generationTime;
 
-    private final int BOMB_INTERVAL = 5;
-    private final int SHAPE_INTERVAL = 10;
-    private final Timer timer = new Timer();
+    private final int bombInterval = 5;
+    private final int shapeInterval = 10;
 
-    public BombThread(BombManager bombManager, PaintTask paintTask) {
+
+    public BombThread(BombManager bombManager, ShapesView view) {
         this.bombManager = bombManager;
-        this.paintTask = paintTask;
-        bombManager.createBomb(1);
-        bombManager.createBomb(1);
-        bombManager.createBomb(1);
+        this.view = view;
+        delay = 5000;
+        numShapes = 1;
+        numBombs = 3;
     }
 
     public void run() {
-        timer.schedule(paintTask, 0, 75);
-        while (!bombManager.isGameOver()) {
-            generateBombs();
-        }
+        generateBombs();
+        view.repaint();
+        bombManager.explodeBomb();
     }
 
     private void generateBombs() {
         while (!bombManager.isGameOver()) {
-            delayNewBombs();
-            if (bombManager.isGameOver()) {
-                break;
+            view.repaint();
+
+            if (getElapsedTime() > delay) {
+                createBombs();
+                counter++;
+                adjustBombRate();
+                adjustShapeRate();
             }
-            createBombs();
-            counter++;
-            adjustBombRate();
-            adjustShapeRate();
+            try {
+                Thread.sleep(12);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private long getElapsedTime() {
+        return System.currentTimeMillis() - generationTime;
     }
 
     private void createBombs() {
         for (int i = 0; i < numBombs; i++) {
             bombManager.createBomb(numShapes);
         }
+        generationTime = System.currentTimeMillis();
     }
 
-    private void delayNewBombs() {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void adjustShapeRate() {
-        if (counter % SHAPE_INTERVAL == 0) {
+        if (counter % shapeInterval == 0) {
             incrementNumShapes();
             decreaseDelay(50);
         }
     }
 
     private void adjustBombRate() {
-        if (counter % BOMB_INTERVAL == 0) {
+        if (counter % bombInterval == 0) {
             incrementNumBombs();
             decreaseDelay(100);
         }
     }
 
     private void incrementNumShapes() {
-        if (numShapes < MAX_SHAPES) {
+        if (numShapes < maxShapes) {
             numShapes++;
         }
     }
 
     private void incrementNumBombs() {
-        if (numBombs < MAX_BOMBS) {
+        if (numBombs < maxBombs) {
             numBombs++;
         }
     }
 
     private void decreaseDelay(int change) {
-        if (delay > MIN_DELAY) {
+        if (delay > minDelay) {
             delay -= change;
         }
     }
