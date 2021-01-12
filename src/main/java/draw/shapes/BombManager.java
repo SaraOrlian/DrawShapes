@@ -71,7 +71,6 @@ public class BombManager {
         return false;
     }
 
-
     public void clearBombs() {
         bombList.clear();
     }

@@ -43,6 +43,11 @@ public class BombThread extends Thread {
                 adjustBombRate();
                 adjustShapeRate();
             }
+            try {
+                Thread.sleep(12);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
 
