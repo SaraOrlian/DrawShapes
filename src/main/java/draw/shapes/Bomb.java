@@ -32,6 +32,10 @@ public class Bomb {
         shapeQueue.remove();
     }
 
+    /**
+     * return the number of seconds since the bomb was created
+     * @return
+     */
     public long getAge() {
         return System.currentTimeMillis() / 1000 - birthday;
     }

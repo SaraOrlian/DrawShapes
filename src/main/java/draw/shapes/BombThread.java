@@ -53,6 +53,7 @@ public class BombThread extends Thread {
         return System.currentTimeMillis() - generationTime;
     }
 
+
     private void createBombs() {
         for (int i = 0; i < numBombs; i++) {
             bombManager.createBomb(numShapes);
