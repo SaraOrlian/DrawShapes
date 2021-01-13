@@ -2,6 +2,7 @@ package draw.shapes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 
 public class DrawShapesFrame extends JFrame {
@@ -13,7 +14,8 @@ public class DrawShapesFrame extends JFrame {
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Diffusion");
-        JLabel background=new JLabel(new ImageIcon("src\\main\\resources\\DrawShapesBackground1.jpg"));
+        URL imageUrl = ClassLoader.getSystemResource("DrawShapesBackground1.jpg");
+        JLabel background=new JLabel(new ImageIcon(imageUrl));
         add(background);
         background.setLayout(new BorderLayout());
         background.add(shapesView);
