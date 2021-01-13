@@ -6,6 +6,7 @@ import java.util.*;
 //Get shape drawn and remove shape from ghost
 public class BombManager {
     public static final int LIFESPAN = 12;
+
     public static final int MAX_BOMBS = 10;
     private final List<Bomb> bombList = new LinkedList<>();
     private ExplosionListener explosionListener;
