@@ -3,6 +3,6 @@
 ###### Contributors: Sara Orlian (@SaraOrlian), Ricki Peikes (@rpeikes), Shoshana Weinfeld Sokolin (@shweinfeld)
 
 [Click to view and download Jar File](https://github.com/SaraOrlian/DrawShapes/blob/main/build/libs/DrawShapes-1.0-SNAPSHOT.jar)
-![Start of Game](Start.png)
-![Drawing](Stroke.png)
-![End of Game](End.png)
+![Start of Game](start.png)
+![Drawing](stroke.png)
+![End of Game](end.png)
